@@ -6,30 +6,45 @@ import { CartComponent } from './Dashboard/cart/cart.component';
 import { DetailProductComponent } from './Dashboard/detail-product/detail-product.component';
 import { MainLayoutComponent } from './main-layout/main-layout.component';
 import { BlankLayoutComponent } from './blank-layout/blank-layout.component';
+import { ProductComponent } from './Management/product/product.component';
+import { CategoryComponent } from './Management/category/category.component';
+import { AdminManagementComponent } from './admin-management/admin-management.component';
 
 
 export const routes: Routes = [
     {
-        path:'',
-        component : MainLayoutComponent,
-        children:[
-            {path:'',redirectTo:'/home',pathMatch:'full'},
-            {path:'home',component: HomeComponent},
-            {path:'cart',component: CartComponent},
-            {path:'detail',component: DetailProductComponent}
-
+        path: '',
+        redirectTo: '/home',
+        pathMatch: 'full'
+    },
+    {
+        path: '',
+        component: MainLayoutComponent,
+        children: [
+            { path: 'home', component: HomeComponent },
+            { path: 'cart', component: CartComponent },
+            { path: 'detail', component: DetailProductComponent }
         ]
     },
     {
-        path:'',
+        path: '',
         component: BlankLayoutComponent,
-        children:[
-            {path:'login',component:LoginComponent},
-            {path:'register',component:RegisterComponent}
-
+        children: [
+            { path: 'login', component: LoginComponent },
+            { path: 'register', component: RegisterComponent }
         ]
     },
     {
-        path:'**',redirectTo:'/home'
+        path: '',
+        component: AdminManagementComponent,
+        children: [
+            { path: 'admin/product', component: ProductComponent },
+            { path: 'admin/category', component: CategoryComponent }
+        ]
+    },
+    {
+        path: '**',
+        redirectTo: '/home'
     }
 ];
+

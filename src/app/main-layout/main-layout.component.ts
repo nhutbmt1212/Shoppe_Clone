@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { RouterOutlet,RouterLink } from '@angular/router';
+import { RouterOutlet,RouterLink,Router } from '@angular/router';
 
 
 @Component({
@@ -10,5 +10,4 @@ import { RouterOutlet,RouterLink } from '@angular/router';
   styleUrl: './main-layout.component.css'
 })
 export class MainLayoutComponent {
-
 }
