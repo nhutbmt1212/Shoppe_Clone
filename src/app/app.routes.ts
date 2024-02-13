@@ -31,6 +31,7 @@ export const routes: Routes = [
         component: BlankLayoutComponent,
         children: [
             { path: '', component: LoginComponent },
+            { path: 'login', component: LoginComponent },
             { path: 'register', component: RegisterComponent }
         ]
     },
