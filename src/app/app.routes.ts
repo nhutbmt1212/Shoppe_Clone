@@ -9,6 +9,7 @@ import { BlankLayoutComponent } from './blank-layout/blank-layout.component';
 import { ProductComponent } from './Management/product/product.component';
 import { CategoryComponent } from './Management/category/category.component';
 import { AdminManagementComponent } from './admin-management/admin-management.component';
+import { NotFoundComponent } from './not-found/not-found.component';
 
 
 export const routes: Routes = [
@@ -45,7 +46,7 @@ export const routes: Routes = [
     },
     {
         path: '**',
-        redirectTo: '/home'
+        component: NotFoundComponent
     }
 ];
 
