@@ -2,7 +2,6 @@
 <div class="modal" id="myModal">
     <div class="modal-dialog modal-xl">
         <div class="modal-content">
-
             <!-- Modal Header -->
             <div class="modal-header">
                 <h4 class="modal-title">Thêm sản phẩm</h4>
@@ -14,59 +13,69 @@
                 <div class="row">
                     <div class="col-sm-6">
                         <label for="" class="form-label">Mã sản phẩm</label>
-                        <input type="text" class="form-control" readonly>
-
+                        <input type="text" [(ngModel)]="MaSanPham" class="form-control" readonly />
                     </div>
-
 
                     <div class="col-sm-6">
                         <label for="" class="form-label">Tên sản phẩm</label>
-                        <input type="text" [(ngModel)]="TenSanPham" class="form-control">
-
+                        <input type="text" [(ngModel)]="TenSanPham" class="form-control" />
                     </div>
                     <div class="col-sm-6">
                         <label for="" class="form-label">Số lượng</label>
-                        <input type="number" [(ngModel)]="SoLuong" class="form-control">
+                        <input type="number" [(ngModel)]="SoLuong" class="form-control" />
                     </div>
-
                     <div class="col-sm-6">
-                        <label for="" class="form-label">Loại sản phẩm</label>
-                        <input type="text" [(ngModel)]="LoaiSanPham" class="form-control">
+                        <label for="" class="form-label">Đơn giá </label>
+                        <input type="text" [(ngModel)]="DonGia" class="form-control" />
+                    </div>
+                    <div class="col-sm-6">
+                        <label for="" class="form-label">Danh Mục</label>
+                        <!-- <input type="text" [(ngModel)]="MaDanhMuc" class="form-control" /> -->
+
+                        <select name="" id="" [(ngModel)]="MaDanhMuc" class="form-select">
+
+                            @for (dm of DanhMuc; track $index) {
+                            <option [value]='dm.MaDanhMuc'>{{dm.MaDanhMuc}} -
+                                {{dm.TenDanhMuc}} </option>
+                            }
+                        </select>
 
                     </div>
                     <div class="col-sm-6">
                         <label for="" class="form-label">Hình ảnh</label>
-                        <input type="file" [(ngModel)]="HinhAnh" class="form-control">
-
+                        <input type="file" #fileHinhAnh [(ngModel)]="HinhAnh" multiple class="form-control" />
                     </div>
-
 
                     <div class="col-sm-6">
                         <label for="" class="form-label">Hãng </label>
-                        <input type="text" [(ngModel)]="Hang" class="form-control">
-
+                        <input type="text" [(ngModel)]="Hang" class="form-control" />
+                    </div>
+                    <div class="col-sm-6">
+                        <label for="" class="form-label">Giảm Giá </label>
+                        <input type="text" [(ngModel)]="GiamGia" class="form-control" />
                     </div>
                     <div class="col-sm-6">
                         <label for="" class="form-label">Mô tả</label>
-                        <input type="text" [(ngModel)]="MoTa" class="form-control">
-
+                        <input type="text" [(ngModel)]="MoTa" class="form-control" />
                     </div>
                 </div>
             </div>
 
             <!-- Modal footer -->
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
-                <button type="button" class="btn btn-success" data-bs-dismiss="modal" (click)="ThemSanPham()">Thêm sản
-                    phẩm</button>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                    Hủy
+                </button>
+                <button type="button" class="btn btn-success" data-bs-dismiss="modal" (click)="ThemSanPham()">
+                    Thêm sản phẩm
+                </button>
             </div>
-
-
         </div>
     </div>
 </div>
 <div class="container-fluid" ng-controller="ProductController">
-    <button type="button" class="btn btn-primary mb-3" data-bs-toggle="modal" data-bs-target="#myModal">
+    <button type="button" class="btn btn-primary mb-3" data-bs-toggle="modal" (click)="ThayDoiMaRandom()"
+        data-bs-target="#myModal">
         Thêm sản phẩm
     </button>
     <table class="table table-bordered table-striped text-center table-reponsive">
@@ -77,57 +86,56 @@
                 <th scope="col">Tên sản phẩm</th>
                 <th scope="col">Số lượng</th>
                 <th scope="col">Ngày thêm</th>
-                <th scope="col">Loại sản phẩm</th>
+                <th scope="col">Danh Mục</th>
                 <th scope="col">Hình ảnh</th>
                 <th scope="col">Hãng</th>
                 <th scope="col">Mô tả</th>
                 <th scope="col">Giảm giá</th>
+                <th scope="col">Tình Trạng</th>
                 <th scope="col">Tùy chọn</th>
+
             </tr>
         </thead>
         <tbody>
+            @for (sp of SanPham; track $index) {
             <tr>
-                <th scope="row">1</th>
-                <td>SP0001</td>
-                <td>Dép Lào</td>
-                <td>2</td>
-                <td>29/09/2006</td>
-                <td>Dép</td>
-                <td><img src="assets/ImageProduct/imgProductDetail1.jpg" height="80px">
+                <th scope="row">{{$index+1}}</th>
+                <td>{{sp.MaSanPham}}</td>
+                <td>{{sp.TenSanPham}}</td>
+                <td>{{sp.SoLuong}}</td>
+                <td>{{sp.NgayThem}}</td>
+                <td>{{sp.MaDanhMuc}}</td>
+                <td>
+                    <img src="assets/ImageProduct/imgProductDetail1.jpg" height="80px" />
                 </td>
-                <td>LV</td>
-                <td>Dép đẹp</td>
-                <td>20%</td>
+                <td>{{sp.Hang}}</td>
+                <td>{{sp.MoTa}}</td>
+                <td>{{sp.GiamGia}}</td>
+                <td>{{sp.TinhTrang}}</td>
                 <td class="text-center">
-                    <!-- <div class="dropdown">
-                        <button type="button" class="border-0" data-bs-toggle="dropdown"
-                            style="background-color: rgba(0, 0, 0, 0);">
-                            <i class="bi bi-three-dots-vertical"></i>
-                        </button>
-                        <ul class="dropdown-menu">
-                            <li><button class="dropdown-item" class=" mb-3" data-bs-toggle="modal"
-                                    data-bs-target="#editModal">Sửa</button></li>
-                            <li> <button class="dropdown-item" class=" mb-3" data-bs-toggle="modal"
-                                    data-bs-target="#deleteConfirmationModal">Xóa</button>
-                            </li>
-                        </ul>
-                    </div> -->
                     <div class="dropdown">
-                        <button class=" border-0" style="background-color: rgba(0, 0, 0, 0);" type="button"
+                        <button class="border-0" style="background-color: rgba(0, 0, 0, 0)" type="button"
                             data-bs-toggle="dropdown" aria-expanded="false">
                             <i class="bi bi-three-dots-vertical"></i>
                         </button>
                         <ul class="dropdown-menu">
-                            <li><button class="dropdown-item" type="button" data-bs-toggle="modal"
-                                    data-bs-target="#deleteConfirmationModal">Xóa</button></li>
-                            <li><button class="dropdown-item" type="button" data-bs-toggle="modal"
-                                    data-bs-target="#editModal">Sửa</button></li>
-
+                            <li>
+                                <button class="dropdown-item" type="button" data-bs-toggle="modal"
+                                    data-bs-target="#editModal">
+                                    Sửa
+                                </button>
+                            </li>
+                            <li>
+                                <button class="dropdown-item" type="button" data-bs-toggle="modal"
+                                    data-bs-target="#deleteConfirmationModal">
+                                    Xóa
+                                </button>
+                            </li>
                         </ul>
                     </div>
-
                 </td>
             </tr>
+            }
         </tbody>
     </table>
     <div class="modal fade" id="deleteConfirmationModal" tabindex="-1" aria-labelledby="deleteConfirmationModalLabel"
@@ -135,17 +143,19 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="deleteConfirmationModalLabel">Xác nhận xóa</h5>
+                    <h5 class="modal-title" id="deleteConfirmationModalLabel">
+                        Xác nhận xóa
+                    </h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <div class="modal-body">
-                    Bạn có chắc chắn muốn xóa không?
-                </div>
+                <div class="modal-body">Bạn có chắc chắn muốn xóa không?</div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
-                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal" id="confirmDeleteButton">Xác
-                        nhận xóa</button>
-
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                        Hủy
+                    </button>
+                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal" id="confirmDeleteButton">
+                        Xác nhận xóa
+                    </button>
                 </div>
             </div>
         </div>
@@ -153,7 +163,6 @@
     <div class="modal" id="editModal">
         <div class="modal-dialog modal-xl">
             <div class="modal-content">
-
                 <!-- Modal Header -->
                 <div class="modal-header">
                     <h4 class="modal-title">Sửa sản phẩm</h4>
@@ -165,60 +174,52 @@
                     <div class="row">
                         <div class="col-sm-6">
                             <label for="" class="form-label">Mã sản phẩm</label>
-                            <input type="text" class="form-control" readonly>
+                            <input type="text" class="form-control" readonly />
                         </div>
                         <div class="col-sm-6">
                             <label for="" class="form-label">Tên sản phẩm</label>
-                            <input type="text" class="form-control">
-
-
+                            <input type="text" class="form-control" />
                         </div>
                         <div class="col-sm-6">
                             <label for="" class="form-label">Số lượng</label>
-                            <input type="number" class="form-control">
-
+                            <input type="number" class="form-control" />
                         </div>
                         <div class="col-sm-6">
                             <label for="" class="form-label">Ngày thêm</label>
-                            <input type="datetime-local" class="form-control" readonly>
+                            <input type="datetime-local" class="form-control" readonly />
                         </div>
                         <div class="col-sm-6">
                             <label for="" class="form-label">Loại sản phẩm</label>
-                            <input type="text" class="form-control">
-
-
+                            <input type="text" class="form-control" />
                         </div>
                         <div class="col-sm-6">
                             <label for="" class="form-label">Hình ảnh</label>
-                            <input type="file" file-model="SuaHinhAnh" class="form-control">
+                            <input type="file" file-model="SuaHinhAnh" class="form-control" />
                         </div>
                         <div class="col-sm-6">
                             <label for="" class="form-label">Hãng </label>
-                            <input type="text" class="form-control">
-
+                            <input type="text" class="form-control" />
                         </div>
                         <div class="col-sm-6">
                             <label for="" class="form-label">Mô tả</label>
-                            <input type="text" class="form-control">
-
-
+                            <input type="text" class="form-control" />
                         </div>
                         <div class="col-sm-6">
                             <label for="" class="form-label">Giảm giá</label>
-                            <input type="number" class="form-control">
-
+                            <input type="number" class="form-control" />
                         </div>
                     </div>
                 </div>
 
                 <!-- Modal footer -->
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
-                    <button type="button" class="btn btn-success" data-bs-dismiss="modal">Sửa
-                        sản phẩm</button>
-
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                        Hủy
+                    </button>
+                    <button type="button" class="btn btn-success" data-bs-dismiss="modal">
+                        Sửa sản phẩm
+                    </button>
                 </div>
-
             </div>
         </div>
     </div>
