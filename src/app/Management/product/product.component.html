@@ -201,12 +201,7 @@
                             </select>
 
                         </div>
-                        <div class="col-sm-6">
-                            <label for="" class="form-label">Hình ảnh</label>
-                            <br>
-                            <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#XuLyAnh">Xử lý
-                                ảnh</button>
-                        </div>
+
                         <div class="col-sm-6">
                             <label for="" class="form-label">Ngày thêm </label>
                             <input type="text" [(ngModel)]="NgayThemSua" class="form-control" />
@@ -244,7 +239,17 @@
 
                             </select>
                         </div>
+
                     </div>
+                    <!-- <div class="col-sm-6"> -->
+                    <label for="" class="form-label">Hình ảnh</label>
+                    <br>
+                    <input type="file" class="form-control">
+                    @for (hinhAnh of imageUrlEdit; track $index) {
+                    <img [src]="'http://localhost:4000/images/' + hinhAnh.TenFileAnh" height="60px" alt="">
+                    <button id="XoaAnhPreviewing">Xóa</button>
+                    }
+                    <!-- </div> -->
                 </div>
 
                 <!-- Modal footer -->
@@ -256,30 +261,6 @@
                         Sửa sản phẩm
                     </button>
                 </div>
-            </div>
-        </div>
-    </div>
-</div>
-
-<!-- Modal Xác Nhận Xóa -->
-
-<!-- </div> -->
-
-
-<!-- modal xử lý ảnh -->
-<div class="modal fade" id="XuLyAnh" tabindex="1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h1 class="modal-title fs-5" id="exampleModalLabel">Modal title</h1>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                ...
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary">Save changes</button>
             </div>
         </div>
     </div>

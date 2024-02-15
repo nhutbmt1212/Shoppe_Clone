@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { AfterViewInit, Component, OnInit, ElementRef, ViewChild } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ServiceSanPhamService } from '../../Services/service-san-pham.service';
 import { DanhMucService } from '../../Services/servicesDanhMuc/danh-muc.service';
@@ -13,6 +13,7 @@ import { DanhMucService } from '../../Services/servicesDanhMuc/danh-muc.service'
 export class ProductComponent implements OnInit {
   SanPham: any[] = [];
   DanhMuc: any[] = [];
+  imageUrlEdit: any[] = [];
   HinhAnhSanPham: any[] = [];
   MaSanPham: string = '';
   TenSanPham: string = '';
@@ -41,7 +42,9 @@ export class ProductComponent implements OnInit {
   constructor(
     private sanPhamServices: ServiceSanPhamService,
     private danhMucServices: DanhMucService
-  ) { }
+  ) {
+
+  }
   ngOnInit(): void {
     this.sanPhamServices.laySanPham().subscribe((data: any[]) => {
       this.SanPham = data;
@@ -58,6 +61,7 @@ export class ProductComponent implements OnInit {
     const MaRandom = this.sanPhamServices.randomMa();
     this.MaSanPham = MaRandom;
   }
+
 
   async ThemSanPham() {
     try {
@@ -133,7 +137,6 @@ export class ProductComponent implements OnInit {
 
   SuaSanPham(MaSP: string) {
     this.sanPhamServices.laySPTheoId(MaSP).subscribe((data: any[]) => {
-      console.log(data);
       this.MaSanPhamSua = data[0].MaSanPham;
       this.TenSanPhamSua = data[0].TenSanPham;
       this.SoLuongSua = data[0].SoLuong;
@@ -146,5 +149,10 @@ export class ProductComponent implements OnInit {
       this.NgayThemSua = data[0].NgayThem;
       this.TinhTrangSua = data[0].TinhTrang;
     });
+    this.sanPhamServices.LayHinhAnhTheoMaSanPham(MaSP).subscribe((data: any[]) => {
+      console.log(data);
+      this.imageUrlEdit = data;
+    });
   }
+
 }

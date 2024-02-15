@@ -38,4 +38,15 @@ export class ServiceSanPhamService {
       })
     );
   }
+  LayHinhAnhTheoMaSanPham(MaSanPham: string): Observable<any> {
+    return from(
+      fetch(`http://localhost:4000/hinhanh/${MaSanPham}`).then((response) => {
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        } else {
+          return response.json();
+        }
+      })
+    );
+  }
 }
