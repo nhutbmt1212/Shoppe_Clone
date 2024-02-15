@@ -247,7 +247,7 @@
                     <input type="file" class="form-control">
                     @for (hinhAnh of imageUrlEdit; track $index) {
                     <img [src]="'http://localhost:4000/images/' + hinhAnh.TenFileAnh" height="60px" alt="">
-                    <button id="XoaAnhPreviewing">Xóa</button>
+                    <button id="XoaAnhPreviewing" (click)="XoaHinhAnh($index)"><i class="bi bi-x-lg"></i></button>
                     }
                     <!-- </div> -->
                 </div>

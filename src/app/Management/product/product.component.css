@@ -1,0 +1,9 @@
+#XoaAnhPreviewing {
+  border: 0;
+  position: relative;
+  top: -20px;
+  left: -15px;
+  background-color: red;
+  color: white;
+  font-size: 10px;
+}

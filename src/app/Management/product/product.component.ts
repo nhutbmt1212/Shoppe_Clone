@@ -150,9 +150,22 @@ export class ProductComponent implements OnInit {
       this.TinhTrangSua = data[0].TinhTrang;
     });
     this.sanPhamServices.LayHinhAnhTheoMaSanPham(MaSP).subscribe((data: any[]) => {
-      console.log(data);
       this.imageUrlEdit = data;
     });
+  }
+  async XoaHinhAnh(index: number) {
+    const MaHinhAnh = this.imageUrlEdit[index].MaHinhAnh;
+    this.imageUrlEdit.splice(index, 1);
+    const response = await fetch(`http://localhost:4000/hinhanh/${MaHinhAnh}`, {
+      method: 'DELETE',
+    });
+    if (!response.ok) {
+      throw new Error(`Remove image error! status: ${response.status}`);
+    } else {
+      console.log(`Remove successfully`);
+
+
+    }
   }
 
 }
