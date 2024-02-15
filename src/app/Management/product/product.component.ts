@@ -24,6 +24,19 @@ export class ProductComponent implements OnInit {
   GiamGia: number = 0;
   MaNguoiDung: string = '';
   selectedFile: FileList | null = null;
+  //sửa
+  MaSanPhamSua: string = '';
+  TenSanPhamSua: string = '';
+  SoLuongSua: number = 1;
+  DonGiaSua: number = 0;
+  MoTaSua: string = '';
+  HangSua: string = '';
+  MaDanhMucSua: string = '';
+  GiamGiaSua: number = 0;
+  MaNguoiDungSua: string = '';
+  NgayThemSua: any;
+  TinhTrangSua: string = '';
+
 
   constructor(
     private sanPhamServices: ServiceSanPhamService,
@@ -64,9 +77,6 @@ export class ProductComponent implements OnInit {
         MaNguoiDung: this.MaNguoiDung,
 
       };
-
-
-
       const response = await fetch('http://localhost:4000/sanpham', {
         method: 'POST',
         headers: {
@@ -80,9 +90,6 @@ export class ProductComponent implements OnInit {
       } else {
         console.log(response);
       }
-
-
-
       if (this.selectedFile) {
         const countFile = this.selectedFile.length;
         const formDataImg = new FormData();
@@ -122,5 +129,22 @@ export class ProductComponent implements OnInit {
     } catch (error) {
       console.error('An error occurred while adding the product:', error);
     }
+  }
+
+  SuaSanPham(MaSP: string) {
+    this.sanPhamServices.laySPTheoId(MaSP).subscribe((data: any[]) => {
+      console.log(data);
+      this.MaSanPhamSua = data[0].MaSanPham;
+      this.TenSanPhamSua = data[0].TenSanPham;
+      this.SoLuongSua = data[0].SoLuong;
+      this.DonGiaSua = data[0].DonGia;
+      this.MaDanhMucSua = data[0].MaDanhMuc;
+      this.HangSua = data[0].Hang;
+      this.GiamGiaSua = data[0].GiamGia;
+      this.MoTaSua = data[0].MoTa;
+      this.MaNguoiDungSua = data[0].MaNguoiDung;
+      this.NgayThemSua = data[0].NgayThem;
+      this.TinhTrangSua = data[0].TinhTrang;
+    });
   }
 }
