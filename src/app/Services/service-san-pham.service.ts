@@ -49,6 +49,16 @@ export class ServiceSanPhamService {
       })
     );
   }
-
+  LayHinhAnhTheoMaSanPhamLimit1(MaSanPham: string): Observable<any> {
+    return from(
+      fetch(`http://localhost:4000/layhinhanhdautien/${MaSanPham}`).then((response) => {
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        } else {
+          return response.json();
+        }
+      })
+    );
+  }
 
 }

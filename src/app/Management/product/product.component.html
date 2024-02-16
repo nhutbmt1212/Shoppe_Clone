@@ -10,23 +10,23 @@
             <!-- Modal body -->
             <div class="modal-body">
                 <div class="row">
-                    <div class="col-sm-6">
+                    <div class="col-sm-4">
                         <label for="" class="form-label">Mã sản phẩm</label>
                         <input type="text" [(ngModel)]="MaSanPham" class="form-control" readonly />
                     </div>
-
+                    <div class="col-sm-4">
+                        <label for="" class="form-label">Số lượng</label>
+                        <input type="number" [(ngModel)]="SoLuong" class="form-control" />
+                    </div>
+                    <div class="col-sm-4">
+                        <label for="" class="form-label">Đơn giá </label>
+                        <input type="text" [(ngModel)]="DonGia" class="form-control" />
+                    </div>
                     <div class="col-sm-6">
                         <label for="" class="form-label">Tên sản phẩm</label>
                         <input type="text" [(ngModel)]="TenSanPham" class="form-control" />
                     </div>
-                    <div class="col-sm-6">
-                        <label for="" class="form-label">Số lượng</label>
-                        <input type="number" [(ngModel)]="SoLuong" class="form-control" />
-                    </div>
-                    <div class="col-sm-6">
-                        <label for="" class="form-label">Đơn giá </label>
-                        <input type="text" [(ngModel)]="DonGia" class="form-control" />
-                    </div>
+
                     <div class="col-sm-6">
                         <label for="" class="form-label">Danh Mục</label>
                         <!-- <input type="text" [(ngModel)]="MaDanhMuc" class="form-control" /> -->
@@ -40,22 +40,24 @@
                         </select>
 
                     </div>
-                    <div class="col-sm-6">
+                    <div class="col-sm-4">
                         <label for="" class="form-label">Hình ảnh</label>
                         <input type="file" (change)="inputFileAnh($event)" multiple class="form-control" />
                     </div>
 
-                    <div class="col-sm-6">
+                    <div class="col-sm-4">
                         <label for="" class="form-label">Hãng </label>
                         <input type="text" [(ngModel)]="Hang" class="form-control" />
                     </div>
-                    <div class="col-sm-6">
+                    <div class="col-sm-4">
                         <label for="" class="form-label">Giảm Giá </label>
                         <input type="text" [(ngModel)]="GiamGia" class="form-control" />
                     </div>
-                    <div class="col-sm-6">
+                    <div class="col-sm-12">
                         <label for="" class="form-label">Mô tả</label>
-                        <input type="text" [(ngModel)]="MoTa" class="form-control" />
+                        <!-- <area [(ngModel)]="MoTa" class="form-control" > -->
+                        <textarea name="" id="" [(ngModel)]="MoTa" class="form-control" style="width: 100%;"
+                            rows="3"></textarea>
                     </div>
                 </div>
             </div>
@@ -105,7 +107,7 @@
                 <td>{{sp.NgayThem}}</td>
                 <td>{{sp.MaDanhMuc}}</td>
                 <td>
-                    <img src="assets/ImageProduct/imgProductDetail1.jpg" height="80px" />
+                    <img [src]="'http://localhost:4000/images/' + sp.HinhAnhDauTien" width="130px" alt="Hình ảnh" />
                 </td>
                 <td>{{sp.Hang}}</td>
                 <td>{{sp.MoTa}}</td>

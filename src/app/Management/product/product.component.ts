@@ -47,8 +47,19 @@ export class ProductComponent implements OnInit {
 
   }
   ngOnInit(): void {
+
+    this.getDataSanPhamVaDanhMuc();
+
+
+  }
+  getDataSanPhamVaDanhMuc() {
     this.sanPhamServices.laySanPham().subscribe((data: any[]) => {
       this.SanPham = data;
+      for (let i = 0; i < data.length; i++) {
+        this.sanPhamServices.LayHinhAnhTheoMaSanPhamLimit1(data[i].MaSanPham).subscribe((res: any[]) => {
+          this.SanPham[i].HinhAnhDauTien = res[0].TenFileAnh
+        });
+      }
       for (let i = 0; i < data.length; i++) {
         let ngayThem: Date = new Date(data[i].NgayThem);
 
@@ -69,6 +80,7 @@ export class ProductComponent implements OnInit {
       this.MaDanhMuc = data[0].MaDanhMuc;
     });
   }
+
   inputFileAnh(event: any) {
     this.selectedFile = event.target.files;
   }
@@ -149,6 +161,7 @@ export class ProductComponent implements OnInit {
               method: "POST",
               body: formData
             });
+            this.getDataSanPhamVaDanhMuc();
           }
         }
         catch (error) {
@@ -216,6 +229,7 @@ export class ProductComponent implements OnInit {
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`);
     } else {
+      this.getDataSanPhamVaDanhMuc();
       console.log("Update product successfully");
     }
   }
@@ -236,6 +250,7 @@ export class ProductComponent implements OnInit {
       throw new Error(`Remove image error! status: ${response.status}`);
     } else {
       console.log(`Remove successfully`);
+      this.getDataSanPhamVaDanhMuc();
     }
   }
 
@@ -276,7 +291,7 @@ export class ProductComponent implements OnInit {
         if (response.ok) {
 
           this.LayHinhAnhFromServices(MaSP);
-
+          this.getDataSanPhamVaDanhMuc();
         }
 
 
