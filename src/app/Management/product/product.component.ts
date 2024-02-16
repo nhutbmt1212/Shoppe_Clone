@@ -149,6 +149,10 @@ export class ProductComponent implements OnInit {
       this.NgayThemSua = data[0].NgayThem;
       this.TinhTrangSua = data[0].TinhTrang;
     });
+    this.LayHinhAnhFromServices(MaSP);
+  }
+
+  LayHinhAnhFromServices(MaSP: string) {
     this.sanPhamServices.LayHinhAnhTheoMaSanPham(MaSP).subscribe((data: any[]) => {
       this.imageUrlEdit = data;
     });
@@ -163,9 +167,59 @@ export class ProductComponent implements OnInit {
       throw new Error(`Remove image error! status: ${response.status}`);
     } else {
       console.log(`Remove successfully`);
+    }
+  }
 
+  async UpLoadMultipleImg_Edit(event: any, MaSP: string) {
+    const files: FileList = event.target.files;
+    const formdata = new FormData();
+    for (let index = 0; index < files.length; index++) {
+      const element = files[index];
+      formdata.append('files', element);
 
     }
+
+    try {
+      const response = await fetch('http://localhost:4000/multifiles', {
+        method: 'POST',
+        body: formdata,
+      });
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      else {
+        //lưu vào db
+        const formData = new FormData();
+        for (let i = 0; i < files.length; i++) {
+          const DataHinhAnhSanPham = {
+            MaSanPham: this.MaSanPham,
+            TenFileAnh: files[i].name
+          }
+          this.HinhAnhSanPham.push(DataHinhAnhSanPham);
+          formData.append('files', files[i]);
+          formData.append('MaSanPham', MaSP);
+        }
+        const response = await fetch('http://localhost:4000/hinhanh', {
+          method: "POST",
+          body: formData
+        });
+        //thực hiện thêm ảnh previewing
+        if (response.ok) {
+
+          this.LayHinhAnhFromServices(MaSP);
+
+        }
+
+
+
+      }
+
+    } catch (error) {
+      console.error('There was a problem with the fetch operation: ', error);
+    }
+
+
+
   }
 
 }

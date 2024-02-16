@@ -1,4 +1,4 @@
-<div class="modal" id="myModal">
+<div class="modal fade" id="myModal">
     <div class="modal-dialog modal-xl">
         <div class="modal-content">
             <!-- Modal Header -->
@@ -159,7 +159,7 @@
             </div>
         </div>
     </div>
-    <div class="modal" id="editModal">
+    <div class="modal fade" id="editModal">
         <div class="modal-dialog modal-xl">
             <div class="modal-content">
                 <!-- Modal Header -->
@@ -244,7 +244,8 @@
                     <!-- <div class="col-sm-6"> -->
                     <label for="" class="form-label">Hình ảnh</label>
                     <br>
-                    <input type="file" class="form-control">
+                    <input type="file" (change)="UpLoadMultipleImg_Edit($event,MaSanPhamSua)" class="form-control"
+                        multiple>
                     @for (hinhAnh of imageUrlEdit; track $index) {
                     <img [src]="'http://localhost:4000/images/' + hinhAnh.TenFileAnh" height="60px" alt="">
                     <button id="XoaAnhPreviewing" (click)="XoaHinhAnh($index)"><i class="bi bi-x-lg"></i></button>
