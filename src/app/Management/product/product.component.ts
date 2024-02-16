@@ -25,6 +25,7 @@ export class ProductComponent implements OnInit {
   GiamGia: number = 0;
   MaNguoiDung: string = '';
   selectedFile: FileList | null = null;
+
   //sửa
   MaSanPhamSua: string = '';
   TenSanPhamSua: string = '';
@@ -48,6 +49,20 @@ export class ProductComponent implements OnInit {
   ngOnInit(): void {
     this.sanPhamServices.laySanPham().subscribe((data: any[]) => {
       this.SanPham = data;
+      for (let i = 0; i < data.length; i++) {
+        let ngayThem: Date = new Date(data[i].NgayThem);
+
+        let year: string = ngayThem.getFullYear().toString();
+        let month: string = (ngayThem.getMonth() + 1).toString().padStart(2, '0'); // padStart để thêm số 0 phía trước nếu tháng chỉ có 1 chữ số
+        let date: string = ngayThem.getDate().toString().padStart(2, '0'); // tương tự như trên
+        let hours: string = ngayThem.getHours().toString().padStart(2, '0');
+        let minutes: string = ngayThem.getMinutes().toString().padStart(2, '0');
+
+        let NgayGioConvert: string = `${year}-${month}-${date}T${hours}:${minutes}`;
+
+        this.SanPham[i].NgayThem = NgayGioConvert;
+      }
+
     });
     this.danhMucServices.layDanhMuc().subscribe((data: any[]) => {
       this.DanhMuc = data;
@@ -66,11 +81,21 @@ export class ProductComponent implements OnInit {
   async ThemSanPham() {
     try {
       this.MaNguoiDung = 'ND0001';
-      const NgayThem = new Date();
+      let ngayThem: Date = new Date;
+
+      let year: string = ngayThem.getFullYear().toString();
+      let month: string = (ngayThem.getMonth() + 1).toString().padStart(2, '0'); // padStart để thêm số 0 phía trước nếu tháng chỉ có 1 chữ số
+      let date: string = ngayThem.getDate().toString().padStart(2, '0'); // tương tự như trên
+      let hours: string = ngayThem.getHours().toString().padStart(2, '0');
+      let minutes: string = ngayThem.getMinutes().toString().padStart(2, '0');
+
+      let NgayGioConvert: string = `${year}-${month}-${date}T${hours}:${minutes}`;
+
+
       const newProduct = {
         MaSanPham: this.MaSanPham,
         TenSanPham: this.TenSanPham,
-        NgayThem: NgayThem,
+        NgayThem: NgayGioConvert,
         MaDanhMuc: this.MaDanhMuc,
         DonGia: this.DonGia,
         SoLuong: this.SoLuong,
@@ -146,11 +171,55 @@ export class ProductComponent implements OnInit {
       this.GiamGiaSua = data[0].GiamGia;
       this.MoTaSua = data[0].MoTa;
       this.MaNguoiDungSua = data[0].MaNguoiDung;
-      this.NgayThemSua = data[0].NgayThem;
+      let ngayThem: Date = new Date(data[0].NgayThem);
+
+      let year: string = ngayThem.getFullYear().toString();
+      let month: string = (ngayThem.getMonth() + 1).toString().padStart(2, '0'); // padStart để thêm số 0 phía trước nếu tháng chỉ có 1 chữ số
+      let date: string = ngayThem.getDate().toString().padStart(2, '0'); // tương tự như trên
+      let hours: string = ngayThem.getHours().toString().padStart(2, '0');
+      let minutes: string = ngayThem.getMinutes().toString().padStart(2, '0');
+
+      let NgayGioConvert: string = `${year}-${month}-${date}T${hours}:${minutes}`;
+
+      this.NgayThemSua = NgayGioConvert;
+
+
       this.TinhTrangSua = data[0].TinhTrang;
     });
     this.LayHinhAnhFromServices(MaSP);
+
+
+
+
   }
+  async ExecSuaSanPham() {
+    let updateProduct = {
+      MaSanPham: this.MaSanPhamSua,
+      TenSanPham: this.TenSanPhamSua,
+      SoLuong: this.SoLuongSua.toString(),
+      DonGia: this.DonGiaSua, // Lưu trữ dưới dạng số thực
+      MaDanhMuc: this.MaDanhMucSua,
+      Hang: this.HangSua,
+      GiamGia: this.GiamGiaSua.toString(),
+      MoTa: this.MoTaSua,
+      MaNguoiDung: this.MaNguoiDungSua,
+      NgayThem: this.NgayThemSua,
+      TinhTrang: this.TinhTrangSua
+    };
+    const response = await fetch(`http://localhost:4000/sanpham/${this.MaSanPhamSua}`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(updateProduct)
+    });
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    } else {
+      console.log("Update product successfully");
+    }
+  }
+
 
   LayHinhAnhFromServices(MaSP: string) {
     this.sanPhamServices.LayHinhAnhTheoMaSanPham(MaSP).subscribe((data: any[]) => {

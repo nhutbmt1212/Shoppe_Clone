@@ -204,7 +204,7 @@
 
                         <div class="col-sm-6">
                             <label for="" class="form-label">Ngày thêm </label>
-                            <input type="text" [(ngModel)]="NgayThemSua" class="form-control" />
+                            <input type="datetime-local" [(ngModel)]="NgayThemSua" readonly class="form-control" />
                         </div>
                         <div class="col-sm-6">
                             <label for="" class="form-label">Hãng </label>
@@ -220,11 +220,10 @@
                         </div>
                         <div class="col-sm-6">
                             <label for="" class="form-label">Mã Người Dùng</label>
-                            <input type="text" [(ngModel)]="MaNguoiDungSua" class="form-control" />
+                            <input type="text" [(ngModel)]="MaNguoiDungSua" readonly class="form-control" />
                         </div>
                         <div class="col-sm-6">
                             <label for="" class="form-label">Tình trạng</label>
-                            <!-- <input type="text" [(ngModel)]="TinhTrangSua" class="form-control" /> -->
                             <select name="" id="" [(ngModel)]="TinhTrangSua" class="form-select">
 
                                 <option [value]="'Còn Hàng'">
@@ -239,17 +238,22 @@
 
                             </select>
                         </div>
+                        <div class="col-sm-6">
+                            <label for="" class="form-label">Hình ảnh</label>
+                            <br>
+                            <input type="file" (change)="UpLoadMultipleImg_Edit($event,MaSanPhamSua)"
+                                class="form-control" multiple>
+                        </div>
+                    </div>
+                    <div class="pt-2">
+                        <p>Ảnh previewing</p>
+
+                        @for (hinhAnh of imageUrlEdit; track $index) {
+                        <img [src]="'http://localhost:4000/images/' + hinhAnh.TenFileAnh" height="60px" alt="">
+                        <button id="XoaAnhPreviewing" (click)="XoaHinhAnh($index)"><i class="bi bi-x-lg"></i></button>
+                        }
 
                     </div>
-                    <!-- <div class="col-sm-6"> -->
-                    <label for="" class="form-label">Hình ảnh</label>
-                    <br>
-                    <input type="file" (change)="UpLoadMultipleImg_Edit($event,MaSanPhamSua)" class="form-control"
-                        multiple>
-                    @for (hinhAnh of imageUrlEdit; track $index) {
-                    <img [src]="'http://localhost:4000/images/' + hinhAnh.TenFileAnh" height="60px" alt="">
-                    <button id="XoaAnhPreviewing" (click)="XoaHinhAnh($index)"><i class="bi bi-x-lg"></i></button>
-                    }
                     <!-- </div> -->
                 </div>
 
@@ -258,7 +262,7 @@
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
                         Hủy
                     </button>
-                    <button type="button" class="btn btn-success" data-bs-dismiss="modal">
+                    <button type="button" class="btn btn-success" data-bs-dismiss="modal" (click)="ExecSuaSanPham()">
                         Sửa sản phẩm
                     </button>
                 </div>
