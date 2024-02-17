@@ -1,4 +1,13 @@
-<div class="container-fluid bg-secondly" style="padding-top: 50px;">
+<div class="container bg-white p-2 pt-3">
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item "><a class="text-primary text-decoration-none">Trang chủ</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Chi tiết</li>
+        </ol>
+    </nav>
+</div>
+
+<div class="container-fluid bg-secondly mt-4">
     <div class="container" style="background-color: white; padding: 15px;">
         <div class="row">
             <div class="col-lg-4">
@@ -6,9 +15,7 @@
             </div>
             <div class="col-lg-8">
                 <div class="title_product_detail">
-                    <p class="text_nameProduct_detail"> Áo phông Tommy_Hilfiger nam nữ in vạch sọc đen trắng đỏ chữ
-                        kí quanh áo. Áo Thun Unisex Form
-                        Rộng Siêu Hot Phiên Bản Mới</p>
+                    <p class="text_nameProduct_detail"> {{MoTa}}</p>
                 </div>
                 <div>
                     <span style="font-size: 18px; text-decoration: underline; color: #ee4d2d;">4.7</span>
@@ -66,8 +73,8 @@
 
                 <div id="price_product_detail">
                     <div>
-                        <span class="firstelement_price_prod">100.000đ</span>
-                        <span class="secondelement_price_prod">59.000đ</span>
+                        <span class="firstelement_price_prod">đ{{DonGia}}</span>
+                        <span class="secondelement_price_prod">đ{{DonGiaDaGiam}}</span>
                     </div>
                 </div>
 
@@ -76,33 +83,96 @@
                     <img src="https://deo.shopeemobile.com/shopee/shopee-pcmall-live-sg/productdetailspage/d9e992985b18d96aab90.png"
                         height="20" class="Fy4A_Q">
                     <span class="font-weight-bolds">Miễn phí vận chuyển</span>
+
+                    <p class="text-secondary pt-2">Giảm giá: <span class="font-weight-bolds Fy4A_Q"
+                            style="margin-left: 10px;">{{GiamGia}}%</span>
+                    </p>
                 </div>
                 <div class="ERTTT_2">
                     <div class=" align-items-center">
                         <div class="row">
                             <div class="col-sm-2"> <span class="text-secondary text_sl">Số lượng</span>
                             </div>
-                            <div class="col-sm-2"> <input type="number" value="1" min="1" class="form-control">
-
+                            <div class="col-sm-2"> <input type="number" width="100px" value="1" min="1" [max]="SoLuong"
+                                    class="form-control">
                             </div>
-                            <div class="col-sm-3"> <span class="text-black">389 sản phẩm có sẵn</span>
-
+                            <div class="col-sm-3"> <span class="text-secondary">{{SoLuong}} sản phẩm có sẵn</span>
                             </div>
                         </div>
                     </div>
                 </div>
 
-                <div class="mt-5" routerLink="/cart">
-
-                    <button class="btn_addToCart equal"><i class="bi bi-cart-plus"></i><a>Thêm vào giỏ
-                            hàng</a></button>
-                    <button class="btn_buynow equal">Mua ngay</button>
+                <div class="mt-5 row gx-2" routerLink="/cart">
+                    <div class="col-sm-4 mt-1">
+                        <button class="btn_addToCart equal w-100"><i class="bi bi-cart-plus"></i><a>Thêm vào giỏ
+                                hàng</a></button>
+                    </div>
+                    <div class="col-sm-2 mt-1">
+                        <button class="btn_buynow equal w-100">Mua ngay</button>
+                    </div>
                 </div>
+
 
             </div>
 
 
 
+        </div>
+    </div>
+</div>
+<div class="container bg-white mt-3">
+    <div class="row p-4">
+        <div class="col-lg-1"><img id="img_profile"
+                src="https://down-vn.img.susercontent.com/file/b94257a4a46e08cbc131607802f331fa_tn" alt=""></div>
+        <div class="col-lg-2">
+            <div class="row">
+                <div class="row-sm-3 font-weight-bold"><b>binhcao86</b></div>
+                <div class="row-sm-3">Online 5 giờ trước</div>
+                <div class="row-sm-6">
+                    <div class="row gx-1">
+                        <div class="col-sm-6">
+                            <button class="w-100 text-white chat_now_button mt-1">Chat Ngay</button>
+                        </div>
+                        <div class="col-sm-6">
+                            <button class="w-100 bg-white see_detail_shop mt-1">Xem Shop</button>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-3">
+            <div class="row pt-2">
+                <div class="col text-secondary">Đánh giá</div>
+                <div class="col text-danger">5,2k
+                </div>
+                <div class="w-100"></div>
+                <br>
+                <div class="col text-secondary">Sản phẩm</div>
+                <div class="col text-danger">178</div>
+            </div>
+        </div>
+        <div class="col-lg-3">
+            <div class="row pt-2">
+                <div class="col text-secondary">tỉ lệ phản hồi</div>
+                <div class="col text-danger">95%
+                </div>
+                <div class="w-100"></div>
+                <br>
+                <div class="col text-secondary">thời gian phản hồi</div>
+                <div class="col text-danger">trong vài giờ</div>
+            </div>
+        </div>
+        <div class="col-lg-3">
+            <div class="row pt-2">
+                <div class="col text-secondary">tham gia</div>
+                <div class="col text-danger">5 năm trước
+                </div>
+                <div class="w-100"></div>
+                <br>
+                <div class="col text-secondary">Người theo dõi</div>
+                <div class="col text-danger">3k</div>
+            </div>
         </div>
     </div>
 </div>

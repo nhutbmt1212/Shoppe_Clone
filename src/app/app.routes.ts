@@ -10,7 +10,7 @@ import { ProductComponent } from './Management/product/product.component';
 import { CategoryComponent } from './Management/category/category.component';
 import { AdminManagementComponent } from './admin-management/admin-management.component';
 import { NotFoundComponent } from './not-found/not-found.component';
-
+import { AuthGuard } from './auth.guard';
 
 export const routes: Routes = [
     {
@@ -22,26 +22,27 @@ export const routes: Routes = [
         path: '',
         component: MainLayoutComponent,
         children: [
-            { path: 'home', component: HomeComponent },
-            { path: 'cart', component: CartComponent },
-            { path: 'detail', component: DetailProductComponent }
+            { path: 'home', title: 'Trang chủ', component: HomeComponent },
+            { path: 'cart', title: 'Giỏ hàng', component: CartComponent, canActivate: [AuthGuard] },
+            { path: 'detail/:id', title: 'Chi tiết sản phẩm', component: DetailProductComponent }
         ]
     },
     {
         path: '',
         component: BlankLayoutComponent,
         children: [
-            { path: '', component: LoginComponent },
-            { path: 'login', component: LoginComponent },
-            { path: 'register', component: RegisterComponent }
+
+            { path: '', title: 'Đăng nhập', component: LoginComponent },
+            { path: 'login', title: 'Đăng nhập', component: LoginComponent },
+            { path: 'register', title: 'Đăng ký', component: RegisterComponent }
         ]
     },
     {
         path: '',
         component: AdminManagementComponent,
         children: [
-            { path: 'admin/product', component: ProductComponent },
-            { path: 'admin/category', component: CategoryComponent }
+            { path: 'admin/product', component: ProductComponent, canActivate: [AuthGuard], data: { role: "admin" } },
+            { path: 'admin/category', component: CategoryComponent, canActivate: [AuthGuard], data: { role: "admin" } }
         ]
     },
     {

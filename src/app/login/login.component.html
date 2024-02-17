@@ -1,9 +1,12 @@
-<h5>Đăng nhập</h5>
+<h5>{{title_login}}</h5>
 
-<input type="text" id="username" placeholder="Điền Email/ Số điện thoại/ Tên đăng nhập" class="form-control mt-3"
-    name="username"><br>
-<input type="password" id="password" class="form-control" placeholder="Mật khẩu" name="password"><br>
-<input type="submit" class="btn_DangNhap" value="Đăng nhập"><br>
+<input type="text" id="username" [(ngModel)]="Email" placeholder="Điền Email/ Số điện thoại/ Tên đăng nhập"
+    class="form-control mt-3" name="username"><br>
+<input type="password" id="password" [(ngModel)]="MatKhau" class="form-control" placeholder="Mật khẩu"
+    name="password"><br>
+<button type="submit" class="btn_DangNhap" (click)="Login()">
+    Đăng Nhập
+</button><br>
 <div class="row mt-1">
     <div class="col-6"> <a href="#" class="text-decoration-none">Quên mật khẩu?</a><br>
     </div>

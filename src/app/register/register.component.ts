@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { RouterLink } from '@angular/router';
 
 @Component({
@@ -8,6 +8,9 @@ import { RouterLink } from '@angular/router';
   templateUrl: './register.component.html',
   styleUrl: './register.component.css'
 })
-export class RegisterComponent {
-
+export class RegisterComponent implements OnInit {
+  title_register: string = '';
+  ngOnInit(): void {
+    this.title_register = 'Đăng ký';
+  }
 }
