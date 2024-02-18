@@ -13,7 +13,7 @@ export class HomeComponent implements OnInit {
   SanPham: any[] = [];
   constructor(private sanPhamServices: ServiceSanPhamService) { }
   ngOnInit(): void {
-    this.sanPhamServices.laySanPham().subscribe((data: any[]) => {
+    this.sanPhamServices.laySanPhamHome().subscribe((data: any[]) => {
       this.SanPham = data;
       for (let index = 0; index < data.length; index++) {
         this.sanPhamServices.LayHinhAnhTheoMaSanPhamLimit1(data[index].MaSanPham).subscribe((res: any[]) => {

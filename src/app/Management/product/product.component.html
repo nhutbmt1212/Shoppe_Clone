@@ -129,7 +129,7 @@
                             </li>
                             <li>
                                 <button class="dropdown-item" type="button" data-bs-toggle="modal"
-                                    data-bs-target="#deleteConfirmationModal">
+                                    data-bs-target="#deleteConfirmationModal" (click)="XoaSanPham(sp.MaSanPham)">
                                     Xóa
                                 </button>
                             </li>
@@ -155,7 +155,8 @@
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
                         Hủy
                     </button>
-                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal" id="confirmDeleteButton">
+                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal" id="confirmDeleteButton"
+                        (click)="XacNhanXoaSP()">
                         Xác nhận xóa
                     </button>
                 </div>

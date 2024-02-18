@@ -93,7 +93,8 @@
                         <div class="row">
                             <div class="col-sm-2"> <span class="text-secondary text_sl">Số lượng</span>
                             </div>
-                            <div class="col-sm-2"> <input type="number" width="100px" value="1" min="1" [max]="SoLuong"
+                            <div class="col-sm-2">
+                                <input type="number" width="100px" [(ngModel)]="SoLuongDaChon" min="1" [max]="SoLuong"
                                     class="form-control">
                             </div>
                             <div class="col-sm-3"> <span class="text-secondary">{{SoLuong}} sản phẩm có sẵn</span>
@@ -104,7 +105,8 @@
 
                 <div class="mt-5 row gx-2" routerLink="/cart">
                     <div class="col-sm-4 mt-1">
-                        <button class="btn_addToCart equal w-100"><i class="bi bi-cart-plus"></i><a>Thêm vào giỏ
+                        <button class="btn_addToCart equal w-100"><i class="bi bi-cart-plus"></i><a
+                                (click)="AddToCart()">Thêm vào giỏ
                                 hàng</a></button>
                     </div>
                     <div class="col-sm-2 mt-1">

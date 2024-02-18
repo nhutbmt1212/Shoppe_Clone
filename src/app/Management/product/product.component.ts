@@ -1,7 +1,8 @@
-import { AfterViewInit, Component, OnInit, ElementRef, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, OnInit, ElementRef, ViewChild, Input } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ServiceSanPhamService } from '../../Services/service-san-pham.service';
 import { DanhMucService } from '../../Services/servicesDanhMuc/danh-muc.service';
+import { error } from 'node:console';
 
 @Component({
   selector: 'app-product',
@@ -38,6 +39,8 @@ export class ProductComponent implements OnInit {
   MaNguoiDungSua: string = '';
   NgayThemSua: any;
   TinhTrangSua: string = '';
+  //xóa
+  MaSanPhamXoa: string = ''
 
 
   constructor(
@@ -55,6 +58,10 @@ export class ProductComponent implements OnInit {
   getDataSanPhamVaDanhMuc() {
     this.sanPhamServices.laySanPham().subscribe((data: any[]) => {
       this.SanPham = data;
+
+
+
+
       for (let i = 0; i < data.length; i++) {
         this.sanPhamServices.LayHinhAnhTheoMaSanPhamLimit1(data[i].MaSanPham).subscribe((res: any[]) => {
           this.SanPham[i].HinhAnhDauTien = res[0].TenFileAnh
@@ -303,6 +310,21 @@ export class ProductComponent implements OnInit {
     }
 
 
+
+  }
+  XoaSanPham(MaSP: string) {
+    this.MaSanPhamXoa = MaSP;
+  }
+  async XacNhanXoaSP() {
+    const response = await fetch(`http://localhost:4000/xoasanpham/${this.MaSanPhamXoa}`, {
+      method: "PUT",
+    });
+    if (!response.ok) {
+      throw new Error("Xóa sản phẩm thất bại");
+
+    }
+    console.log("Xóa sản phẩm thành công");
+    this.getDataSanPhamVaDanhMuc();
 
   }
 
