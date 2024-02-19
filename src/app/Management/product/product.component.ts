@@ -1,17 +1,21 @@
 import { AfterViewInit, Component, OnInit, ElementRef, ViewChild, Input } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, Validators } from '@angular/forms';
 import { ServiceSanPhamService } from '../../Services/service-san-pham.service';
 import { DanhMucService } from '../../Services/servicesDanhMuc/danh-muc.service';
-import { error } from 'node:console';
+import { RouterLink, ActivatedRoute, Router } from '@angular/router';
+import { ReactiveFormsModule, FormControl, Validator } from '@angular/forms';
+
+
 
 @Component({
   selector: 'app-product',
   standalone: true,
-  imports: [FormsModule],
+  imports: [FormsModule, RouterLink, ReactiveFormsModule],
   templateUrl: './product.component.html',
   styleUrl: './product.component.css',
 })
 export class ProductComponent implements OnInit {
+  pageid: any;
   SanPham: any[] = [];
   DanhMuc: any[] = [];
   imageUrlEdit: any[] = [];
@@ -19,10 +23,12 @@ export class ProductComponent implements OnInit {
   MaSanPham: string = '';
   TenSanPham: string = '';
   SoLuong: number = 1;
+  DonViTinh: string = '';
   DonGia: number = 0;
   MoTa: string = '';
   Hang: string = '';
   MaDanhMuc: string = '';
+
   GiamGia: number = 0;
   MaNguoiDung: string = '';
   selectedFile: FileList | null = null;
@@ -32,6 +38,7 @@ export class ProductComponent implements OnInit {
   TenSanPhamSua: string = '';
   SoLuongSua: number = 1;
   DonGiaSua: number = 0;
+  DonViTinhSua: string = ''
   MoTaSua: string = '';
   HangSua: string = '';
   MaDanhMucSua: string = '';
@@ -42,63 +49,102 @@ export class ProductComponent implements OnInit {
   //xóa
   MaSanPhamXoa: string = ''
 
-
+  totalPage: any;
+  //validate
+  MaSanPham_Add: FormControl;
+  TenSanPham_Add: FormControl;
   constructor(
     private sanPhamServices: ServiceSanPhamService,
-    private danhMucServices: DanhMucService
+    private danhMucServices: DanhMucService,
+    private activatedRoute: ActivatedRoute,
+    private router: Router,
+
   ) {
+    this.MaSanPham_Add = new FormControl('', [Validators.required]);
+    this.TenSanPham_Add = new FormControl('', [Validators.required]);
 
   }
+
   ngOnInit(): void {
 
     this.getDataSanPhamVaDanhMuc();
-
-
   }
   getDataSanPhamVaDanhMuc() {
     this.sanPhamServices.laySanPham().subscribe((data: any[]) => {
-      this.SanPham = data;
-
-
-
-
-      for (let i = 0; i < data.length; i++) {
-        this.sanPhamServices.LayHinhAnhTheoMaSanPhamLimit1(data[i].MaSanPham).subscribe((res: any[]) => {
-          this.SanPham[i].HinhAnhDauTien = res[0].TenFileAnh
-        });
-      }
-      for (let i = 0; i < data.length; i++) {
-        let ngayThem: Date = new Date(data[i].NgayThem);
-
-        let year: string = ngayThem.getFullYear().toString();
-        let month: string = (ngayThem.getMonth() + 1).toString().padStart(2, '0'); // padStart để thêm số 0 phía trước nếu tháng chỉ có 1 chữ số
-        let date: string = ngayThem.getDate().toString().padStart(2, '0'); // tương tự như trên
-        let hours: string = ngayThem.getHours().toString().padStart(2, '0');
-        let minutes: string = ngayThem.getMinutes().toString().padStart(2, '0');
-
-        let NgayGioConvert: string = `${year}-${month}-${date}T${hours}:${minutes}`;
-
-        this.SanPham[i].NgayThem = NgayGioConvert;
-      }
-
+      this.totalPage = Array.from({ length: Math.ceil(data.length / 2) }, (_, i) => i + 1);
     });
+    this.pageid = this.activatedRoute.snapshot.paramMap.get('id');
+    fetch(`http://localhost:4000/page/${this.pageid}`, {
+      method: 'GET'
+    })
+      .then(response => {
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+        return response.json();
+      })
+      .then(data => {
+        this.SanPham = data;
+        for (let i = 0; i < data.length; i++) {
+          this.sanPhamServices.LayHinhAnhTheoMaSanPhamLimit1(data[i].MaSanPham).subscribe((res: any[]) => {
+            this.SanPham[i].HinhAnhDauTien = res[0].TenFileAnh
+          });
+        }
+        for (let i = 0; i < data.length; i++) {
+          let ngayThem: Date = new Date(data[i].NgayThem);
+          let year: string = ngayThem.getFullYear().toString();
+          let month: string = (ngayThem.getMonth() + 1).toString().padStart(2, '0'); // padStart để thêm số 0 phía trước nếu tháng chỉ có 1 chữ số
+          let date: string = ngayThem.getDate().toString().padStart(2, '0'); // tương tự như trên
+          let hours: string = ngayThem.getHours().toString().padStart(2, '0');
+          let minutes: string = ngayThem.getMinutes().toString().padStart(2, '0');
+          let NgayGioConvert: string = `${year}-${month}-${date}T${hours}:${minutes}`;
+          this.SanPham[i].NgayThem = NgayGioConvert;
+        }
+      })
+      .catch(error => {
+        console.error('There has been a problem with your fetch operation:', error);
+      });
     this.danhMucServices.layDanhMuc().subscribe((data: any[]) => {
       this.DanhMuc = data;
       this.MaDanhMuc = data[0].MaDanhMuc;
     });
   }
+  PrevPage() {
+    this.pageid = this.activatedRoute.snapshot.paramMap.get('id');
+    this.pageid--;
+    if (this.pageid < 1) {
+      this.pageid = 1;
+    }
+    this.router.navigate([`/admin/product/${this.pageid}`]);
+    this.getDataSanPhamVaDanhMuc();
 
+
+  }
+  NextPage() {
+    this.pageid = this.activatedRoute.snapshot.paramMap.get('id');
+    this.pageid++;
+
+
+    if (this.pageid >= this.totalPage.length) {
+      this.pageid = this.totalPage.length;
+    }
+    this.router.navigate([`/admin/product/${this.pageid}`]);
+    this.getDataSanPhamVaDanhMuc();
+  }
   inputFileAnh(event: any) {
     this.selectedFile = event.target.files;
   }
   ThayDoiMaRandom() {
     const MaRandom = this.sanPhamServices.randomMa();
     this.MaSanPham = MaRandom;
+    console.log(this.MaSanPham);
+
   }
 
 
   async ThemSanPham() {
     try {
+
       this.MaNguoiDung = 'ND0001';
       let ngayThem: Date = new Date;
 
@@ -118,6 +164,7 @@ export class ProductComponent implements OnInit {
         MaDanhMuc: this.MaDanhMuc,
         DonGia: this.DonGia,
         SoLuong: this.SoLuong,
+        DonViTinh: this.DonViTinh,
         Hang: this.Hang,
         TinhTrang: 'Còn Hàng',
         GiamGia: this.GiamGia,
@@ -186,6 +233,8 @@ export class ProductComponent implements OnInit {
       this.TenSanPhamSua = data[0].TenSanPham;
       this.SoLuongSua = data[0].SoLuong;
       this.DonGiaSua = data[0].DonGia;
+      this.DonViTinhSua = data[0].DonViTinh;
+
       this.MaDanhMucSua = data[0].MaDanhMuc;
       this.HangSua = data[0].Hang;
       this.GiamGiaSua = data[0].GiamGia;
@@ -218,6 +267,7 @@ export class ProductComponent implements OnInit {
       TenSanPham: this.TenSanPhamSua,
       SoLuong: this.SoLuongSua.toString(),
       DonGia: this.DonGiaSua, // Lưu trữ dưới dạng số thực
+      DonViTinh: this.DonViTinhSua,
       MaDanhMuc: this.MaDanhMucSua,
       Hang: this.HangSua,
       GiamGia: this.GiamGiaSua.toString(),

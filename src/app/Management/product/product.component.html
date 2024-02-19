@@ -1,77 +1,94 @@
 <div class="modal fade" id="myModal">
     <div class="modal-dialog modal-xl">
-        <div class="modal-content">
-            <!-- Modal Header -->
-            <div class="modal-header">
-                <h4 class="modal-title">Thêm sản phẩm</h4>
-                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-            </div>
+        <form (ngSubmit)="ThemSanPham()">
+            <div class="modal-content">
 
-            <!-- Modal body -->
-            <div class="modal-body">
-                <div class="row">
-                    <div class="col-sm-4">
-                        <label for="" class="form-label">Mã sản phẩm</label>
-                        <input type="text" [(ngModel)]="MaSanPham" class="form-control" readonly />
-                    </div>
-                    <div class="col-sm-4">
-                        <label for="" class="form-label">Số lượng</label>
-                        <input type="number" [(ngModel)]="SoLuong" class="form-control" />
-                    </div>
-                    <div class="col-sm-4">
-                        <label for="" class="form-label">Đơn giá </label>
-                        <input type="text" [(ngModel)]="DonGia" class="form-control" />
-                    </div>
-                    <div class="col-sm-6">
-                        <label for="" class="form-label">Tên sản phẩm</label>
-                        <input type="text" [(ngModel)]="TenSanPham" class="form-control" />
-                    </div>
+                <!-- Modal Header -->
+                <div class="modal-header">
+                    <h4 class="modal-title">Thêm sản phẩm</h4>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
 
-                    <div class="col-sm-6">
-                        <label for="" class="form-label">Danh Mục</label>
-                        <!-- <input type="text" [(ngModel)]="MaDanhMuc" class="form-control" /> -->
+                <!-- Modal body -->
 
-                        <select name="" id="" [(ngModel)]="MaDanhMuc" class="form-select">
-
-                            @for (dm of DanhMuc; track $index) {
-                            <option [value]='dm.MaDanhMuc'>{{dm.MaDanhMuc}} -
-                                {{dm.TenDanhMuc}} </option>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-sm-4">
+                            <label for="" class="form-label">Mã sản phẩm</label>
+                            <input type="text" [formControl]="MaSanPham_Add" [(ngModel)]="MaSanPham"
+                                class="form-control" readonly name="MaSanPham" />
+                        </div>
+                        <div class="col-sm-4">
+                            <label for="" class="form-label">Số lượng</label>
+                            <input type="number" [(ngModel)]="SoLuong" class="form-control" name="SoLuong" />
+                        </div>
+                        <div class="col-sm-4">
+                            <label for="" class="form-label">Đơn vị tính</label>
+                            <input type="text" [(ngModel)]="DonViTinh" class="form-control" name="DonViTinh" />
+                        </div>
+                        <div class="col-sm-4">
+                            <label for="" class="form-label">Đơn giá </label>
+                            <input type="text" [(ngModel)]="DonGia" class="form-control" name="DonGia" />
+                        </div>
+                        <div class="col-sm-4">
+                            <label for="" class="form-label">Tên sản phẩm</label>
+                            <input type="text" [formControl]="TenSanPham_Add" [(ngModel)]="TenSanPham"
+                                class="form-control" name="TenSanPham" />
+                            @if(TenSanPham_Add.invalid && (TenSanPham_Add.dirty || TenSanPham_Add.touched)){
+                            <small class="text-danger">Mã sản phẩm is required.
+                            </small>
                             }
-                        </select>
+                        </div>
 
-                    </div>
-                    <div class="col-sm-4">
-                        <label for="" class="form-label">Hình ảnh</label>
-                        <input type="file" (change)="inputFileAnh($event)" multiple class="form-control" />
-                    </div>
+                        <div class="col-sm-4">
+                            <label for="" class="form-label">Danh Mục</label>
+                            <!-- <input type="text" [(ngModel)]="MaDanhMuc" class="form-control" /> -->
 
-                    <div class="col-sm-4">
-                        <label for="" class="form-label">Hãng </label>
-                        <input type="text" [(ngModel)]="Hang" class="form-control" />
-                    </div>
-                    <div class="col-sm-4">
-                        <label for="" class="form-label">Giảm Giá </label>
-                        <input type="text" [(ngModel)]="GiamGia" class="form-control" />
-                    </div>
-                    <div class="col-sm-12">
-                        <label for="" class="form-label">Mô tả</label>
-                        <!-- <area [(ngModel)]="MoTa" class="form-control" > -->
-                        <textarea name="" id="" [(ngModel)]="MoTa" class="form-control" style="width: 100%;"
-                            rows="3"></textarea>
+                            <select name="" id="" [(ngModel)]="MaDanhMuc" class="form-select" name="MaDanhMuc">
+
+                                @for (dm of DanhMuc; track $index) {
+                                <option [value]='dm.MaDanhMuc'>{{dm.MaDanhMuc}} -
+                                    {{dm.TenDanhMuc}} </option>
+                                }
+                            </select>
+
+                        </div>
+                        <div class="col-sm-4">
+                            <label for="" class="form-label">Hình ảnh</label>
+                            <input type="file" (change)="inputFileAnh($event)" multiple class="form-control"
+                                name="image" />
+                        </div>
+
+                        <div class="col-sm-4">
+                            <label for="" class="form-label">Hãng </label>
+                            <input type="text" [(ngModel)]="Hang" class="form-control" name="Hang" />
+                        </div>
+                        <div class="col-sm-4">
+                            <label for="" class="form-label">Giảm Giá </label>
+                            <input type="text" [(ngModel)]="GiamGia" class="form-control" name="GiamGia" />
+                        </div>
+                        <div class="col-sm-12">
+                            <label for="" class="form-label">Mô tả</label>
+                            <!-- <area [(ngModel)]="MoTa" class="form-control" > -->
+                            <textarea name="MoTa" id="" [(ngModel)]="MoTa" class="form-control" style="width: 100%;"
+                                rows="3"></textarea>
+                        </div>
                     </div>
                 </div>
-            </div>
 
-            <!-- Modal footer -->
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
-                    Hủy
-                </button>
-                <button type="button" class="btn btn-success" data-bs-dismiss="modal" (click)="ThemSanPham()">
-                    Thêm sản phẩm
-                </button>
+
+
+                <!-- Modal footer -->
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                        Hủy
+                    </button>
+                    <button type="submit" class="btn btn-success" data-bs-dismiss="modal">
+                        Thêm sản phẩm
+                    </button>
+                </div>
             </div>
-        </div>
+        </form>
     </div>
 </div>
 <div class="container-fluid" ng-controller="ProductController">
@@ -140,6 +157,25 @@
             }
         </tbody>
     </table>
+    <nav aria-label="Page navigation example ">
+        <ul class="pagination justify-content-center">
+            <li class="page-item " (click)="PrevPage()" style="cursor: pointer;">
+                <a class="page-link" tabindex="-1" aria-disabled="true">Previous</a>
+            </li>
+            @for( sp of totalPage; track $index){
+
+            <li class="page-item">
+                <a class="page-link" [routerLink]="'/admin/product/'+sp"
+                    (click)="getDataSanPhamVaDanhMuc()">{{$index+1}}</a>
+            </li>
+
+
+            }
+            <li class="page-item " (click)="NextPage()" style="cursor: pointer;">
+                <a class="page-link" tabindex="-1" aria-disabled="true">Next</a>
+            </li>
+        </ul>
+    </nav>
     <div class="modal fade" id="deleteConfirmationModal" tabindex="-1" aria-labelledby="deleteConfirmationModalLabel"
         aria-hidden="true">
         <div class="modal-dialog">
@@ -187,6 +223,10 @@
                         <div class="col-sm-6">
                             <label for="" class="form-label">Số lượng</label>
                             <input type="number" [(ngModel)]="SoLuongSua" class="form-control" />
+                        </div>
+                        <div class="col-sm-6">
+                            <label for="" class="form-label">Đơn vị tính</label>
+                            <input type="text" [(ngModel)]="DonViTinhSua" class="form-control" />
                         </div>
                         <div class="col-sm-6">
                             <label for="" class="form-label">Đơn giá </label>
