@@ -61,7 +61,8 @@
                     ₫{{sp.TongTien}}
                 </div>
                 <div class="cart-col cart-col-remove">
-                    <button class="btn btn-danger"><i class="bi bi-trash"></i></button>
+                    <button class="btn btn-danger" (click)="XoaGioHang(sp.SanPham[0].MaSanPham)"><i
+                            class="bi bi-trash"></i></button>
                 </div>
             </div>
 
@@ -134,10 +135,10 @@
                 <div class="col-6 col-sm-1 pt-2 div_checkbox"><input type="checkbox" [(ngModel)]="CheckAll"
                         (click)="CheckAllCheckBox()" class="form-check-input text_cart_total">
                 </div>
-                <div class="col-6 col-sm-2 pt-2"><span class="text_cart_total">Chọn tất
+                <div class="col-6 col-sm-2 pt-3"><span class="text_cart_total">Chọn tất
                         cả({{valueLengthCart}})</span></div>
                 <div class="col-6 col-sm-2 pt-2"><span class="text_cart_total">Xóa</span></div>
-                <div class="col-6 col-sm-3 pt-2"><span class="text_cart_total">Tổng thanh toán
+                <div class="col-6 col-sm-3 pt-3"><span class="text_cart_total">Tổng thanh toán
                         ({{labelSoLuongThanhToan}} sản phẩm)</span>
                 </div>
                 <div class="col-6 col-sm-2 div_thanhtien"><span class="text_thanhtien">đ{{TongCongTienGioHang}}</span>

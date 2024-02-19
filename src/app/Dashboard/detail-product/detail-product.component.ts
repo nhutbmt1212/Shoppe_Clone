@@ -68,6 +68,7 @@ export class DetailProductComponent implements OnInit {
         const decodeToken = helper.decodeToken(token);
         const cart = localStorage.getItem('cart');
         this.CartStorage = {
+          CheckBox: false,
           SoLuong: this.SoLuongDaChon,
           SanPham: this.SanPham,
           MaNguoiDung: decodeToken.results[0].MaNguoiDung,

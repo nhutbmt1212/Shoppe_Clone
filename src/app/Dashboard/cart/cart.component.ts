@@ -2,6 +2,9 @@ import { isPlatformBrowser } from '@angular/common';
 import { Component, OnInit, PLATFORM_ID, Inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
+import { JwtHelperService } from '@auth0/angular-jwt';
+import { routes } from '../../app.routes';
+
 
 
 
@@ -23,6 +26,9 @@ export class CartComponent implements OnInit {
   labelSoLuongThanhToan: number = 0;
   constructor(@Inject(PLATFORM_ID) private platformId: Object) { }
   ngOnInit(): void {
+    this.LayDataCart();
+  }
+  LayDataCart(): void {
     if (isPlatformBrowser(this.platformId)) {
       const pathKey = 'path';
       const pathValue = {
@@ -40,6 +46,8 @@ export class CartComponent implements OnInit {
         }
         this.valueLengthCart = this.cartData.length;
       }
+      console.log(this.cartData);
+
     }
   }
   ThayDoiSoLuong(index: number) {
@@ -54,14 +62,17 @@ export class CartComponent implements OnInit {
     if (this.cartData[index].CheckBox === true) {
       this.cartData[index].CheckBox = false;
 
-      this.CapNhatTongTien();
       this.labelSoLuongThanhToan -= 1;
     }
     else {
       this.cartData[index].CheckBox = true;
-      this.CapNhatTongTien();
+
       this.labelSoLuongThanhToan += 1;
     }
+    localStorage.setItem('cart', JSON.stringify(this.cartData));
+    this.CapNhatTongTien();
+
+
   }
 
 
@@ -73,17 +84,18 @@ export class CartComponent implements OnInit {
       }
       this.TongCongTienGioHang = 0;
       this.labelSoLuongThanhToan = 0;
-      this.CapNhatTongTien();
 
     }
     else {
       for (let index = 0; index < this.cartData.length; index++) {
         this.cartData[index].CheckBox = true;
-        this.CapNhatTongTien();
+
       }
       this.labelSoLuongThanhToan = this.cartData.length;
 
     }
+    localStorage.setItem('cart', JSON.stringify(this.cartData));
+    this.CapNhatTongTien();
   }
 
   CapNhatTongTien() {
@@ -95,6 +107,51 @@ export class CartComponent implements OnInit {
       }
 
     }
+
+
+  }
+  XoaGioHang(MaSP: string) {
+    const helper = new JwtHelperService();
+    if (isPlatformBrowser(this.platformId)) {
+
+      const token = localStorage.getItem('token');
+      if (token) {
+        let found = false;
+        let decode = helper.decodeToken(token);
+        let MaNguoiDungToken = decode.results[0].MaNguoiDung;
+        const cart = localStorage.getItem('cart');
+
+
+        //nếu cart có data
+        if (cart !== null) {
+          let cartValue = JSON.parse(cart);
+          let found = false;
+
+          for (let index = 0; index < cartValue.length; index++) {
+            if (cartValue[index].MaNguoiDung === MaNguoiDungToken && cartValue[index].SanPham[0].MaSanPham === MaSP) {
+              // Xóa sản phẩm khỏi giỏ hàng
+
+              cartValue.splice(index, 1);
+              found = true;
+              break;
+            }
+          }
+
+          if (!found) {
+            console.log('Sản phẩm không tồn tại trong giỏ hàng');
+          } else {
+            // Cập nhật giỏ hàng trong localstorage
+            localStorage.setItem('cart', JSON.stringify(cartValue));
+            this.LayDataCart();
+            this.CapNhatTongTien();
+          }
+        }
+        else {
+          console.log('Giỏ hàng không xóa được');
+        }
+      }
+    }
+
 
 
   }
