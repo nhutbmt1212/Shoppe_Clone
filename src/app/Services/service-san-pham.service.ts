@@ -13,15 +13,15 @@ export class ServiceSanPhamService {
   MaNguoiDung: string = '';
   constructor(@Inject(PLATFORM_ID) private platformId: Object) { }
   laySanPham(): Observable<any> {
+    if (isPlatformBrowser(this.platformId)) {
+      const token = localStorage.getItem('token');
+      const helper = new JwtHelperService();
+      if (token) {
+        const decodedToken = helper.decodeToken(token);
+        this.MaNguoiDung = decodedToken.results[0].MaNguoiDung;
 
-    const token = localStorage.getItem('token');
-    const helper = new JwtHelperService();
-    if (token) {
-      const decodedToken = helper.decodeToken(token);
-      this.MaNguoiDung = decodedToken.results[0].MaNguoiDung;
-
+      }
     }
-
 
     return from(
       fetch('http://localhost:4000/sanpham').then((response) => {
@@ -39,14 +39,16 @@ export class ServiceSanPhamService {
   }
 
   laySanPhamHome(): Observable<any> {
+    if (isPlatformBrowser(this.platformId)) {
+      const token = localStorage.getItem('token');
+      const helper = new JwtHelperService();
+      if (token) {
+        const decodedToken = helper.decodeToken(token);
+        this.MaNguoiDung = decodedToken.results[0].MaNguoiDung;
 
-    const token = localStorage.getItem('token');
-    const helper = new JwtHelperService();
-    if (token) {
-      const decodedToken = helper.decodeToken(token);
-      this.MaNguoiDung = decodedToken.results[0].MaNguoiDung;
-
+      }
     }
+
 
 
     return from(

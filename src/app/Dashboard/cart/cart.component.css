@@ -10,6 +10,9 @@
   -webkit-box-orient: vertical;
   overflow: hidden;
 }
+.cart-col-price {
+  margin-right: 60px;
+}
 @media (min-width: 1204px) {
   .cart-row {
     grid-template-columns: 1% 8% 30% 15% 16% 16% 10%;
@@ -34,7 +37,8 @@
     grid-template-columns: 1% 12% 21% 15% 16% 14% 8%;
   }
   .cart-col-title {
-    width: 140px;
+    width: 100px;
+    margin-left: 9px;
   }
   .text_muc {
     font-size: 14px;
@@ -44,6 +48,9 @@
   }
   .div_checkbox {
     padding-top: 12px !important;
+  }
+  .cart-col-price {
+    margin-right: 0px;
   }
 }
 @media (max-width: 767px) {

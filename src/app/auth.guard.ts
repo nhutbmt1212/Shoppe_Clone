@@ -20,7 +20,7 @@ export class AuthGuard implements CanActivate {
             if (token) {
                 const decodedToken = helper.decodeToken(token);
                 const role = decodedToken.results[0].PhanQuyen;
-                console.log(role);
+
 
                 if (route.data['role'] && route.data['role'].indexOf(role) === -1) {
                     this.router.navigate(['/login']);

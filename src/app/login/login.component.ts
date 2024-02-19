@@ -1,50 +1,72 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Inject, OnInit, PLATFORM_ID } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { SvLoginService } from '../Services/ServicesLogin/sv-login.service';
 import { FormsModule } from '@angular/forms';
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { Router } from '@angular/router';
+import { isPlatformBrowser } from '@angular/common';
 
 @Component({
   selector: 'app-login',
   standalone: true,
   imports: [RouterLink, FormsModule],
   templateUrl: './login.component.html',
-  styleUrl: './login.component.css'
+  styleUrl: './login.component.css',
 })
 export class LoginComponent implements OnInit {
+  DoiTuongPath: any = {};
+
   title_login: string = '';
   Email: string = 'nguoidung1@email.com';
   MatKhau: string = 'matkhau1';
   ngOnInit(): void {
     this.title_login = 'Đăng nhập';
   }
-  constructor(private svLoginServices: SvLoginService, private router: Router) {
-  }
+  constructor(
+    private svLoginServices: SvLoginService,
+    private router: Router,
+    @Inject(PLATFORM_ID) private platformId: Object
+  ) { }
   Login() {
-    this.svLoginServices.login(this.Email, this.MatKhau).subscribe((res: any[]) => {
+    this.svLoginServices
+      .login(this.Email, this.MatKhau)
+      .subscribe((res: any[]) => {
+        if ('message' in res) {
+          console.log('Tk hoặc mk sai');
+        } else {
+          if (isPlatformBrowser(this.platformId)) {
+            const token = localStorage.getItem('token');
+            const path = localStorage.getItem('path');
+            if (path === null) {
+              this.router.navigate(['/home']);
+
+              return;
+            }
 
 
-      if ('message' in res) {
-        console.log('Tk hoặc mk sai');
+            else if (path !== null) {
+              this.DoiTuongPath = JSON.parse(path);
+            }
 
-      }
-      else {
-        const token = localStorage.getItem('token');
-        const helper = new JwtHelperService();
-        if (token) {
-          const decodedToken = helper.decodeToken(token);
-          console.log(decodedToken.results[0].PhanQuyen);
-          this.router.navigate(['/home']);
+
+            if (token && this.DoiTuongPath) {
+              if (this.DoiTuongPath.id === '') {
+                console.log('path có 1');
+
+                this.router.navigate([`/${this.DoiTuongPath.pagename}`]);
+
+              } else {
+                console.log('path có 2');
+                this.router.navigate([`/${this.DoiTuongPath.pagename}/${this.DoiTuongPath.id}`]);
+
+
+              }
+            }
+
+
+
+          }
         }
-
-      }
-
-
-    });
+      });
   }
-
-
 }
-
-

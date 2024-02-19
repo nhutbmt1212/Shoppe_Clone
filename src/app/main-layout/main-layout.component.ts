@@ -32,5 +32,6 @@ export class MainLayoutComponent implements OnInit {
       localStorage.removeItem('token');
       this.NguoiDung = {};
     }
+    location.reload();
   }
 }

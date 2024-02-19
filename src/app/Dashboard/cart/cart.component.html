@@ -35,9 +35,13 @@
 
 
         <div class="bg-white mt-3 p-3">
+            @for (sp of cartData; track $index) {
+
+
             <div class="cart-row mb-2 pb-2 border-bottom">
                 <div class="cart-col cart-col-checkbox">
-                    <input class="form-check-input" type="checkbox" value="">
+                    <input class="form-check-input" [(ngModel)]="sp.CheckBox" (click)="CheckMotSanPham($index)"
+                        type="checkbox" value="">
                 </div>
                 <div class="cart-col cart-col-image">
                     <img src="assets/ImageProduct/imgProductDetail1.jpg" class="img_cart" width="100px"
@@ -45,22 +49,23 @@
                 </div>
                 <div class="cart-col cart-col-title truncate-text cartTitle">
 
-                    Áo phông Tommy_Hilfiger nam nữ in vạch sọc đen trắng đỏ chữ kí quanh áo. Áo Thun Unisex Form
-                    Rộng Siêu Hot Phiên Bản Mới </div>
-                <div class="cart-col cart-col-price">
-                    <span class="original-price"><del class="text-muted"
-                            style="margin-right: 10px;">₫45.000₫</del></span><b>₫35.000</b>
+                    {{sp.SanPham[0].TenSanPham}} </div>
+                <div class="cart-col cart-col-price" style="text-align: right;direction: rtl;">
+                    <span class="original-price"><del
+                            class="text-muted">đ{{sp.SanPham[0].DonGia}}</del></span><b>₫{{sp.GiaDaGiam}}</b>
                 </div>
-                <div class="cart-col cart-col-quantity">
-                    <input type="number" value="2" min="1" class="form-control" style="width: 90px;">
-                </div>
+                <input type="number" min="1" [max]="sp.SanPham[0].SoLuong" [(ngModel)]="sp.SoLuong"
+                    (input)="ThayDoiSoLuong($index)" class="form-control" style="width: 90px;">
+
                 <div class="cart-col cart-col-subtotal text-danger">
-                    ₫70.000
+                    ₫{{sp.TongTien}}
                 </div>
                 <div class="cart-col cart-col-remove">
                     <button class="btn btn-danger"><i class="bi bi-trash"></i></button>
                 </div>
             </div>
+
+            }
             <div class="container bg-white mt-3">
                 <div class="row p-4">
                     <div class="col-lg-1"><img id="img_profile"
@@ -126,14 +131,17 @@
 
         <div class="container bg-white border mt-3 position-sticky bottom-0 Cart_Money">
             <div class="row p-3 text-center">
-                <div class="col-6 col-sm-1 pt-2 div_checkbox"><input type="checkbox"
-                        class="form-check-input text_cart_total">
+                <div class="col-6 col-sm-1 pt-2 div_checkbox"><input type="checkbox" [(ngModel)]="CheckAll"
+                        (click)="CheckAllCheckBox()" class="form-check-input text_cart_total">
                 </div>
-                <div class="col-6 col-sm-2 pt-2"><span class="text_cart_total">Chọn tất cả(5)</span></div>
+                <div class="col-6 col-sm-2 pt-2"><span class="text_cart_total">Chọn tất
+                        cả({{valueLengthCart}})</span></div>
                 <div class="col-6 col-sm-2 pt-2"><span class="text_cart_total">Xóa</span></div>
-                <div class="col-6 col-sm-3 pt-2"><span class="text_cart_total">Tổng thanh toán (1 sản phẩm)</span>
+                <div class="col-6 col-sm-3 pt-2"><span class="text_cart_total">Tổng thanh toán
+                        ({{labelSoLuongThanhToan}} sản phẩm)</span>
                 </div>
-                <div class="col-6 col-sm-2 div_thanhtien"><span class="text_thanhtien">đ90,000</span></div>
+                <div class="col-6 col-sm-2 div_thanhtien"><span class="text_thanhtien">đ{{TongCongTienGioHang}}</span>
+                </div>
                 <div class="col-6 col-sm-2">
                     <button class="btn_muahang btn btn-danger"><i class="bi bi-cart-plus-fill"></i></button>
                 </div>
