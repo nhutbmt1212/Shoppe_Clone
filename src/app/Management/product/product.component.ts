@@ -33,8 +33,11 @@ export class ProductComponent implements OnInit {
   //page
   totalPages: number = 0;
   currentPage: number = 1;
-  itemsPerPage: number = 2;
+  itemsPerPage: number = 4;
   pagedItems: any[] = [];
+  sortKey: string = '';
+  sortDirection: string = '';
+  searchTerm: string = '';
 
   constructor(
     private sanPhamServices: ServiceSanPhamService,
@@ -208,7 +211,17 @@ export class ProductComponent implements OnInit {
   get TinhTrangSua() {
     return this.SuaSanPhamForm.get('TinhTrangSua');
   }
+  get filteredItems() {
+    if (this.searchTerm) {
+      return this.pagedItems.filter(item =>
+        Object.values(item).some((val: any) =>
+          val.toString().toLowerCase().includes(this.searchTerm.toLowerCase())
+        )
+      );
+    }
 
+    return this.pagedItems;
+  }
 
   ngOnInit(): void {
 
@@ -242,6 +255,29 @@ export class ProductComponent implements OnInit {
       this.DanhMuc = data;
 
     });
+  }
+  sortData(key: string) {
+    if (this.sortKey === key) {
+      // Đảo ngược hướng sắp xếp nếu đã sắp xếp theo khóa này
+      this.sortDirection = this.sortDirection === 'asc' ? 'desc' : 'asc';
+    } else {
+      // Sắp xếp tăng dần nếu chưa sắp xếp theo khóa này
+      this.sortKey = key;
+      this.sortDirection = 'asc';
+    }
+
+    this.SanPham.sort((a, b) => {
+      if (a[this.sortKey] < b[this.sortKey]) {
+        return this.sortDirection === 'asc' ? -1 : 1;
+      }
+      if (a[this.sortKey] > b[this.sortKey]) {
+        return this.sortDirection === 'asc' ? 1 : -1;
+      }
+      return 0;
+    });
+
+    // Cập nhật trang hiện tại sau khi sắp xếp
+    this.goToPage(this.currentPage);
   }
   goToPage(page: number) {
     this.currentPage = page;

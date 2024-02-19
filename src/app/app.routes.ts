@@ -41,7 +41,7 @@ export const routes: Routes = [
         path: '',
         component: AdminManagementComponent,
         children: [
-            { path: 'admin/product/:id', title: 'Quản lý sản phẩm', component: ProductComponent, canActivate: [AuthGuard], data: { role: "admin" } },
+            { path: 'admin/product', title: 'Quản lý sản phẩm', component: ProductComponent, canActivate: [AuthGuard], data: { role: "admin" } },
             { path: 'admin/category', title: 'Quản lý danh mục', component: CategoryComponent, canActivate: [AuthGuard], data: { role: "admin" } }
         ]
     },

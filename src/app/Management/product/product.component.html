@@ -178,31 +178,37 @@
         </form>
     </div>
 </div>
-<div class="container-fluid" ng-controller="ProductController">
-    <button type="button" class="btn btn-primary mb-3" data-bs-toggle="modal" (click)="ThayDoiMaRandom()"
-        data-bs-target="#myModal">
-        Thêm sản phẩm
-    </button>
+<button type="button" class="btn btn-primary mb-3" data-bs-toggle="modal" (click)="ThayDoiMaRandom()"
+    data-bs-target="#myModal">
+    Thêm sản phẩm
+</button>
+<div class="container-fluid" style="height: 76vh;" ng-controller="ProductController">
+    <div class="d-flex justify-content-end mb-3">
+
+
+        <input type="text" [(ngModel)]="searchTerm" class="form-control w-50" placeholder=" Tìm kiếm..." />
+    </div>
+
     <table class="table table-bordered table-striped text-center table-reponsive">
         <thead class="">
             <tr>
                 <th scope="col">STT</th>
-                <th scope="col">Mã sản phẩm</th>
-                <th scope="col">Tên sản phẩm</th>
-                <th scope="col">Số lượng</th>
-                <th scope="col">Đơn giá</th>
-                <th scope="col">Danh Mục</th>
-                <th scope="col">Hình ảnh</th>
-                <th scope="col">Hãng</th>
-                <th scope="col">Mô tả</th>
-                <th scope="col">Giảm giá</th>
-                <th scope="col">Tình Trạng</th>
+                <th scope="col" (click)="sortData('MaSanPham')">Mã sản phẩm</th>
+                <th scope="col" (click)="sortData('TenSanPham')">Tên sản phẩm</th>
+                <th scope="col" (click)="sortData('SoLuong')">Số lượng</th>
+                <th scope="col" (click)="sortData('DonGia')">Đơn giá</th>
+                <th scope="col" (click)="sortData('DanhMuc')">Danh Mục</th>
+                <th scope="col" (click)="sortData('HinhAnh')">Hình ảnh</th>
+                <th scope="col" (click)="sortData('Hang')">Hãng</th>
+                <th scope="col" (click)="sortData('MoTa')">Mô tả</th>
+                <th scope="col" (click)="sortData('GiamGia')">Giảm giá</th>
+                <th scope="col" (click)="sortData('TinhTrang')">Tình Trạng</th>
                 <th scope="col">Tùy chọn</th>
 
             </tr>
         </thead>
         <tbody>
-            @for (sp of pagedItems; track $index) {
+            @for (sp of filteredItems; track $index) {
             <tr>
                 <th scope="row" class="align-middle">{{$index+1}}</th>
                 <td class="align-middle">
@@ -244,21 +250,7 @@
             }
         </tbody>
     </table>
-    <nav aria-label="..." class="">
-        <ul class="pagination">
-            <li class="page-item" [class.disabled]="currentPage === 1">
-                <a class="page-link" (click)="goToPage(currentPage - 1)" tabindex="-1">Previous</a>
-            </li>
-            @for (page of [].constructor(totalPages); track $index) {
-            <li class="page-item" [class.active]="currentPage === $index+ 1">
-                <a class="page-link" (click)="goToPage($index + 1)">{{ $index + 1 }}</a>
-            </li>
-            }
-            <li class="page-item" [class.disabled]="currentPage === totalPages">
-                <a class="page-link" (click)="goToPage(currentPage + 1)">Next</a>
-            </li>
-        </ul>
-    </nav>
+
     <div class="modal fade" id="deleteConfirmationModal" tabindex="-1" aria-labelledby="deleteConfirmationModalLabel"
         aria-hidden="true">
         <div class="modal-dialog">
@@ -495,3 +487,18 @@
         </div>
     </div>
 </div>
+<nav aria-label="..." class="d-flex justify-content-end ">
+    <ul class="pagination">
+        <li class="page-item" [class.disabled]="currentPage === 1">
+            <a class="page-link" (click)="goToPage(currentPage - 1)" tabindex="-1">Previous</a>
+        </li>
+        @for (page of [].constructor(totalPages); track $index) {
+        <li class="page-item" [class.active]="currentPage === $index+ 1">
+            <a class="page-link" (click)="goToPage($index + 1)">{{ $index + 1 }}</a>
+        </li>
+        }
+        <li class="page-item" [class.disabled]="currentPage === totalPages">
+            <a class="page-link" (click)="goToPage(currentPage + 1)">Next</a>
+        </li>
+    </ul>
+</nav>
