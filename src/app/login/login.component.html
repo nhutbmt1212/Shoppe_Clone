@@ -1,12 +1,39 @@
 <h5>{{title_login}}</h5>
+<form [formGroup]="loginForm" (submit)="Login()">
+    <input type="text" id="username" formControlName="email" placeholder="Điền Email/ Số điện thoại/ Tên đăng nhập"
+        class="form-control mt-3" name="username">
 
-<input type="text" id="username" [(ngModel)]="Email" placeholder="Điền Email/ Số điện thoại/ Tên đăng nhập"
-    class="form-control mt-3" name="username"><br>
-<input type="password" id="password" [(ngModel)]="MatKhau" class="form-control" placeholder="Mật khẩu"
-    name="password"><br>
-<button type="submit" class="btn_DangNhap" (click)="Login()">
-    Đăng Nhập
-</button><br>
+    @if(email?.invalid && (email?.dirty || email?.touched)){
+    @if(email?.errors?.['required']){
+    <small class="text-danger">Bạn chưa nhập email</small>
+    }
+    @if(email?.errors?.['minlength']){
+    <small class="text-danger">Email quá ngắn</small>
+    }
+    @if(email?.errors?.['email']){
+    <small class="text-danger"> Định dạng email sai</small>
+    }
+    @if(email?.errors?.['incorrect']){
+
+    }
+    }<br>
+    <input type="password" id="password" formControlName="matkhau" class="form-control" placeholder="Mật khẩu"
+        name="password">
+    @if(matkhau?.invalid && (matkhau?.dirty || matkhau?.touched)){
+    @if(matkhau?.errors?.['required']){
+    <small class="text-danger">Password is required.</small>
+    }
+    @if(matkhau?.errors?.['minlength']){
+    <small class="text-danger">Mật khẩu có tối thiểu 8 ký tự</small>
+    }
+    @if(matkhau?.errors?.['incorrect']){
+    <small class="text-danger">Tài khoản hoặc mật khẩu sai</small>
+    }
+    }<br>
+    <button type="submit" class="btn_DangNhap" [disabled]="loginForm.invalid">
+        Đăng Nhập
+    </button><br>
+</form>
 <div class="row mt-1">
     <div class="col-6"> <a href="#" class="text-decoration-none">Quên mật khẩu?</a><br>
     </div>

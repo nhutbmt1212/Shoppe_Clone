@@ -454,9 +454,18 @@
                             <div class="col-sm-6">
                                 <label for="" class="form-label">Hình ảnh</label>
                                 <br>
-                                <input type="file"
+                                <input type="file" formControlName="HinhAnhSua"
                                     (change)="UpLoadMultipleImg_Edit($event,SuaSanPhamForm.get('MaSanPhamSua')?.value ||'')"
                                     class="form-control" multiple>
+                                @if(HinhAnhSua?.invalid && (HinhAnhSua?.dirty || HinhAnhSua?.touched)){
+                                @if(HinhAnhSua?.errors?.['required']){
+                                <small class="text-danger">Vui chọn ảnh</small>
+                                <br>
+                                }
+
+
+
+                                }
                             </div>
                         </div>
                         <div class="pt-2">

@@ -5,17 +5,38 @@ import { FormsModule } from '@angular/forms';
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { Router } from '@angular/router';
 import { isPlatformBrowser } from '@angular/common';
+import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+
 
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [RouterLink, FormsModule],
+  imports: [RouterLink, FormsModule, ReactiveFormsModule],
   templateUrl: './login.component.html',
   styleUrl: './login.component.css',
 })
 export class LoginComponent implements OnInit {
   DoiTuongPath: any = {};
+  loginForm = new FormGroup({
+    email: new FormControl('', [
+      Validators.required,
+      Validators.minLength(4),
+      Validators.email,
 
+    ]),
+    matkhau: new FormControl('', [
+      Validators.required,
+      Validators.minLength(8)
+
+    ]),
+
+  });
+  get email() {
+    return this.loginForm.get('email');
+  }
+  get matkhau() {
+    return this.loginForm.get('matkhau');
+  }
   title_login: string = '';
   Email: string = 'nguoidung1@email.com';
   MatKhau: string = 'matkhau1';
@@ -28,43 +49,35 @@ export class LoginComponent implements OnInit {
     @Inject(PLATFORM_ID) private platformId: Object
   ) { }
   Login() {
+    const email = this.loginForm.value.email || '';
+    const matkhau = this.loginForm.value.matkhau || '';
     this.svLoginServices
-      .login(this.Email, this.MatKhau)
+      .login(email, matkhau)
       .subscribe((res: any[]) => {
         if ('message' in res) {
-          console.log('Tk hoặc mk sai');
+          this.loginForm.get('matkhau')?.setErrors({ incorrect: true });
+          this.loginForm.get('email')?.setErrors({ incorrect: true });
+
+
         } else {
           if (isPlatformBrowser(this.platformId)) {
             const token = localStorage.getItem('token');
             const path = localStorage.getItem('path');
             if (path === null) {
               this.router.navigate(['/home']);
-
               return;
             }
-
-
             else if (path !== null) {
               this.DoiTuongPath = JSON.parse(path);
             }
-
-
             if (token && this.DoiTuongPath) {
               if (this.DoiTuongPath.id === '') {
                 console.log('path có 1');
-
                 this.router.navigate([`/${this.DoiTuongPath.pagename}`]);
-
               } else {
-                console.log('path có 2');
                 this.router.navigate([`/${this.DoiTuongPath.pagename}/${this.DoiTuongPath.id}`]);
-
-
               }
             }
-
-
-
           }
         }
       });

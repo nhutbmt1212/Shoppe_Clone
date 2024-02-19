@@ -175,6 +175,8 @@ export class ProductComponent implements OnInit {
 
     NgayThemSua: new FormControl('', [
     ]),
+    HinhAnhSua: new FormControl('', [
+    ]),
   });
 
   get TenSanPhamSua() {
@@ -210,6 +212,9 @@ export class ProductComponent implements OnInit {
   }
   get TinhTrangSua() {
     return this.SuaSanPhamForm.get('TinhTrangSua');
+  }
+  get HinhAnhSua() {
+    return this.SuaSanPhamForm.get('HinhAnhSua');
   }
   get filteredItems() {
     if (this.searchTerm) {
@@ -498,8 +503,16 @@ export class ProductComponent implements OnInit {
     const formdata = new FormData();
     for (let index = 0; index < files.length; index++) {
       const element = files[index];
-      formdata.append('files', element);
+      const extension = element.name.split('.').pop()?.toLowerCase();
+      const imageExtensions = ['jpg', 'jpeg', 'png', 'gif', 'bmp'];
+      if (extension && !imageExtensions.includes(extension)) {
+        alert('Vui lòng chỉ chọn tệp ảnh!');
+        event.target.value = null; // Xóa tất cả các tệp đã chọn
+        this.SuaSanPhamForm.controls['HinhAnhSua'].setErrors({ 'require': true });
 
+        return;
+      }
+      formdata.append('files', element);
     }
 
     try {
@@ -523,6 +536,10 @@ export class ProductComponent implements OnInit {
           formData.append('files', files[i]);
           formData.append('MaSanPham', MaSP);
         }
+
+
+
+
         const response = await fetch('http://localhost:4000/hinhanh', {
           method: "POST",
           body: formData

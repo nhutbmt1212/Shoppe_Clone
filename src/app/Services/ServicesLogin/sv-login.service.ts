@@ -23,14 +23,11 @@ export class SvLoginService {
         return response.json();
       }
     }).then((data) => {
-      localStorage.setItem('token', data.token);
+      if (data.token) {
+        localStorage.setItem('token', data.token);
+      }
       return data;
     }));
   }
-
-
-
-
-
 
 }
