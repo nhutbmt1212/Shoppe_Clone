@@ -122,6 +122,9 @@ export class DetailProductComponent implements OnInit {
         }
         this.router.navigate(['/cart']);
       }
+      else {
+        this.router.navigate(['/cart']);
+      }
     }
   }
 }

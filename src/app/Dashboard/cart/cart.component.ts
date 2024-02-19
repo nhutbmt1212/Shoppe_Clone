@@ -29,7 +29,9 @@ export class CartComponent implements OnInit {
     this.LayDataCart();
   }
   LayDataCart(): void {
+    this.labelSoLuongThanhToan = 0;
     if (isPlatformBrowser(this.platformId)) {
+
       const pathKey = 'path';
       const pathValue = {
         pagename: 'cart',
@@ -38,15 +40,38 @@ export class CartComponent implements OnInit {
       localStorage.setItem(pathKey, JSON.stringify(pathValue));
       // Lấy dữ liệu từ localStorage
       const cart = localStorage.getItem('cart');
-      if (cart !== null) {
-        this.cartData = JSON.parse(cart);
-        for (let index = 0; index < this.cartData.length; index++) {
-          this.cartData[index].GiaDaGiam = this.cartData[index].SanPham[0].DonGia - (this.cartData[index].SanPham[0].DonGia * this.cartData[index].SanPham[0].GiamGia) / 100;
-          this.cartData[index].TongTien = this.cartData[index].GiaDaGiam * this.cartData[index].SoLuong;
+      const token = localStorage.getItem('token');
+      const helper = new JwtHelperService();
+      if (token) {
+        let decode = helper.decodeToken(token);
+        console.log(decode.results[0].MaNguoiDung);
+
+        if (cart !== null) {
+          //chỉ lọc những cart nào có cùng mã người dùng
+          let dataChuaFilter = JSON.parse(cart);
+
+          this.cartData = dataChuaFilter.filter((item: any) => {
+            return decode.results[0].MaNguoiDung === item.MaNguoiDung;
+          });
+
+          console.log(this.cartData); // this.cartData giờ đây chỉ chứa những phần tử hợp lệ
+
+
+          for (let index = 0; index < this.cartData.length; index++) {
+            this.cartData[index].GiaDaGiam = this.cartData[index].SanPham[0].DonGia - (this.cartData[index].SanPham[0].DonGia * this.cartData[index].SanPham[0].GiamGia) / 100;
+            this.cartData[index].TongTien = this.cartData[index].GiaDaGiam * this.cartData[index].SoLuong;
+            if (this.cartData[index].CheckBox === true) {
+              this.labelSoLuongThanhToan++;
+            }
+          }
+          this.valueLengthCart = this.cartData.length;
+          this.CapNhatTongTien();
+
+
         }
-        this.valueLengthCart = this.cartData.length;
       }
-      console.log(this.cartData);
+
+
 
     }
   }
@@ -55,6 +80,15 @@ export class CartComponent implements OnInit {
       this.cartData[index].SoLuong = 1;
     }
     this.cartData[index].TongTien = this.cartData[index].SoLuong * this.cartData[index].GiaDaGiam;
+    if (isPlatformBrowser(this.platformId)) {
+      const cartValueLocalStorage = localStorage.getItem('cart');
+      if (cartValueLocalStorage) {
+        let parseCartValueLocalStorage = JSON.parse(cartValueLocalStorage);
+        parseCartValueLocalStorage[index].SoLuong = this.cartData[index].SoLuong;
+        localStorage.setItem('cart', JSON.stringify(parseCartValueLocalStorage));
+
+      }
+    }
     this.CapNhatTongTien();
   }
   CheckMotSanPham(index: number) {
@@ -69,6 +103,7 @@ export class CartComponent implements OnInit {
 
       this.labelSoLuongThanhToan += 1;
     }
+
     localStorage.setItem('cart', JSON.stringify(this.cartData));
     this.CapNhatTongTien();
 
@@ -143,7 +178,7 @@ export class CartComponent implements OnInit {
             // Cập nhật giỏ hàng trong localstorage
             localStorage.setItem('cart', JSON.stringify(cartValue));
             this.LayDataCart();
-            this.CapNhatTongTien();
+
           }
         }
         else {
