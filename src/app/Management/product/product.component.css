@@ -11,3 +11,18 @@
 #XoaAnhPreviewing:hover {
   background-color: red;
 }
+.form-control {
+  &.ng-invalid.ng-touched {
+    border: 1px solid red;
+  }
+}
+.btn_ThemSanPham {
+  cursor: pointer;
+  outline: none;
+
+  &[disabled] {
+    border: 0;
+    background-color: #ccc;
+    cursor: not-allowed !important;
+  }
+}

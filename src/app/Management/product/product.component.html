@@ -1,6 +1,6 @@
 <div class="modal fade" id="myModal">
     <div class="modal-dialog modal-xl">
-        <form (ngSubmit)="ThemSanPham()">
+        <form [formGroup]="ThemSanPhamForm" (submit)="ThemSanPham()">
             <div class="modal-content">
 
                 <!-- Modal Header -->
@@ -15,63 +15,149 @@
                     <div class="row">
                         <div class="col-sm-4">
                             <label for="" class="form-label">Mã sản phẩm</label>
-                            <input type="text" [formControl]="MaSanPham_Add" [(ngModel)]="MaSanPham"
-                                class="form-control" readonly name="MaSanPham" />
+                            <input type="text" formControlName="MaSanPhamThem" class="form-control" readonly
+                                name="MaSanPham" />
+
                         </div>
                         <div class="col-sm-4">
                             <label for="" class="form-label">Số lượng</label>
-                            <input type="number" [(ngModel)]="SoLuong" class="form-control" name="SoLuong" />
+                            <input type="number" formControlName="SoLuongThem" class="form-control" name="SoLuong" />
+                            @if(SoLuongThem?.invalid && (SoLuongThem?.dirty || SoLuongThem?.touched)){
+                            @if(SoLuongThem?.errors?.['required']){
+                            <small class="text-danger">Vui lòng nhập số lượng.</small>
+                            }
+                            @if(SoLuongThem?.errors?.['min']){
+                            <small class="text-danger">Số lượng quá ít</small>
+                            }
+
+                            }
                         </div>
                         <div class="col-sm-4">
                             <label for="" class="form-label">Đơn vị tính</label>
-                            <input type="text" [(ngModel)]="DonViTinh" class="form-control" name="DonViTinh" />
+                            <input type="text" formControlName="DonViTinhThem" class="form-control" name="DonViTinh" />
+                            @if(DonViTinhThem?.invalid && (DonViTinhThem?.dirty || DonViTinhThem?.touched)){
+                            @if(DonViTinhThem?.errors?.['required']){
+                            <small class="text-danger">Vui lòng nhập đơn vị tính</small>
+                            }
+                            @if(DonViTinhThem?.errors?.['minlength']){
+                            <small class="text-danger">Đơn vị tính quá ít</small>
+                            <br>
+                            }
+                            @if(DonViTinhThem?.errors?.['pattern']){
+                            <small class="text-danger">Đơn vị tính không chứa dấu hoặc kí tự đặc biệt</small>
+                            }
+
+                            }
                         </div>
                         <div class="col-sm-4">
                             <label for="" class="form-label">Đơn giá </label>
-                            <input type="text" [(ngModel)]="DonGia" class="form-control" name="DonGia" />
+                            <input type="number" formControlName="DonGiaThem" class="form-control" name="DonGia" />
+                            @if(DonGiaThem?.invalid && (DonGiaThem?.dirty || DonGiaThem?.touched)){
+                            @if(DonGiaThem?.errors?.['required']){
+                            <small class="text-danger">Vui lòng nhập đơn giá</small>
+                            }
+                            @if(DonGiaThem?.errors?.['min']){
+                            <small class="text-danger">Đơn giá quá ít</small>
+                            }
+
+                            }
                         </div>
                         <div class="col-sm-4">
                             <label for="" class="form-label">Tên sản phẩm</label>
-                            <input type="text" [formControl]="TenSanPham_Add" [(ngModel)]="TenSanPham"
-                                class="form-control" name="TenSanPham" />
-                            @if(TenSanPham_Add.invalid && (TenSanPham_Add.dirty || TenSanPham_Add.touched)){
-                            <small class="text-danger">Mã sản phẩm is required.
-                            </small>
+                            <input type="text" formControlName="TenSanPhamThem" class="form-control"
+                                name="TenSanPham" />
+                            @if(TenSanPhamThem?.invalid && (TenSanPhamThem?.dirty || TenSanPhamThem?.touched)){
+                            @if(TenSanPhamThem?.errors?.['required']){
+                            <small class="text-danger">Vui lòng nhập tên sản phẩm</small>
+                            }
+                            @if(TenSanPhamThem?.errors?.['minlength']){
+                            <small class="text-danger">Tên sản phẩm quá ít</small>
+                            <br>
+                            }
+                            @if(TenSanPhamThem?.errors?.['pattern']){
+                            <small class="text-danger">Tên sản phẩm không chứa dấu hoặc kí tự đặc biệt</small>
+                            }
+
                             }
                         </div>
 
                         <div class="col-sm-4">
                             <label for="" class="form-label">Danh Mục</label>
-                            <!-- <input type="text" [(ngModel)]="MaDanhMuc" class="form-control" /> -->
 
-                            <select name="" id="" [(ngModel)]="MaDanhMuc" class="form-select" name="MaDanhMuc">
+                            <select name="" id="" formControlName="MaDanhMucThem" class="form-select" name="MaDanhMuc">
 
                                 @for (dm of DanhMuc; track $index) {
-                                <option [value]='dm.MaDanhMuc'>{{dm.MaDanhMuc}} -
-                                    {{dm.TenDanhMuc}} </option>
+                                <option [value]='dm.MaDanhMuc'>{{dm.MaDanhMuc}} - {{dm.TenDanhMuc}} </option>
                                 }
                             </select>
+                            @if(MaDanhMucThem?.invalid && (MaDanhMucThem?.dirty || MaDanhMucThem?.touched)){
+                            @if(MaDanhMucThem?.errors?.['required']){
+                            <small class="text-danger">Vui lòng chọn danh mục</small>
+                            }
+
+                            }
 
                         </div>
                         <div class="col-sm-4">
                             <label for="" class="form-label">Hình ảnh</label>
-                            <input type="file" (change)="inputFileAnh($event)" multiple class="form-control"
-                                name="image" />
+                            <input type="file" formControlName="HinhAnhThem" (change)="inputFileAnh($event)" multiple
+                                class="form-control" name="image" />
+                            @if(HinhAnhThem?.invalid && (HinhAnhThem?.dirty || HinhAnhThem?.touched)){
+                            @if(HinhAnhThem?.errors?.['required']){
+                            <small class="text-danger">Vui chọn ảnh</small>
+                            <br>
+                            }
+
+
+
+                            }
                         </div>
 
                         <div class="col-sm-4">
                             <label for="" class="form-label">Hãng </label>
-                            <input type="text" [(ngModel)]="Hang" class="form-control" name="Hang" />
+                            <input type="text" formControlName="HangThem" class="form-control" name="Hang" />
+                            @if(HangThem?.invalid && (HangThem?.dirty || HangThem?.touched)){
+                            @if(HangThem?.errors?.['required']){
+                            <small class="text-danger">Vui lòng nhập hãng</small>
+                            }
+                            @if(HangThem?.errors?.['minlength']){
+                            <small class="text-danger">Hãng quá ít</small>
+                            <br>
+                            }
+                            @if(HangThem?.errors?.['pattern']){
+                            <small class="text-danger">Hãng không chứa dấu hoặc kí tự đặc biệt</small>
+                            }
+                            }
                         </div>
                         <div class="col-sm-4">
                             <label for="" class="form-label">Giảm Giá </label>
-                            <input type="text" [(ngModel)]="GiamGia" class="form-control" name="GiamGia" />
+                            <input type="number" formControlName="GiamGiaThem" class="form-control" name="GiamGia" />
+                            @if(GiamGiaThem?.invalid && (GiamGiaThem?.dirty || GiamGiaThem?.touched)){
+                            @if(GiamGiaThem?.errors?.['required']){
+                            <small class="text-danger">Vui lòng nhập giảm giá</small>
+                            }
+                            @if(GiamGiaThem?.errors?.['min']){
+                            <small class="text-danger">Giám giá quá ít</small>
+                            }
+                            @if(GiamGiaThem?.errors?.['max']){
+                            <small class="text-danger">Giám giá quá không được quá 100%</small>
+                            }
+
+                            }
                         </div>
                         <div class="col-sm-12">
                             <label for="" class="form-label">Mô tả</label>
-                            <!-- <area [(ngModel)]="MoTa" class="form-control" > -->
-                            <textarea name="MoTa" id="" [(ngModel)]="MoTa" class="form-control" style="width: 100%;"
-                                rows="3"></textarea>
+                            <textarea name="MoTa" formControlName="MoTaThem" id="" class="form-control"
+                                style="width: 100%;" rows="3"></textarea>
+                            @if(MoTaThem?.invalid && (MoTaThem?.dirty || MoTaThem?.touched)){
+                            @if(MoTaThem?.errors?.['required']){
+                            <small class="text-danger">Vui lòng nhập mô tả</small>
+                            }
+                            @if(MoTaThem?.errors?.['minlength']){
+                            <small class="text-danger">Mô tả quá ít</small>
+                            }
+
+                            }
                         </div>
                     </div>
                 </div>
@@ -83,7 +169,8 @@
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
                         Hủy
                     </button>
-                    <button type="submit" class="btn btn-success" data-bs-dismiss="modal">
+                    <button type="submit" [disabled]="ThemSanPhamForm.invalid" class="btn btn-success btn_ThemSanPham"
+                        data-bs-dismiss="modal">
                         Thêm sản phẩm
                     </button>
                 </div>
@@ -115,7 +202,7 @@
             </tr>
         </thead>
         <tbody>
-            @for (sp of SanPham; track $index) {
+            @for (sp of pagedItems; track $index) {
             <tr>
                 <th scope="row" class="align-middle">{{$index+1}}</th>
                 <td class="align-middle">
@@ -157,22 +244,18 @@
             }
         </tbody>
     </table>
-    <nav aria-label="Page navigation example ">
-        <ul class="pagination justify-content-center">
-            <li class="page-item " (click)="PrevPage()" style="cursor: pointer;">
-                <a class="page-link" tabindex="-1" aria-disabled="true">Previous</a>
+    <nav aria-label="..." class="">
+        <ul class="pagination">
+            <li class="page-item" [class.disabled]="currentPage === 1">
+                <a class="page-link" (click)="goToPage(currentPage - 1)" tabindex="-1">Previous</a>
             </li>
-            @for( sp of totalPage; track $index){
-
-            <li class="page-item">
-                <a class="page-link" [routerLink]="'/admin/product/'+sp"
-                    (click)="getDataSanPhamVaDanhMuc()">{{$index+1}}</a>
+            @for (page of [].constructor(totalPages); track $index) {
+            <li class="page-item" [class.active]="currentPage === $index+ 1">
+                <a class="page-link" (click)="goToPage($index + 1)">{{ $index + 1 }}</a>
             </li>
-
-
             }
-            <li class="page-item " (click)="NextPage()" style="cursor: pointer;">
-                <a class="page-link" tabindex="-1" aria-disabled="true">Next</a>
+            <li class="page-item" [class.disabled]="currentPage === totalPages">
+                <a class="page-link" (click)="goToPage(currentPage + 1)">Next</a>
             </li>
         </ul>
     </nav>
@@ -202,114 +285,212 @@
     <div class="modal fade" id="editModal">
         <div class="modal-dialog modal-xl">
             <div class="modal-content">
-                <!-- Modal Header -->
-                <div class="modal-header">
-                    <h4 class="modal-title">Sửa sản phẩm</h4>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                </div>
+                <form (submit)="ExecSuaSanPham()" [formGroup]="SuaSanPhamForm">
+                    <!-- Modal Header -->
+                    <div class="modal-header">
+                        <h4 class="modal-title">Sửa sản phẩm</h4>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                    </div>
 
-                <!-- Modal body -->
-                <div class="modal-body">
-                    <div class="row">
-                        <div class="col-sm-6">
-                            <label for="" class="form-label">Mã sản phẩm</label>
-                            <input type="text" [(ngModel)]="MaSanPhamSua" class="form-control" readonly />
-                        </div>
+                    <!-- Modal body -->
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <label for="" class="form-label">Mã sản phẩm</label>
+                                <input type="text" formControlName="MaSanPhamSua" class="form-control" readonly />
+                            </div>
 
-                        <div class="col-sm-6">
-                            <label for="" class="form-label">Tên sản phẩm</label>
-                            <input type="text" [(ngModel)]="TenSanPhamSua" class="form-control" />
-                        </div>
-                        <div class="col-sm-6">
-                            <label for="" class="form-label">Số lượng</label>
-                            <input type="number" [(ngModel)]="SoLuongSua" class="form-control" />
-                        </div>
-                        <div class="col-sm-6">
-                            <label for="" class="form-label">Đơn vị tính</label>
-                            <input type="text" [(ngModel)]="DonViTinhSua" class="form-control" />
-                        </div>
-                        <div class="col-sm-6">
-                            <label for="" class="form-label">Đơn giá </label>
-                            <input type="text" [(ngModel)]="DonGiaSua" class="form-control" />
-                        </div>
-                        <div class="col-sm-6">
-                            <label for="" class="form-label">Danh Mục</label>
-                            <!-- <input type="text" [(ngModel)]="MaDanhMuc" class="form-control" /> -->
-
-                            <select name="" id="" [(ngModel)]="MaDanhMucSua" class="form-select">
-
-                                @for (dm of DanhMuc; track $index) {
-                                <option [value]='dm.MaDanhMuc'>{{dm.MaDanhMuc}} -
-                                    {{dm.TenDanhMuc}} </option>
+                            <div class="col-sm-6">
+                                <label for="" class="form-label">Tên sản phẩm</label>
+                                <input type="text" formControlName="TenSanPhamSua" class="form-control" />
+                                @if(TenSanPhamSua?.invalid && (TenSanPhamSua?.dirty || TenSanPhamSua?.touched)){
+                                @if(TenSanPhamSua?.errors?.['required']){
+                                <small class="text-danger">Vui lòng nhập tên sản phẩm</small>
                                 }
-                            </select>
+                                @if(TenSanPhamSua?.errors?.['minlength']){
+                                <small class="text-danger">Tên sản phẩm quá ít</small>
+                                <br>
+                                }
+                                @if(TenSanPhamSua?.errors?.['pattern']){
+                                <small class="text-danger">Tên sản phẩm không chứa dấu hoặc kí tự đặc biệt</small>
+                                }
+
+                                }
+                            </div>
+                            <div class="col-sm-6">
+                                <label for="" class="form-label">Số lượng</label>
+                                <input type="number" formControlName="SoLuongSua" class="form-control" />
+                                @if(SoLuongSua?.invalid && (SoLuongSua?.dirty || SoLuongSua?.touched)){
+                                @if(SoLuongSua?.errors?.['required']){
+                                <small class="text-danger">Vui lòng nhập số lượng.</small>
+                                }
+                                @if(SoLuongSua?.errors?.['min']){
+                                <small class="text-danger">Số lượng quá ít</small>
+                                }
+
+                                }
+                            </div>
+                            <div class="col-sm-6">
+                                <label for="" class="form-label">Đơn vị tính</label>
+                                <input type="text" formControlName="DonViTinhSua" class="form-control" />
+                                @if(DonViTinhSua?.invalid && (DonViTinhSua?.dirty || DonViTinhSua?.touched)){
+                                @if(DonViTinhSua?.errors?.['required']){
+                                <small class="text-danger">Vui lòng nhập đơn vị tính</small>
+                                }
+                                @if(DonViTinhSua?.errors?.['minlength']){
+                                <small class="text-danger">Đơn vị tính quá ít</small>
+                                <br>
+                                }
+                                @if(DonViTinhSua?.errors?.['pattern']){
+                                <small class="text-danger">Đơn vị tính không chứa dấu hoặc kí tự đặc biệt</small>
+                                }
+
+                                }
+                            </div>
+                            <div class="col-sm-6">
+                                <label for="" class="form-label">Đơn giá </label>
+                                <input type="number" formControlName="DonGiaSua" class="form-control" />
+                                @if(DonGiaSua?.invalid && (DonGiaSua?.dirty || DonGiaSua?.touched)){
+                                @if(DonGiaSua?.errors?.['required']){
+                                <small class="text-danger">Vui lòng nhập đơn giá</small>
+                                }
+                                @if(DonGiaSua?.errors?.['min']){
+                                <small class="text-danger">Đơn giá quá ít</small>
+                                }
+
+                                }
+                            </div>
+                            <div class="col-sm-6">
+                                <label for="" class="form-label">Danh Mục</label>
+                                <!-- <input type="text" [(ngModel)]="MaDanhMuc" class="form-control" /> -->
+
+                                <select name="" id="" formControlName="MaDanhMucSua" class="form-select">
+
+                                    @for (dm of DanhMuc; track $index) {
+                                    <option [value]='dm.MaDanhMuc'>{{dm.MaDanhMuc}} -
+                                        {{dm.TenDanhMuc}} </option>
+                                    }
+                                </select>
+                                @if(MaDanhMucSua?.invalid && (MaDanhMucSua?.dirty || MaDanhMucSua?.touched)){
+                                @if(MaDanhMucSua?.errors?.['required']){
+                                <small class="text-danger">Vui lòng chọn danh mục</small>
+                                }
+
+                                }
+
+                            </div>
+
+                            <div class="col-sm-6">
+                                <label for="" class="form-label">Ngày thêm </label>
+                                <input type="datetime-local" formControlName="NgayThemSua" readonly
+                                    class="form-control" />
+
+                            </div>
+                            <div class="col-sm-6">
+                                <label for="" class="form-label">Hãng </label>
+                                <input type="text" formControlName="HangSua" class="form-control" />
+                                @if(HangSua?.invalid && (HangSua?.dirty || HangSua?.touched)){
+                                @if(HangSua?.errors?.['required']){
+                                <small class="text-danger">Vui lòng nhập hãng</small>
+                                }
+                                @if(HangSua?.errors?.['minlength']){
+                                <small class="text-danger">Hãng quá ít</small>
+                                <br>
+                                }
+                                @if(HangSua?.errors?.['pattern']){
+                                <small class="text-danger">Hãng không chứa dấu hoặc kí tự đặc biệt</small>
+                                }
+                                }
+                            </div>
+                            <div class="col-sm-6">
+                                <label for="" class="form-label">Giảm Giá </label>
+                                <input type="number" formControlName="GiamGiaSua" class="form-control" />
+                                @if(GiamGiaSua?.invalid && (GiamGiaSua?.dirty || GiamGiaSua?.touched)){
+                                @if(GiamGiaSua?.errors?.['required']){
+                                <small class="text-danger">Vui lòng nhập giảm giá</small>
+                                }
+                                @if(GiamGiaSua?.errors?.['min']){
+                                <small class="text-danger">Giám giá quá ít</small>
+                                }
+                                @if(GiamGiaSua?.errors?.['max']){
+                                <small class="text-danger">Giám giá quá không được quá 100%</small>
+                                }
+
+                                }
+                            </div>
+                            <div class="col-sm-6">
+                                <label for="" class="form-label">Mô Tả</label>
+                                <input type="text" formControlName="MoTaSua" class="form-control" />
+                                @if(MoTaSua?.invalid && (MoTaSua?.dirty || MoTaSua?.touched)){
+                                @if(MoTaSua?.errors?.['required']){
+                                <small class="text-danger">Vui lòng nhập mô tả</small>
+                                }
+                                @if(MoTaSua?.errors?.['minlength']){
+                                <small class="text-danger">Mô tả quá ít</small>
+                                }
+
+                                }
+                            </div>
+                            <div class="col-sm-6">
+                                <label for="" class="form-label">Mã Người Dùng</label>
+                                <input type="text" formControlName="MaNguoiDungSua" readonly class="form-control" />
+                            </div>
+                            <div class="col-sm-6">
+                                <label for="" class="form-label">Tình trạng</label>
+                                <select name="" id="" formControlName="TinhTrangSua" class="form-select">
+
+                                    <option [value]="'Còn Hàng'">
+                                        Còn Hàng
+                                    </option>
+                                    <option [value]="'Hết Hàng'">
+                                        Hết Hàng
+                                    </option>
+                                    <option [value]="'Ngưng Bán'">
+                                        Ngưng Bán
+                                    </option>
+
+                                </select>
+                                @if(TinhTrangSua?.invalid && (TinhTrangSua?.dirty || TinhTrangSua?.touched)){
+                                @if(TinhTrangSua?.errors?.['required']){
+                                <small class="text-danger">Vui lòng nhập tình trạng</small>
+                                }
+
+
+
+                                }
+                            </div>
+                            <div class="col-sm-6">
+                                <label for="" class="form-label">Hình ảnh</label>
+                                <br>
+                                <input type="file"
+                                    (change)="UpLoadMultipleImg_Edit($event,SuaSanPhamForm.get('MaSanPhamSua')?.value ||'')"
+                                    class="form-control" multiple>
+                            </div>
+                        </div>
+                        <div class="pt-2">
+                            <p>Ảnh previewing</p>
+
+                            @for (hinhAnh of imageUrlEdit; track $index) {
+                            <img [src]="'http://localhost:4000/images/' + hinhAnh.TenFileAnh" height="60px" alt="">
+                            <button id="XoaAnhPreviewing" (click)="XoaHinhAnh($index)"><i
+                                    class="bi bi-x-lg"></i></button>
+                            }
 
                         </div>
-
-                        <div class="col-sm-6">
-                            <label for="" class="form-label">Ngày thêm </label>
-                            <input type="datetime-local" [(ngModel)]="NgayThemSua" readonly class="form-control" />
-                        </div>
-                        <div class="col-sm-6">
-                            <label for="" class="form-label">Hãng </label>
-                            <input type="text" [(ngModel)]="HangSua" class="form-control" />
-                        </div>
-                        <div class="col-sm-6">
-                            <label for="" class="form-label">Giảm Giá </label>
-                            <input type="text" [(ngModel)]="GiamGiaSua" class="form-control" />
-                        </div>
-                        <div class="col-sm-6">
-                            <label for="" class="form-label">Mô Tả</label>
-                            <input type="text" [(ngModel)]="MoTaSua" class="form-control" />
-                        </div>
-                        <div class="col-sm-6">
-                            <label for="" class="form-label">Mã Người Dùng</label>
-                            <input type="text" [(ngModel)]="MaNguoiDungSua" readonly class="form-control" />
-                        </div>
-                        <div class="col-sm-6">
-                            <label for="" class="form-label">Tình trạng</label>
-                            <select name="" id="" [(ngModel)]="TinhTrangSua" class="form-select">
-
-                                <option [value]="'Còn Hàng'">
-                                    Còn Hàng
-                                </option>
-                                <option [value]="'Hết Hàng'">
-                                    Hết Hàng
-                                </option>
-                                <option [value]="'Ngưng Bán'">
-                                    Ngưng Bán
-                                </option>
-
-                            </select>
-                        </div>
-                        <div class="col-sm-6">
-                            <label for="" class="form-label">Hình ảnh</label>
-                            <br>
-                            <input type="file" (change)="UpLoadMultipleImg_Edit($event,MaSanPhamSua)"
-                                class="form-control" multiple>
-                        </div>
+                        <!-- </div> -->
                     </div>
-                    <div class="pt-2">
-                        <p>Ảnh previewing</p>
 
-                        @for (hinhAnh of imageUrlEdit; track $index) {
-                        <img [src]="'http://localhost:4000/images/' + hinhAnh.TenFileAnh" height="60px" alt="">
-                        <button id="XoaAnhPreviewing" (click)="XoaHinhAnh($index)"><i class="bi bi-x-lg"></i></button>
-                        }
-
+                    <!-- Modal footer -->
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                            Hủy
+                        </button>
+                        <button type="submit" class="btn btn-success" data-bs-dismiss="modal"
+                            [disabled]="SuaSanPhamForm.invalid">
+                            Sửa sản phẩm
+                        </button>
                     </div>
-                    <!-- </div> -->
-                </div>
-
-                <!-- Modal footer -->
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
-                        Hủy
-                    </button>
-                    <button type="button" class="btn btn-success" data-bs-dismiss="modal" (click)="ExecSuaSanPham()">
-                        Sửa sản phẩm
-                    </button>
-                </div>
+                </form>
             </div>
         </div>
     </div>
