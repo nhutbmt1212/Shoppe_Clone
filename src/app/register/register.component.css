@@ -22,6 +22,11 @@
   background-color: #ee4d2d;
   color: white;
   border: 1px solid #ee4d2d;
+  &[disabled] {
+    border: 0;
+    background-color: #ccc;
+    cursor: not-allowed;
+  }
 }
 
 .login-form {
