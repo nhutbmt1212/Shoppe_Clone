@@ -6,7 +6,7 @@ import { JwtHelperService } from '@auth0/angular-jwt';
 import { Router } from '@angular/router';
 import { isPlatformBrowser } from '@angular/common';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-login',
@@ -46,7 +46,8 @@ export class LoginComponent implements OnInit {
   constructor(
     private svLoginServices: SvLoginService,
     private router: Router,
-    @Inject(PLATFORM_ID) private platformId: Object
+    @Inject(PLATFORM_ID) private platformId: Object,
+    private toastr: ToastrService
   ) { }
   Login() {
     const email = this.loginForm.value.email || '';
@@ -56,14 +57,17 @@ export class LoginComponent implements OnInit {
       .subscribe((res: any[]) => {
         if ('message' in res) {
           this.loginForm.get('matkhau')?.setErrors({ incorrect: true });
-          this.loginForm.get('email')?.setErrors({ incorrect: true });
 
+          this.loginForm.get('matkhau')?.setErrors({ incorrect: true });
+          this.toastr.error("Đăng nhập không thành công");
 
         } else {
           if (isPlatformBrowser(this.platformId)) {
             const token = localStorage.getItem('token');
             const path = localStorage.getItem('path');
             if (path === null) {
+              this.toastr.success("Đăng nhập thành công");
+
               this.router.navigate(['/home']);
               return;
             }
@@ -73,8 +77,12 @@ export class LoginComponent implements OnInit {
             if (token && this.DoiTuongPath) {
               if (this.DoiTuongPath.id === '') {
                 console.log('path có 1');
+                this.toastr.success("Đăng nhập thành công");
+
                 this.router.navigate([`/${this.DoiTuongPath.pagename}`]);
               } else {
+                this.toastr.success("Đăng nhập thành công");
+
                 this.router.navigate([`/${this.DoiTuongPath.pagename}/${this.DoiTuongPath.id}`]);
               }
             }
@@ -82,4 +90,7 @@ export class LoginComponent implements OnInit {
         }
       });
   }
+
 }
+
+

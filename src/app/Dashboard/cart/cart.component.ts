@@ -5,6 +5,8 @@ import { Router } from '@angular/router';
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { routes } from '../../app.routes';
 
+import { ToastrService } from 'ngx-toastr';
+
 
 
 
@@ -24,7 +26,8 @@ export class CartComponent implements OnInit {
   valueLengthCart: number = 0;
   TongCongTienGioHang: number = 0;
   labelSoLuongThanhToan: number = 0;
-  constructor(@Inject(PLATFORM_ID) private platformId: Object) { }
+  constructor(@Inject(PLATFORM_ID) private platformId: Object, private toastr: ToastrService
+  ) { }
   ngOnInit(): void {
     this.LayDataCart();
   }
@@ -176,6 +179,7 @@ export class CartComponent implements OnInit {
             console.log('Sản phẩm không tồn tại trong giỏ hàng');
           } else {
             // Cập nhật giỏ hàng trong localstorage
+            this.toastr.info('Xóa sản phẩm khỏi giỏ hàng thành công', 'Xóa giỏ hàng');
             localStorage.setItem('cart', JSON.stringify(cartValue));
             this.LayDataCart();
 

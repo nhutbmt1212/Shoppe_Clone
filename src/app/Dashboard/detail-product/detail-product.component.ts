@@ -7,6 +7,8 @@ import { isPlatformBrowser } from '@angular/common';
 
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { jwtDecode } from 'jwt-decode';
+import { ToastrService } from 'ngx-toastr';
+
 
 @Component({
   selector: 'app-detail-product',
@@ -31,7 +33,9 @@ export class DetailProductComponent implements OnInit {
     private activatedRoute: ActivatedRoute,
     private servicesSanPhamServices: ServiceSanPhamService,
     private router: Router,
-    @Inject(PLATFORM_ID) private platformId: Object
+    @Inject(PLATFORM_ID) private platformId: Object,
+    private toastr: ToastrService
+
   ) { }
   ngOnInit(): void {
     this.MaSanPham = this.activatedRoute.snapshot.paramMap.get('id');
@@ -114,10 +118,13 @@ export class DetailProductComponent implements OnInit {
 
 
           }
+          this.toastr.success('Thêm sản phẩm vào giỏ hàng thành công.');
           localStorage.setItem('cart', JSON.stringify(cartValueParsed));
         }
         //done nếu không có sản phẩm trong cart
         else {
+          this.toastr.success('Thêm sản phẩm vào giỏ hàng thành công.');
+
           localStorage.setItem('cart', JSON.stringify(this.cartValueArr));
         }
         this.router.navigate(['/cart']);

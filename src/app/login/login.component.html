@@ -13,10 +13,11 @@
     @if(email?.errors?.['email']){
     <small class="text-danger"> Định dạng email sai</small>
     }
-    @if(email?.errors?.['incorrect']){
-
+    @if(matkhau?.errors?.['incorrect']){
     }
-    }<br>
+    }
+
+    <br>
     <input type="password" id="password" formControlName="matkhau" class="form-control" placeholder="Mật khẩu"
         name="password">
     @if(matkhau?.invalid && (matkhau?.dirty || matkhau?.touched)){

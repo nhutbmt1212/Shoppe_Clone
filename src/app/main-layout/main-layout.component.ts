@@ -2,6 +2,8 @@ import { Component, OnInit, PLATFORM_ID, Inject } from '@angular/core';
 import { isPlatformBrowser } from '@angular/common';
 import { RouterOutlet, RouterLink } from '@angular/router';
 import { JwtHelperService } from '@auth0/angular-jwt';
+import { ToastrService } from 'ngx-toastr';
+
 
 @Component({
   selector: 'app-main-layout',
@@ -12,7 +14,8 @@ import { JwtHelperService } from '@auth0/angular-jwt';
 })
 export class MainLayoutComponent implements OnInit {
   NguoiDung: any = {};
-  constructor(@Inject(PLATFORM_ID) private platformId: Object) { }
+  constructor(@Inject(PLATFORM_ID) private platformId: Object, private toastr: ToastrService
+  ) { }
 
   ngOnInit(): void {
     if (isPlatformBrowser(this.platformId)) {

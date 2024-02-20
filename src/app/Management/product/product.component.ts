@@ -7,6 +7,8 @@ import { FormGroup, ReactiveFormsModule, FormControl, Validator, AbstractControl
 import { isPlatformBrowser } from '@angular/common';
 
 import { JwtHelperService } from '@auth0/angular-jwt';
+import { ToastrService } from 'ngx-toastr';
+
 
 @Component({
   selector: 'app-product',
@@ -44,7 +46,9 @@ export class ProductComponent implements OnInit {
     private danhMucServices: DanhMucService,
     private activatedRoute: ActivatedRoute,
     private router: Router,
-    @Inject(PLATFORM_ID) private platformId: Object
+    @Inject(PLATFORM_ID) private platformId: Object,
+    private toastr: ToastrService
+
 
   ) {
 
@@ -402,7 +406,10 @@ export class ProductComponent implements OnInit {
                   method: "POST",
                   body: formData
                 });
+                this.toastr.success('Thêm sản phẩm thành công', 'Thêm sản phẩm')
                 this.getDataSanPhamVaDanhMuc();
+
+
               }
             }
             catch (error) {
@@ -474,6 +481,7 @@ export class ProductComponent implements OnInit {
       throw new Error(`HTTP error! status: ${response.status}`);
     } else {
       this.getDataSanPhamVaDanhMuc();
+      this.toastr.success('Sửa sản phẩm thành công', 'Sửa sản phẩm')
       console.log("Update product successfully");
     }
   }
@@ -573,6 +581,8 @@ export class ProductComponent implements OnInit {
       throw new Error("Xóa sản phẩm thất bại");
 
     }
+    this.toastr.success('Xóa sản phẩm thành công', 'Xóa sản phẩm')
+
     console.log("Xóa sản phẩm thành công");
     this.getDataSanPhamVaDanhMuc();
 
