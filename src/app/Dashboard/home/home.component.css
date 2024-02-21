@@ -106,3 +106,51 @@
   padding-left: 7px;
   padding-right: 7px;
 }
+.total_item_danhmuc {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, 140px);
+  justify-content: center; /* Căn giữa theo chiều ngang */
+  align-items: center; /* Căn giữa theo chiều dọc */
+  gap: 3px;
+}
+.item_danhmuc {
+  box-sizing: border-box;
+  width: 140px;
+  border: 1px solid gray;
+}
+/* Đối với màn hình có chiều rộng nhỏ hơn 600px */
+@media (max-width: 600px) {
+  .item-image-danhmuc {
+    height: 90px;
+  }
+  .item_danhmuc {
+    width: 90px;
+  }
+  .total_item_danhmuc {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, 90px);
+    gap: 1px;
+  }
+}
+
+/* Đối với màn hình có chiều rộng từ 600px đến 900px */
+@media (min-width: 600px) and (max-width: 900px) {
+  .item-image-danhmuc {
+    height: 100px;
+  }
+  .item_danhmuc {
+    width: 100px;
+  }
+  .total_item_danhmuc {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, 100px);
+    gap: 1px;
+  }
+}
+
+/* Đối với màn hình có chiều rộng lớn hơn 900px */
+@media (min-width: 900px) {
+  .item-image-danhmuc {
+    height: 140px;
+  }
+}

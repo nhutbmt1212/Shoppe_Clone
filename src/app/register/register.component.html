@@ -20,7 +20,8 @@
 </div>
 }
 @if(showPassWord){
-<input type="email" id="username" [(ngModel)]="matkhau" placeholder="Mật khẩu" class="form-control" name="username"><br>
+<input type="text" maxlength="35" id="username" [(ngModel)]="matkhau" placeholder="Mật khẩu" class="form-control"
+    name="username"><br>
 <button (click)="DangKy()" type="submit" class="btn_DangNhap">Đăng ký</button><br>
 }
 

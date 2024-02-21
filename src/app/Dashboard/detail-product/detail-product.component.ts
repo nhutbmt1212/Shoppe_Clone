@@ -19,6 +19,7 @@ import { ToastrService } from 'ngx-toastr';
 })
 export class DetailProductComponent implements OnInit {
   MaSanPham: any;
+
   SanPham: any[] = [];
   CartArray: any[] = [];
   CartStorage: any = {};
@@ -29,6 +30,9 @@ export class DetailProductComponent implements OnInit {
   SoLuong: number = 1;
   SoLuongDaChon: number = 1;
   cartValueArr: any[] = [];
+  TenSanPham: string = '';
+  MaSanPhamLimit: string = '';
+  HinhAnhDauTien: any;
   constructor(
     private activatedRoute: ActivatedRoute,
     private servicesSanPhamServices: ServiceSanPhamService,
@@ -52,6 +56,8 @@ export class DetailProductComponent implements OnInit {
       .subscribe((data: any[]) => {
         if (data.length > 0) {
           this.SanPham = data;
+          this.MaSanPhamLimit = data[0].MaSanPham;
+          this.TenSanPham = this.SanPham[0].TenSanPham;
           this.MoTa = this.SanPham[0].MoTa;
           this.DonGia = this.SanPham[0].DonGia;
           this.GiamGia = this.SanPham[0].GiamGia;
@@ -59,8 +65,15 @@ export class DetailProductComponent implements OnInit {
           this.DonGiaDaGiam = this.DonGia - (this.DonGia * this.GiamGia) / 100;
         } else {
           this.router.navigate(['/not-found']);
-        }
+        } this.servicesSanPhamServices.LayHinhAnhTheoMaSanPhamLimit1(this.MaSanPhamLimit).subscribe((res: any[]) => {
+          this.HinhAnhDauTien = res[0].TenFileAnh
+          console.log(res);
+
+        });
       });
+
+
+
   }
   AddToCart() {
     if (isPlatformBrowser(this.platformId)) {

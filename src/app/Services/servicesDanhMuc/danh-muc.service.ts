@@ -16,4 +16,27 @@ export class DanhMucService {
         }
       }));
   }
+  layDanhMucTheoId(MaDanhMuc: string): Observable<any> {
+    return from(
+      fetch(`http://localhost:4000/danhmuc/${MaDanhMuc}`).then((response) => {
+        if (!response.ok) {
+
+          throw new Error(`HTTP error! status: ${response.status}`);
+        } else {
+          return response.json();
+        }
+      })
+    );
+  }
+  LayHinhAnhTheoMaSanPhamLimit1(MaDanhMuc: string): Observable<any> {
+    return from(
+      fetch(`http://localhost:4000/layhinhanhdanhmucdautien/${MaDanhMuc}`).then((response) => {
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        } else {
+          return response.json();
+        }
+      })
+    );
+  }
 }

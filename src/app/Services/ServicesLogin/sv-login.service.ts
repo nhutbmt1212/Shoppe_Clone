@@ -30,4 +30,15 @@ export class SvLoginService {
     }));
   }
 
+  LayNguoiDung(): Observable<any> {
+    return from(fetch('http://localhost:4000/nguoidung')
+      .then(response => {
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        } else {
+          return response.json();
+        }
+      }));
+  }
+
 }

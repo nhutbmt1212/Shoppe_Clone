@@ -1,1 +1,300 @@
-<p>category works!</p>
+<div class="modal fade" id="myModal">
+    <div class="modal-dialog modal-xl">
+        <form [formGroup]="ThemDanhMucForm" (submit)="ThemDanhMuc()">
+            <div class="modal-content">
+
+                <!-- Modal Header -->
+                <div class="modal-header">
+                    <h4 class="modal-title">Thêm danh mục</h4>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+
+                <!-- Modal body -->
+
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-sm-4">
+                            <label for="" class="form-label">Mã danh mục</label>
+                            <input type="text" formControlName="MaDanhMucThem" class="form-control" readonly />
+
+                        </div>
+                        <div class="col-sm-4">
+                            <label for="" class="form-label">Tên Danh Mục</label>
+                            <input type="text" formControlName="TenDanhMucThem" class="form-control" />
+                            @if(TenDanhMucThem?.invalid && (TenDanhMucThem?.dirty || TenDanhMucThem?.touched)){
+                            @if(TenDanhMucThem?.errors?.['required']){
+                            <small class="text-danger">Vui lòng nhập tên danh mục</small>
+                            }
+                            @if(TenDanhMucThem?.errors?.['minlength']){
+                            <small class="text-danger">Tên danh mục quá ít</small>
+                            <br>
+                            }
+                            @if(TenDanhMucThem?.errors?.['pattern']){
+                            <small class="text-danger">Tên danh mục không chứa dấu hoặc kí tự đặc biệt</small>
+                            }
+
+                            }
+                        </div>
+                        <div class="col-sm-4">
+                            <label for="" class="form-label">Ngày Thêm</label>
+                            <input type="datetime-local" readonly formControlName="NgayThemThem" class="form-control" />
+
+                        </div>
+                        <div class="col-sm-4">
+                            <label for="" class="form-label">Tình Trạng</label>
+                            <input formControlName="TinhTrangThem" readonly class="form-control" />
+
+                        </div>
+                        <div class="col-sm-4">
+                            <label for="" class="form-label">Mô Tả</label>
+                            <input type="text" formControlName="MoTaThem" class="form-control" />
+                            @if(MoTaThem?.invalid && (MoTaThem?.dirty || MoTaThem?.touched)){
+                            @if(MoTaThem?.errors?.['required']){
+                            <small class="text-danger">Vui lòng nhập mô tả</small>
+                            }
+                            @if(MoTaThem?.errors?.['minlength']){
+                            <small class="text-danger">Mô tả quá ít</small>
+                            <br>
+                            }
+
+                            }
+                        </div>
+
+
+                        <div class="col-sm-4">
+                            <label for="" class="form-label">Hình ảnh</label>
+                            <input type="file" formControlName="HinhAnhThem" (change)="inputFileAnh($event)"
+                                class="form-control" name="image" />
+                            @if(HinhAnhThem?.invalid && (HinhAnhThem?.dirty || HinhAnhThem?.touched)){
+                            @if(HinhAnhThem?.errors?.['required']){
+                            <small class="text-danger">Vui lòng chọn hình ảnh</small>
+                            }
+
+
+                            }
+                        </div>
+
+
+                    </div>
+                </div>
+
+
+
+                <!-- Modal footer -->
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                        Hủy
+                    </button>
+                    <button type="submit" [disabled]="ThemDanhMucForm.invalid" class="btn btn-success btn_ThemDanhMuc"
+                        data-bs-dismiss="modal">
+                        Thêm danh mục
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div class="container-fluid" style="height: 76vh;" ng-controller="ProductController">
+    <div class="row">
+        <div class="col-sm-6"> <button type="button" class="btn btn-primary mb-3" data-bs-toggle="modal"
+                (click)="ThayDoiMaRandom()" data-bs-target="#myModal">
+                Thêm danh mục
+            </button></div>
+        <!-- <div class="col-sm-6"> <input type="text" [(ngModel)]="searchTerm" class="form-control w-50"
+                placeholder=" Tìm kiếm..." />
+        </div> -->
+    </div>
+
+    <!-- <div class="d-flex justify-content-end mb-3"> -->
+
+
+    <!-- </div> -->
+
+    <table class="table table-bordered table-striped text-center table-reponsive">
+        <thead class="">
+            <tr>
+                <th scope="col">STT</th>
+                <th scope="col">Mã danh mục</th>
+                <th scope="col">Tên danh mục</th>
+                <th scope="col">Ngày thêm</th>
+                <th scope="col">Tình trạng</th>
+
+                <th scope="col">Mô tả</th>
+                <th scope="col">Hình ảnh</th>
+                <th scope="col">Tùy chọn</th>
+            </tr>
+        </thead>
+        <tbody>
+            @for (sp of DanhMuc; track $index) {
+            <tr>
+                <th scope="row" class="align-middle">{{$index+1}}</th>
+                <td class="align-middle">
+                    {{sp.MaDanhMuc}}</td>
+                <td class="align-middle">{{sp.TenDanhMuc}}</td>
+                <td class="align-middle">{{sp.NgayThem}}</td>
+                <td class="align-middle">{{sp.TinhTrang}}</td>
+                <td class="align-middle">{{sp.MoTa}}</td>
+                <td class="align-middle">
+                    <img [src]="'http://localhost:4000/images/'+sp.HinhAnh" width="85px" alt="Hình ảnh" />
+                </td>
+                <td class="text-center align-middle">
+                    <div class="dropdown">
+                        <button class="border-0" style="background-color: rgba(0, 0, 0, 0)" type="button"
+                            data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="bi bi-three-dots-vertical"></i>
+                        </button>
+                        <ul class="dropdown-menu">
+                            <li>
+                                <button class="dropdown-item" type="button" data-bs-toggle="modal"
+                                    data-bs-target="#editModal" (click)="SuaDanhMuc(sp.MaDanhMuc)">
+                                    Sửa
+                                </button>
+                            </li>
+                            <li>
+                                <button class="dropdown-item" type="button" data-bs-toggle="modal"
+                                    data-bs-target="#deleteConfirmationModal" (click)="XoaDanhMuc(sp.MaDanhMuc)">
+                                    Xóa
+                                </button>
+                            </li>
+                        </ul>
+                    </div>
+                </td>
+            </tr>
+            }
+        </tbody>
+    </table>
+
+    <div class="modal fade" id="deleteConfirmationModal" tabindex="-1" aria-labelledby="deleteConfirmationModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="deleteConfirmationModalLabel">
+                        Xác nhận xóa
+                    </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">Bạn có chắc chắn muốn xóa không?</div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                        Hủy
+                    </button>
+                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal" id="confirmDeleteButton"
+                        (click)="XacNhanXoaDanhMuc()">
+                        Xác nhận xóa
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="editModal">
+        <div class="modal-dialog modal-xl">
+            <div class="modal-content">
+
+                <!-- Modal Header -->
+                <div class="modal-header">
+                    <h4 class="modal-title">Thêm danh mục</h4>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+
+                <!-- Modal body -->
+                <form [formGroup]="SuaDanhMucForm" (submit)="ExecSuaDanhMuc()">
+
+
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-sm-4">
+                                <label for="" class="form-label">Mã danh mục</label>
+                                <input type="text" formControlName="MaDanhMucSua" class="form-control" readonly />
+
+                            </div>
+                            <div class="col-sm-4">
+                                <label for="" class="form-label">Tên Danh Mục</label>
+                                <input type="text" formControlName="TenDanhMucSua" class="form-control" />
+                                @if(TenDanhMucSua?.invalid && (TenDanhMucSua?.dirty || TenDanhMucSua?.touched)){
+                                @if(TenDanhMucThem?.errors?.['required']){
+                                <small class="text-danger">Vui lòng nhập tên danh mục</small>
+                                }
+                                @if(TenDanhMucSua?.errors?.['minlength']){
+                                <small class="text-danger">Tên danh mục quá ít</small>
+                                <br>
+                                }
+                                @if(TenDanhMucSua?.errors?.['pattern']){
+                                <small class="text-danger">Tên danh mục không chứa dấu hoặc kí tự đặc biệt</small>
+                                }
+
+                                }
+                            </div>
+                            <div class="col-sm-4">
+                                <label for="" class="form-label">Ngày Thêm</label>
+                                <input type="datetime-local" formControlName="NgayThemSua" class="form-control" />
+
+                            </div>
+                            <div class="col-sm-4">
+                                <label for="" class="form-label">Tình Trạng</label>
+                                <select formControlName="TinhTrangSua" class="form-select">
+                                    <option value="Hoạt động">Hoạt động</option>
+                                    <option value="Không hoạt động">Không hoạt động</option>
+                                </select>
+
+                            </div>
+                            <div class="col-sm-4">
+                                <label for="" class="form-label">Mô Tả</label>
+                                <input type="text" formControlName="MoTaSua" class="form-control" />
+                                @if(MoTaSua?.invalid && (MoTaSua?.dirty || MoTaSua?.touched)){
+                                @if(MoTaSua?.errors?.['required']){
+                                <small class="text-danger">Vui lòng nhập mô tả</small>
+                                }
+                                @if(MoTaSua?.errors?.['minlength']){
+                                <small class="text-danger">Mô tả quá ít</small>
+                                <br>
+                                }
+
+                                }
+                            </div>
+
+
+                            <div class="col-sm-4">
+                                <label for="" class="form-label">Hình ảnh</label>
+                                <input type="file" formControlName="HinhAnhSua" (change)="inputFileAnhSua($event)"
+                                    class="form-control" name="image" />
+
+                            </div>
+
+
+                        </div>
+                    </div>
+
+
+
+                    <!-- Modal footer -->
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                            Hủy
+                        </button>
+                        <button type="submit" [disabled]="SuaDanhMucForm.invalid"
+                            class="btn btn-success btn_ThemDanhMuc" data-bs-dismiss="modal">
+                            Sửa danh mục
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- <nav aria-label="..." class="d-flex justify-content-end ">
+    <ul class="pagination">
+        <li class="page-item" [class.disabled]="currentPage === 1">
+            <a class="page-link" (click)="goToPage(currentPage - 1)" tabindex="-1">Previous</a>
+        </li>
+        @for (page of [].constructor(totalPages); track $index) {
+        <li class="page-item" [class.active]="currentPage === $index+ 1">
+            <a class="page-link" (click)="goToPage($index + 1)">{{ $index + 1 }}</a>
+        </li>
+        }
+        <li class="page-item" [class.disabled]="currentPage === totalPages">
+            <a class="page-link" (click)="goToPage(currentPage + 1)">Next</a>
+        </li>
+    </ul>
+</nav> -->

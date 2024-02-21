@@ -10,6 +10,7 @@ import { JwtHelperService } from '@auth0/angular-jwt';
 import { ToastrService } from 'ngx-toastr';
 
 
+
 @Component({
   selector: 'app-product',
   standalone: true,
@@ -70,7 +71,7 @@ export class ProductComponent implements OnInit {
     ]),
     DonViTinhThem: new FormControl('', [
       Validators.required,
-      Validators.minLength(4),
+      Validators.minLength(2),
       Validators.pattern(/^[^\d~`!@#$%\^&*()_+=\-\[\]\\';,/{}|\\":<>\?]*$/),
     ]),
     DonGiaThem: new FormControl('', [
@@ -146,7 +147,7 @@ export class ProductComponent implements OnInit {
     ]),
     DonViTinhSua: new FormControl('', [
       Validators.required,
-      Validators.minLength(4),
+      Validators.minLength(2),
       Validators.pattern(/^[^\d~`!@#$%\^&*()_+=\-\[\]\\';,/{}|\\":<>\?]*$/),
     ]),
     DonGiaSua: new FormControl('', [
@@ -299,7 +300,7 @@ export class ProductComponent implements OnInit {
       const extension = files[i].name.split('.').pop().toLowerCase();
       const imageExtensions = ['jpg', 'jpeg', 'png', 'gif', 'bmp'];
       if (!imageExtensions.includes(extension)) {
-        alert('Vui lòng chỉ chọn tệp ảnh!');
+        this.toastr.warning('Vui lòng chọn tệp ảnh', 'Thêm ảnh');
         event.target.value = null; // Xóa tất cả các tệp đã chọn
         this.ThemSanPhamForm.controls['HinhAnhThem'].setErrors({ 'require': true });
         return;
@@ -377,44 +378,44 @@ export class ProductComponent implements OnInit {
             for (let i = 0; i < countFile; i++) {
               formDataImg.append('files', this.selectedFile[i]);
             }
-            try {
-              const response = await fetch("http://localhost:4000/multifiles", {
-                method: 'POST',
-                body: formDataImg
-              });
-              if (!response.ok) {
-                throw new Error(`HTTP error! status: ${response.status}`);
-              } else {
+            // try {
+            //   const response = await fetch("http://localhost:4000/multifiles", {
+            //     method: 'POST',
+            //     body: formDataImg
+            //   });
+            //   if (!response.ok) {
+            //     throw new Error(`HTTP error! status: ${response.status}`);
+            //   } else {
 
-                const formData = new FormData();
-                for (let i = 0; i < countFile; i++) {
-                  const DataHinhAnhSanPham = {
-                    MaSanPham: this.ThemSanPhamForm.value.MaSanPhamThem,
-                    TenFileAnh: this.selectedFile[i].name
-                  }
-                  console.log(DataHinhAnhSanPham);
-
-                  if (this.ThemSanPhamForm.value.MaSanPhamThem) {
-                    this.HinhAnhSanPham.push(DataHinhAnhSanPham);
-                    formData.append('files', this.selectedFile[i]);
-                    formData.append('MaSanPham', this.ThemSanPhamForm.value.MaSanPhamThem);
-                  }
-
-                }
-                console.log(this.HinhAnhSanPham);
-                const response = await fetch('http://localhost:4000/hinhanh', {
-                  method: "POST",
-                  body: formData
-                });
-                this.toastr.success('Thêm sản phẩm thành công', 'Thêm sản phẩm')
-                this.getDataSanPhamVaDanhMuc();
-
-
+            const formData = new FormData();
+            for (let i = 0; i < countFile; i++) {
+              const DataHinhAnhSanPham = {
+                MaSanPham: this.ThemSanPhamForm.value.MaSanPhamThem,
+                TenFileAnh: this.selectedFile[i].name
               }
+              console.log(DataHinhAnhSanPham);
+
+              if (this.ThemSanPhamForm.value.MaSanPhamThem) {
+                this.HinhAnhSanPham.push(DataHinhAnhSanPham);
+                formData.append('files', this.selectedFile[i]);
+                formData.append('MaSanPham', this.ThemSanPhamForm.value.MaSanPhamThem);
+              }
+
             }
-            catch (error) {
-              console.error('There was a problem with the fetch operation: ', error);
-            }
+            console.log(this.HinhAnhSanPham);
+            const response = await fetch('http://localhost:4000/hinhanh', {
+              method: "POST",
+              body: formData
+            });
+            this.toastr.success('Thêm sản phẩm thành công', 'Thêm sản phẩm')
+            this.getDataSanPhamVaDanhMuc();
+
+
+            //   }
+            // }
+            // catch (error) {
+            //   console.error('There was a problem with the fetch operation: ', error);
+            // }
           }
         }
       }
@@ -514,7 +515,8 @@ export class ProductComponent implements OnInit {
       const extension = element.name.split('.').pop()?.toLowerCase();
       const imageExtensions = ['jpg', 'jpeg', 'png', 'gif', 'bmp'];
       if (extension && !imageExtensions.includes(extension)) {
-        alert('Vui lòng chỉ chọn tệp ảnh!');
+        this.toastr.warning('Vui lòng chọn tệp ảnh', 'Sửa ảnh');
+
         event.target.value = null; // Xóa tất cả các tệp đã chọn
         this.SuaSanPhamForm.controls['HinhAnhSua'].setErrors({ 'require': true });
 
@@ -522,53 +524,27 @@ export class ProductComponent implements OnInit {
       }
       formdata.append('files', element);
     }
-
-    try {
-      const response = await fetch('http://localhost:4000/multifiles', {
-        method: 'POST',
-        body: formdata,
-      });
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
+    const formData = new FormData();
+    for (let i = 0; i < files.length; i++) {
+      const DataHinhAnhSanPham = {
+        //comment tạm đợi thêm sản phẩm xong
+        // MaSanPham: this.MaSanPham,
+        TenFileAnh: files[i].name
       }
-      else {
-        //lưu vào db
-        const formData = new FormData();
-        for (let i = 0; i < files.length; i++) {
-          const DataHinhAnhSanPham = {
-            //comment tạm đợi thêm sản phẩm xong
-            // MaSanPham: this.MaSanPham,
-            TenFileAnh: files[i].name
-          }
-          this.HinhAnhSanPham.push(DataHinhAnhSanPham);
-          formData.append('files', files[i]);
-          formData.append('MaSanPham', MaSP);
-        }
-
-
-
-
-        const response = await fetch('http://localhost:4000/hinhanh', {
-          method: "POST",
-          body: formData
-        });
-        //thực hiện thêm ảnh previewing
-        if (response.ok) {
-
-          this.LayHinhAnhFromServices(MaSP);
-          this.getDataSanPhamVaDanhMuc();
-        }
-
-
-
-      }
-
-    } catch (error) {
-      console.error('There was a problem with the fetch operation: ', error);
+      this.HinhAnhSanPham.push(DataHinhAnhSanPham);
+      formData.append('files', files[i]);
+      formData.append('MaSanPham', MaSP);
     }
+    const response = await fetch('http://localhost:4000/hinhanh', {
+      method: "POST",
+      body: formData
+    });
+    //thực hiện thêm ảnh previewing
+    if (response.ok) {
 
-
-
+      this.LayHinhAnhFromServices(MaSP);
+      this.getDataSanPhamVaDanhMuc();
+    }
   }
   XoaSanPham(MaSP: string) {
     this.MaSanPhamXoa = MaSP;

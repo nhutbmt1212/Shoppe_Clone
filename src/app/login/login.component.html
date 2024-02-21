@@ -1,7 +1,7 @@
 <h5>{{title_login}}</h5>
 <form [formGroup]="loginForm" (submit)="Login()">
-    <input type="text" id="username" formControlName="email" placeholder="Điền Email/ Số điện thoại/ Tên đăng nhập"
-        class="form-control mt-3" name="username">
+    <input type="text" maxlength="30" id="username" formControlName="email"
+        placeholder="Điền Email/ Số điện thoại/ Tên đăng nhập" class="form-control mt-3" name="username">
 
     @if(email?.invalid && (email?.dirty || email?.touched)){
     @if(email?.errors?.['required']){
@@ -18,8 +18,8 @@
     }
 
     <br>
-    <input type="password" id="password" formControlName="matkhau" class="form-control" placeholder="Mật khẩu"
-        name="password">
+    <input type="password" maxlength="25" id="password" formControlName="matkhau" class="form-control"
+        placeholder="Mật khẩu" name="password">
     @if(matkhau?.invalid && (matkhau?.dirty || matkhau?.touched)){
     @if(matkhau?.errors?.['required']){
     <small class="text-danger">Password is required.</small>

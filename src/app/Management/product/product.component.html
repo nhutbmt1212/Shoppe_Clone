@@ -87,7 +87,7 @@
                             <select name="" id="" formControlName="MaDanhMucThem" class="form-select" name="MaDanhMuc">
 
                                 @for (dm of DanhMuc; track $index) {
-                                <option [value]='dm.MaDanhMuc'>{{dm.MaDanhMuc}} - {{dm.TenDanhMuc}} </option>
+                                <option [value]='dm.MaDanhMuc'>{{dm.TenDanhMuc}} </option>
                                 }
                             </select>
                             @if(MaDanhMucThem?.invalid && (MaDanhMucThem?.dirty || MaDanhMucThem?.touched)){
@@ -365,7 +365,7 @@
                                 <select name="" id="" formControlName="MaDanhMucSua" class="form-select">
 
                                     @for (dm of DanhMuc; track $index) {
-                                    <option [value]='dm.MaDanhMuc'>{{dm.MaDanhMuc}} -
+                                    <option [value]='dm.MaDanhMuc'>
                                         {{dm.TenDanhMuc}} </option>
                                     }
                                 </select>

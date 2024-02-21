@@ -58,7 +58,6 @@ export class LoginComponent implements OnInit {
         if ('message' in res) {
           this.loginForm.get('matkhau')?.setErrors({ incorrect: true });
 
-          this.loginForm.get('matkhau')?.setErrors({ incorrect: true });
           this.toastr.error("Đăng nhập không thành công");
 
         } else {

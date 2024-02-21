@@ -1,13 +1,20 @@
 <div class="header position-sticky sticky-header top-0 p-2 pt-3 mb-4">
     <div class="container">
         <!-- navbar  -->
-        <div class="navbar d-flex justify-content-between align-items-center">
+        <div class="navbar d-flex justify-content-between align-items-center nav_main_menu">
             <div class="d-flex align-items-center">
                 @if(isObjectEmpty(NguoiDung)){
                 <span><a class="text-white text-decoration-none" routerLink="/admin/product">Quản lý sản phẩm của
                         bạn</a></span>
                 <div class="hr1 mx-2"></div>
-                <span><a class="text-white text-decoration-none">Xin chào! {{ NguoiDung.TenNguoiDung }}</a></span>
+                <span class="nav-item dropdown">
+                    <a class="nav-link " href="#" role="button" data-bs-toggle="dropdown">Xin chào! {{
+                        NguoiDung.TenNguoiDung }}</a>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" routerLink="/login">Xem thông tin của bạn</a></li>
+                        <li><a class="dropdown-item" routerLink="/register">Nhập thông tin mới</a></li>
+                    </ul>
+                </span>
                 <div class="hr1 mx-2"></div>
                 <span><a class="text-white text-decoration-none" (click)="DangXuat(NguoiDung)"
                         style="cursor: pointer;">Đăng xuất</a></span>
@@ -36,14 +43,15 @@
             </div>
         </div>
         <!-- input search brand -->
-        <div class="d-flex align-items-center mt-2" ng-controller="BackToHomeWithLoGo">
-            <div class="d-flex align-items-center" style="cursor: pointer" routerLink="/home">
+        <div class="d-flex align-items-center mt-2 logoandsearch">
+            <div class="d-flex align-items-center logo_brand" style="cursor: pointer" routerLink="/home">
                 <img class="brand-img mr-0" src="assets/brand.png" alt="" />
                 <h2 class="text-brand">Shopee</h2>
             </div>
             <div class="wrap-navbar-input">
-                <div class="wrap-search">
-                    <input type="text" class="form-control" placeholder="Shopee bao shop 0Đ - đăng ký ngay!" />
+                <div class="wrap-search ">
+                    <input type="text" class="form-control input_search"
+                        placeholder="Shopee bao shop 0Đ - đăng ký ngay!" />
                     <div class="wrap-icon-s">
                         <img class="icon-media" src="assets/search.png" alt="" />
                     </div>
@@ -206,6 +214,49 @@
             <span> &copy; Shopee 2024. Truong Minh Nhut </span>
             <span>© 2024 Shopee. Tất cả các quyền được bảo lưu.: Singapura | Indonesia |
                 Taiwan | Thailand | Malaysia | Vietnam | Filipina |</span>
+        </div>
+    </div>
+</div>
+<div class="header1 position-sticky sticky-header bottom-0 p-2 pt-3 mb-4">
+    <div class="navbar d-flex justify-content-between align-items-center">
+        <div class="d-flex align-items-center">
+            @if(isObjectEmpty(NguoiDung)){
+            <span><a class="text-white text-decoration-none" routerLink="/admin/product">Quản lý sản phẩm của
+                    bạn</a></span>
+            <div class="hr1 mx-2"></div>
+            <span class="nav-item dropup">
+                <a class="nav-link " href="#" role="button" data-bs-toggle="dropdown">Xin chào! {{
+                    NguoiDung.TenNguoiDung }}</a>
+                <ul class="dropdown-menu">
+                    <li><a class="dropdown-item" routerLink="/login">Xem thông tin của bạn</a></li>
+                    <li><a class="dropdown-item" routerLink="/register">Nhập thông tin mới</a></li>
+                </ul>
+            </span>
+            <div class="hr1 mx-2"></div>
+            <span><a class="text-white text-decoration-none" (click)="DangXuat(NguoiDung)" style="cursor: pointer;">Đăng
+                    xuất</a></span>
+            <div class="hr1 mx-2"></div>
+
+            <img class="icon-media mr-2 ml-2" src="assets/facebook.png" alt="" />
+            <img class="icon-media mr-2" src="assets/instagram.png" alt="" />
+            } @else{
+
+            <span><a routerLink="/login" class="text-white text-decoration-none">Đăng nhập</a></span>
+            <div class="hr1 mx-2"></div>
+            <span><a routerLink="/register" class="text-white text-decoration-none">Đăng ký</a></span>
+            <div class="hr1 mx-2"></div>
+
+            <img class="icon-media mr-2 ml-2" src="assets/facebook.png" alt="" />
+            <img class="icon-media mr-2" src="assets/instagram.png" alt="" />
+
+            }
+        </div>
+        <div class="d-flex align-items-center text_contact">
+            <img class="icon-media mr-2" src="assets/notif.png" alt="" />
+            <span class="mr-4" style="padding-left: 5px">Thông báo</span>
+            <img class="icon-media mr-2" style="padding-left: 5px" src="assets/bantuan.png" alt="" />
+            <span class="mr-4" style="padding-left: 5px">Gợi ý</span>
+            <span class="font-weight-bold" style="padding-left: 5px">Liên hệ: 0869536182</span>
         </div>
     </div>
 </div>
