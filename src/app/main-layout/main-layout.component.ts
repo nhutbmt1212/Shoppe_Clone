@@ -4,12 +4,13 @@ import { RouterOutlet, RouterLink, Router, NavigationEnd } from '@angular/router
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { ToastrService } from 'ngx-toastr';
 import { ElementRef } from '@angular/core';
-
-
+import { MatInputModule } from '@angular/material/input';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 @Component({
   selector: 'app-main-layout',
   standalone: true,
-  imports: [RouterOutlet, RouterLink],
+  imports: [RouterOutlet, RouterLink, MatInputModule, MatFormFieldModule, MatProgressSpinnerModule],
   templateUrl: './main-layout.component.html',
   styleUrl: './main-layout.component.css',
 })
@@ -24,9 +25,9 @@ export class MainLayoutComponent implements OnInit {
   ) {
 
   }
-  OnActive(event: any) {
-    window.scroll(0, 0);
-  }
+  // OnActive(event: any) {
+  //   window.scroll(0, 0);
+  // }
   ngOnInit(): void {
     // this.router.events.subscribe((evt) => {
     //   if (!(evt instanceof NavigationEnd)) {

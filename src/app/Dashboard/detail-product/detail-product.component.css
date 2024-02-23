@@ -16,7 +16,8 @@
 .soluong_danhgia_detail_product {
   text-decoration: underline;
   font-size: 17px;
-  font-weight: 600;
+  font-weight: 500;
+  padding-right: 5px;
 }
 .title_danhgia_detail_product {
   color: grey;
@@ -28,8 +29,11 @@
 }
 .soluong_daBan_detail_product {
   font-size: 17px;
-  font-weight: 600;
+  font-weight: 500;
+  text-decoration: underline;
+  padding-right: 5px;
 }
+
 .title_daBan_detail_product {
   color: grey;
   padding-right: 20px;
@@ -39,6 +43,7 @@
   margin-top: 10px;
   height: 80px;
   padding: 16px;
+  padding-top: 1.8rem;
   border-radius: 3px;
 }
 .firstelement_price_prod {
@@ -84,6 +89,14 @@
 @media (max-width: 768px) {
   .text_contact {
     display: none !important;
+  }
+  .text_nameProduct_detail {
+    font-size: 22px;
+    font-weight: 400;
+    padding-top: 15px;
+  }
+  .select_soluong {
+    width: 80px;
   }
 }
 

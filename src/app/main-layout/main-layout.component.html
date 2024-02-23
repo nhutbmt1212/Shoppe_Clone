@@ -1,4 +1,4 @@
-<div class="header position-sticky sticky-header top-0 p-2 pt-3 mb-4">
+<div class="header p-2 pt-3 ">
     <div class="container">
         <!-- navbar  -->
         <div class="navbar d-flex justify-content-between align-items-center nav_main_menu">
@@ -65,9 +65,11 @@
         </div>
     </div>
 </div>
-<div class="container-fluid">
-    <router-outlet (activate)="OnActive($event)"> </router-outlet>
+<div class="container-fluid router_page_main">
+    <router-outlet> </router-outlet>
 </div>
+
+
 
 <div class="footer">
     <div class="container p-3">

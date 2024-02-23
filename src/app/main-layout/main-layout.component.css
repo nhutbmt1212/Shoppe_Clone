@@ -95,11 +95,14 @@
 }
 
 .text-brand {
-  /* font-size: 30px; */
+  font-size: 25px;
   font-weight: 400;
   margin-bottom: 25px;
 }
-
+.router_page_main {
+  position: relative;
+  top: 140px;
+}
 .under-input span {
   font-size: 12px;
   font-weight: 100;
@@ -156,6 +159,10 @@
     margin-top: -20px;
     margin-bottom: 25px;
   }
+  .router_page_main {
+    position: relative;
+    top: 65px;
+  }
 }
 
 /* Đối với màn hình có chiều rộng từ 600px đến 900px */
@@ -197,6 +204,10 @@
   .brand-img {
     margin-top: -15px;
     margin-bottom: 30px;
+  }
+  .router_page_main {
+    position: relative;
+    top: 70px;
   }
 }
 
