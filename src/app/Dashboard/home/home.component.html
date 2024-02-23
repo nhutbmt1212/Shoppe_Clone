@@ -172,21 +172,23 @@
 
 </div>
 <div class="container-fluid bg-secondly">
-    <div class="container mt-4 bg-white border-bottom border-4 border-danger position-sticky" style="top: 130px">
+    <div class="container mt-4 bg-white border-bottom border-4 border-danger position-sticky suggested_today">
         <p class="text-center text-danger p-1 pt-3 fw-bold">GỢI Ý HÔM NAY</p>
     </div>
 
     <div class="container">
         <div id="total_card_product" style="margin-top: 10px; margin-bottom: 50px">
             @for (sp of SanPham; track $index) {
-            <div class="product-card border bg-white" [routerLink]="'/detail/'+sp.MaSanPham">
+            <!-- <div class="product-card border bg-white" [routerLink]="'/detail/'+sp.MaSanPham"> -->
+            <div class="product-card border bg-white" (click)="RedirectToDetal(sp.MaSanPham)">
+
                 <div class="image-container">
                     <img [src]="'http://localhost:4000/images/'+ sp.HinhAnhSP" width="100%" alt="Product Image" />
                 </div>
                 <div class="details-container">
                     <!-- Category Title with Maximum 2 Lines and Ellipsis -->
                     <div class="category-title truncate-text">
-                        {{sp.MoTa}}
+                        {{sp.TenSanPham}}
                     </div>
 
                     <div class="Sale"></div>

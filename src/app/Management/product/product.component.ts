@@ -459,7 +459,7 @@ export class ProductComponent implements OnInit {
       MaSanPham: this.SuaSanPhamForm.value.MaSanPhamSua,
       TenSanPham: this.SuaSanPhamForm.value.TenSanPhamSua,
       SoLuong: this.SuaSanPhamForm.value.SoLuongSua,
-      DonGia: this.SuaSanPhamForm.value.DonGiaSua, // Lưu trữ dưới dạng số thực
+      DonGia: this.SuaSanPhamForm.value.DonGiaSua,
       DonViTinh: this.SuaSanPhamForm.value.DonViTinhSua,
       MaDanhMuc: this.SuaSanPhamForm.value.MaDanhMucSua,
       Hang: this.SuaSanPhamForm.value.HangSua,

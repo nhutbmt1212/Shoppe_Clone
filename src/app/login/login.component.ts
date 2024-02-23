@@ -81,8 +81,9 @@ export class LoginComponent implements OnInit {
                 this.router.navigate([`/${this.DoiTuongPath.pagename}`]);
               } else {
                 this.toastr.success("Đăng nhập thành công");
+                let encodedString: string = encodeURIComponent(';q?ees3rs ' + this.DoiTuongPath.id + ' #@#%^d').toLocaleUpperCase();
 
-                this.router.navigate([`/${this.DoiTuongPath.pagename}/${this.DoiTuongPath.id}`]);
+                this.router.navigate([`/${this.DoiTuongPath.pagename}/${encodedString}`]);
               }
             }
           }

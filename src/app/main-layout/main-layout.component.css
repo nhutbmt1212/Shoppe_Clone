@@ -85,7 +85,7 @@
   width: 50px;
   height: 50px;
   margin-left: 40px;
-  margin-bottom: 30px;
+  margin-bottom: 45px;
 }
 
 .brand-img {
@@ -109,6 +109,13 @@
   margin-left: 50px;
   width: 67%;
 }
+.text_display_total_cart {
+  position: relative;
+  /* top: -9px;
+  right: 21px; */
+  top: -47px;
+  left: 19px;
+}
 /* Đối với màn hình có chiều rộng nhỏ hơn 600px */
 @media (max-width: 600px) {
   .text_contact {
@@ -117,7 +124,7 @@
   .icon-shop {
     width: 40px;
     height: 40px;
-    margin-top: -15px;
+    margin-top: -27px;
   }
   .header1 {
     display: block !important;
@@ -135,7 +142,7 @@
     padding-top: 10px;
     z-index: 999;
   }
-  .logo_brand {
+  .text-brand {
     display: none !important;
   }
   .wrap-search {
@@ -144,6 +151,10 @@
     background-color: #ffffff;
     border-radius: 6px;
     margin-top: -15px;
+  }
+  .brand-img {
+    margin-top: -20px;
+    margin-bottom: 25px;
   }
 }
 
@@ -172,16 +183,20 @@
     height: 40px;
     background-color: #ffffff;
     border-radius: 6px;
-    margin-top: -22px;
+    margin-top: -15px;
   }
   .icon-shop {
     width: 40px;
     height: 40px;
-    margin-top: -16px;
+    margin-top: -30px;
   }
-  .logo_brand {
-    margin-top: -20px;
-    margin-bottom: 5px;
+  .text-brand {
+    margin-top: -15px;
+    margin-bottom: 27px;
+  }
+  .brand-img {
+    margin-top: -15px;
+    margin-bottom: 30px;
   }
 }
 

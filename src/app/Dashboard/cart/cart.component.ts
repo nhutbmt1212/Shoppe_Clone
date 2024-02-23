@@ -29,6 +29,7 @@ export class CartComponent implements OnInit {
   constructor(@Inject(PLATFORM_ID) private platformId: Object, private toastr: ToastrService
   ) { }
   ngOnInit(): void {
+    window.scroll(0, 0);
     this.LayDataCart();
   }
   LayDataCart(): void {

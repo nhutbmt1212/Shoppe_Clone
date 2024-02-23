@@ -42,7 +42,15 @@ export class DetailProductComponent implements OnInit {
 
   ) { }
   ngOnInit(): void {
-    this.MaSanPham = this.activatedRoute.snapshot.paramMap.get('id');
+    let EncodedString = this.activatedRoute.snapshot.paramMap.get('id');
+    let decodedString: string = decodeURIComponent(EncodedString || '');
+    console.log(decodedString); // In ra chuỗi gốc
+
+    // Tách chuỗi đã giải mã bằng dấu cách
+    let parts: string[] = decodedString.split(' ');
+
+    // Mã sản phẩm nằm ở vị trí thứ hai trong mảng
+    this.MaSanPham = parts[1];
     if (isPlatformBrowser(this.platformId)) {
       const pathKey = 'path';
       const pathValue = {

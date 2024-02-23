@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormsModule, ReactiveFormsModule, FormControl, Validators, AbstractControl } from '@angular/forms';
 import { DanhMucService } from '../../Services/servicesDanhMuc/danh-muc.service';
 import { ServiceSanPhamService } from '../../Services/service-san-pham.service';
+import { ToastrService } from 'ngx-toastr';
+
 @Component({
   selector: 'app-category',
   standalone: true,
@@ -15,47 +17,10 @@ export class CategoryComponent implements OnInit {
   selectedFileSua: any;
   InsertMaDanhMuc: string = '';
   constructor(private danhMucServices: DanhMucService,
-    private sanPhamServices: ServiceSanPhamService
+    private sanPhamServices: ServiceSanPhamService, private toastr: ToastrService
+
   ) { }
-  ngOnInit(): void {
 
-    this.loadDanhMuc();
-  }
-
-  loadDanhMuc() {
-    this.danhMucServices.layDanhMuc().subscribe(data => {
-      for (let index = 0; index < data.length; index++) {
-        this.danhMucServices.LayHinhAnhTheoMaSanPhamLimit1(data[index].MaDanhMuc).subscribe(data => {
-          data[index].HinhAnh = data[index].HinhAnh;
-        })
-
-      }
-
-      this.DanhMuc = data;
-      for (let i = 0; i < data.length; i++) {
-        let ngayThem: Date = new Date(data[i].NgayThem);
-        let year: string = ngayThem.getFullYear().toString();
-        let month: string = (ngayThem.getMonth() + 1).toString().padStart(2, '0'); // padStart để thêm số 0 phía trước nếu tháng chỉ có 1 chữ số
-        let date: string = ngayThem.getDate().toString().padStart(2, '0'); // tương tự như trên
-        let hours: string = ngayThem.getHours().toString().padStart(2, '0');
-        let minutes: string = ngayThem.getMinutes().toString().padStart(2, '0');
-        let NgayGioConvert: string = `${year}-${month}-${date}T${hours}:${minutes}`;
-        this.DanhMuc[i].NgayThem = NgayGioConvert;
-      }
-    })
-
-    this.ThemDanhMucForm.controls['TinhTrangThem'].setValue('Đang hoạt động');
-    let ngayThem: Date = new Date;
-
-    let year: string = ngayThem.getFullYear().toString();
-    let month: string = (ngayThem.getMonth() + 1).toString().padStart(2, '0'); // padStart để thêm số 0 phía trước nếu tháng chỉ có 1 chữ số
-    let date: string = ngayThem.getDate().toString().padStart(2, '0'); // tương tự như trên
-    let hours: string = ngayThem.getHours().toString().padStart(2, '0');
-    let minutes: string = ngayThem.getMinutes().toString().padStart(2, '0');
-
-    let NgayGioConvert: string = `${year}-${month}-${date}T${hours}:${minutes}`;
-    this.ThemDanhMucForm.controls['NgayThemThem'].setValue(NgayGioConvert);
-  }
   ThemDanhMucForm = new FormGroup({
 
     MaDanhMucThem: new FormControl('',
@@ -153,7 +118,45 @@ export class CategoryComponent implements OnInit {
 
 
 
+  ngOnInit(): void {
 
+    this.loadDanhMuc();
+  }
+
+  loadDanhMuc() {
+    this.danhMucServices.layDanhMuc().subscribe(data => {
+      for (let index = 0; index < data.length; index++) {
+        this.danhMucServices.LayHinhAnhTheoMaSanPhamLimit1(data[index].MaDanhMuc).subscribe(data => {
+          data[index].HinhAnh = data[index].HinhAnh;
+        })
+
+      }
+
+      this.DanhMuc = data;
+      for (let i = 0; i < data.length; i++) {
+        let ngayThem: Date = new Date(data[i].NgayThem);
+        let year: string = ngayThem.getFullYear().toString();
+        let month: string = (ngayThem.getMonth() + 1).toString().padStart(2, '0'); // padStart để thêm số 0 phía trước nếu tháng chỉ có 1 chữ số
+        let date: string = ngayThem.getDate().toString().padStart(2, '0'); // tương tự như trên
+        let hours: string = ngayThem.getHours().toString().padStart(2, '0');
+        let minutes: string = ngayThem.getMinutes().toString().padStart(2, '0');
+        let NgayGioConvert: string = `${year}-${month}-${date}T${hours}:${minutes}`;
+        this.DanhMuc[i].NgayThem = NgayGioConvert;
+      }
+    })
+
+    this.ThemDanhMucForm.controls['TinhTrangThem'].setValue('Đang hoạt động');
+    let ngayThem: Date = new Date;
+
+    let year: string = ngayThem.getFullYear().toString();
+    let month: string = (ngayThem.getMonth() + 1).toString().padStart(2, '0'); // padStart để thêm số 0 phía trước nếu tháng chỉ có 1 chữ số
+    let date: string = ngayThem.getDate().toString().padStart(2, '0'); // tương tự như trên
+    let hours: string = ngayThem.getHours().toString().padStart(2, '0');
+    let minutes: string = ngayThem.getMinutes().toString().padStart(2, '0');
+
+    let NgayGioConvert: string = `${year}-${month}-${date}T${hours}:${minutes}`;
+    this.ThemDanhMucForm.controls['NgayThemThem'].setValue(NgayGioConvert);
+  }
 
   inputFileAnh(event: any) {
     const file = event.target.files[0]; // Chỉ lấy tệp đầu tiên
@@ -174,7 +177,7 @@ export class CategoryComponent implements OnInit {
     const MaRandom = this.sanPhamServices.randomMa();
     this.ThemDanhMucForm.controls['MaDanhMucThem'].setValue(MaRandom);
   }
-  ThemDanhMuc() {
+  async ThemDanhMuc() {
     console.log(this.selectedFile.name);
 
     if (this.ThemDanhMucForm) {
@@ -186,26 +189,30 @@ export class CategoryComponent implements OnInit {
       formData.append('TinhTrang', this.ThemDanhMucForm.value.TinhTrangThem ?? '');
       formData.append('MoTa', this.ThemDanhMucForm.value.MoTaThem ?? '');
 
-      fetch('http://localhost:4000/danhmuc', {
+      await fetch('http://localhost:4000/danhmuc', {
         method: 'POST',
         body: formData,
       })
         .then(response => response.json())
         .then(result => console.log(result))
         .catch(error => console.error(error));
-
+      this.toastr.success('Thêm danh mục thành công', 'Thêm danh mục');
+      this.loadDanhMuc();
     }
-    this.loadDanhMuc();
+
+
   }
 
 
-  XacNhanXoaDanhMuc() {
-    fetch('http://localhost:4000/xoadanhmuc/' + this.InsertMaDanhMuc, {
+  async XacNhanXoaDanhMuc() {
+    await fetch('http://localhost:4000/xoadanhmuc/' + this.InsertMaDanhMuc, {
       method: 'PUT',
     })
       .then(response => response.json())
       .then(result => console.log(result))
       .catch(error => console.error(error));
+    this.toastr.success('Xóa danh mục thành công', 'Xóa danh mục');
+
     this.loadDanhMuc();
   }
   SuaDanhMuc(MaDM: string) {
@@ -231,7 +238,7 @@ export class CategoryComponent implements OnInit {
 
     })
   }
-  ExecSuaDanhMuc() {
+  async ExecSuaDanhMuc() {
     if (this.SuaDanhMucForm) {
       const formData = new FormData();
       formData.append('MaDanhMuc', this.SuaDanhMucForm.value.MaDanhMucSua ?? '');
@@ -248,7 +255,7 @@ export class CategoryComponent implements OnInit {
       }
 
 
-      fetch('http://localhost:4000/danhmuc/' + this.SuaDanhMucForm.value.MaDanhMucSua, {
+      await fetch('http://localhost:4000/danhmuc/' + this.SuaDanhMucForm.value.MaDanhMucSua, {
         method: 'PUT',
         body: formData,
       })
@@ -259,20 +266,21 @@ export class CategoryComponent implements OnInit {
 
 
 
+      this.toastr.success('Sửa danh mục thành công', 'Sửa danh mục');
 
-
+      this.loadDanhMuc();
     }
-    this.loadDanhMuc();
+
   }
 
 
   inputFileAnhSua(event: any) {
-    const file = event.target.files[0]; // Chỉ lấy tệp đầu tiên
+    const file = event.target.files[0];
     const extension = file.name.split('.').pop().toLowerCase();
     const imageExtensions = ['jpg', 'jpeg', 'png', 'gif', 'bmp'];
 
     if (!imageExtensions.includes(extension)) {
-      // this.toastr.warning('Vui lòng chọn tệp ảnh', 'Thêm ảnh');
+      //  this.toastr.warning('Vui lòng chọn tệp ảnh', 'Thêm ảnh');
       event.target.value = null;
       this.ThemDanhMucForm.controls['HinhAnhThem'].setErrors({ 'require': true });
       return;
