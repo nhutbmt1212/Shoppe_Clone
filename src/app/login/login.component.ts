@@ -43,6 +43,7 @@ export class LoginComponent implements OnInit {
   MatKhau: string = 'matkhau1';
   ngOnInit(): void {
     this.title_login = 'Đăng nhập';
+    this.svLoginServices.changeTitleLoginAndRegister(true);
   }
   constructor(
     private svLoginServices: SvLoginService,
@@ -58,7 +59,6 @@ export class LoginComponent implements OnInit {
       .subscribe((res: any[]) => {
         if ('message' in res) {
           this.loginForm.get('matkhau')?.setErrors({ incorrect: true });
-
           this.toastr.error("Đăng nhập không thành công");
 
         } else {
@@ -66,17 +66,21 @@ export class LoginComponent implements OnInit {
             const token = localStorage.getItem('token');
             const path = localStorage.getItem('path');
             if (path === null) {
+              this.svLoginServices.thayDoiLoginStatus(true);
               this.toastr.success("Đăng nhập thành công");
 
               this.router.navigate(['/home']);
               return;
             }
             else if (path !== null) {
+
+
               this.DoiTuongPath = JSON.parse(path);
             }
             if (token && this.DoiTuongPath) {
+              this.svLoginServices.thayDoiLoginStatus(true);
+
               if (this.DoiTuongPath.id === '') {
-                console.log('path có 1');
                 this.toastr.success("Đăng nhập thành công");
 
                 this.router.navigate([`/${this.DoiTuongPath.pagename}`]);

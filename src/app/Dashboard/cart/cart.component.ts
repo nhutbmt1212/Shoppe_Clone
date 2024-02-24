@@ -29,7 +29,6 @@ export class CartComponent implements OnInit {
   constructor(@Inject(PLATFORM_ID) private platformId: Object, private toastr: ToastrService
   ) { }
   ngOnInit(): void {
-    window.scroll(0, 0);
     this.LayDataCart();
   }
   LayDataCart(): void {
@@ -48,7 +47,6 @@ export class CartComponent implements OnInit {
       const helper = new JwtHelperService();
       if (token) {
         let decode = helper.decodeToken(token);
-        console.log(decode.results[0].MaNguoiDung);
 
         if (cart !== null) {
           //chỉ lọc những cart nào có cùng mã người dùng
@@ -58,7 +56,6 @@ export class CartComponent implements OnInit {
             return decode.results[0].MaNguoiDung === item.MaNguoiDung;
           });
 
-          console.log(this.cartData); // this.cartData giờ đây chỉ chứa những phần tử hợp lệ
 
 
           for (let index = 0; index < this.cartData.length; index++) {

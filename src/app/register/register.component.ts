@@ -15,6 +15,7 @@ import { SvLoginService } from '../Services/ServicesLogin/sv-login.service';
   styleUrl: './register.component.css'
 })
 export class RegisterComponent implements OnInit {
+
   constructor(private toastr: ToastrService, private router: Router, private nguoiDungServives: SvLoginService
   ) { }
   title_register: string = '';
@@ -28,6 +29,7 @@ export class RegisterComponent implements OnInit {
   matkhau: string = '';
   ngOnInit(): void {
     this.title_register = 'Đăng ký';
+    this.nguoiDungServives.changeTitleLoginAndRegister(false);
   }
   isValidEmail(email: string): boolean {
     const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
@@ -97,13 +99,14 @@ export class RegisterComponent implements OnInit {
 
       let MaNguoiDung = Math.floor(100000 + Math.random() * 900000).toString(); // generates a 6-digit number
       let PhanQuyen = 'user';
+      let TinhTrang = 'Đang hoạt động'
 
       fetch('http://localhost:4000/register', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ Email: this.email, MatKhau: this.matkhau, MaNguoiDung, PhanQuyen }),
+        body: JSON.stringify({ Email: this.email, MatKhau: this.matkhau, MaNguoiDung, PhanQuyen, TinhTrang }),
       })
 
         .then(data => {

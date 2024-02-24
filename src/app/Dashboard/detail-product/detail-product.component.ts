@@ -44,7 +44,6 @@ export class DetailProductComponent implements OnInit {
   ngOnInit(): void {
     let EncodedString = this.activatedRoute.snapshot.paramMap.get('id');
     let decodedString: string = decodeURIComponent(EncodedString || '');
-    console.log(decodedString); // In ra chuỗi gốc
 
     // Tách chuỗi đã giải mã bằng dấu cách
     let parts: string[] = decodedString.split(' ');
@@ -75,7 +74,7 @@ export class DetailProductComponent implements OnInit {
           this.router.navigate(['/not-found']);
         } this.servicesSanPhamServices.LayHinhAnhTheoMaSanPhamLimit1(this.MaSanPhamLimit).subscribe((res: any[]) => {
           this.HinhAnhDauTien = res[0].TenFileAnh
-          console.log(res);
+
 
         });
       });

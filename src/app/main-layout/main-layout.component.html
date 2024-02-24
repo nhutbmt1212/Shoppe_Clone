@@ -11,8 +11,8 @@
                     <a class="nav-link " href="#" role="button" data-bs-toggle="dropdown">Xin chào! {{
                         NguoiDung.TenNguoiDung }}</a>
                     <ul class="dropdown-menu">
-                        <li><a class="dropdown-item" routerLink="/login">Xem thông tin của bạn</a></li>
-                        <li><a class="dropdown-item" routerLink="/register">Nhập thông tin mới</a></li>
+                        <li><a class="dropdown-item" data-bs-target="#exampleModalToggle" data-bs-toggle="modal">Xem
+                                thông tin của bạn</a></li>
                     </ul>
                 </span>
                 <div class="hr1 mx-2"></div>
@@ -266,3 +266,160 @@
         </div>
     </div>
 </div>
+
+@if(NguoiDung.TenNguoiDung ===null ){
+<div class="modal fade" id="exampleModalToggle" aria-hidden="true" aria-labelledby="exampleModalToggleLabel"
+    tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered modal-lg"> <!-- Thêm class modal-lg hoặc modal-xl tại đây -->
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="exampleModalToggleLabel">Cập nhật thông tin của bạn</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+
+                <mat-stepper [linear]="isLinear" #stepper>
+                    <mat-step [stepControl]="firstFormGroup">
+                        <form [formGroup]="firstFormGroup" style="margin-top: 20px;">
+                            <ng-template matStepLabel>Nhập họ và tên, số điện thoại</ng-template>
+                            <div class="row d-flex justify-content-center">
+                                <div class="col-sm-12 col-md-5">
+                                    <mat-form-field style="width: 100%;">
+                                        <mat-label>Họ và tên</mat-label>
+                                        <input matInput placeholder="Họ và tên" [errorStateMatcher]="matcher"
+                                            formControlName="HoVaTen">
+
+                                        @if (HoVaTen?.errors?.['required']) {
+                                        <mat-error>Vui lòng nhập họ và tên</mat-error>
+                                        } @else if (HoVaTen?.errors?.['invalidChar']) {
+                                        <mat-error>Họ và tên không chứa ký tự đặc biệt & số</mat-error>
+                                        } @else if (HoVaTen?.errors?.['whitespace']) {
+                                        <mat-error>Họ và tên không được chỉ toàn là dấu cách</mat-error>
+                                        }@else if (HoVaTen?.errors?.['minlength']) {
+                                        <mat-error>Họ và tên quá ít</mat-error>
+                                        }
+
+                                    </mat-form-field>
+
+                                </div>
+                                <div class="col-sm-12 col-md-5">
+                                    <mat-form-field style="width: 100%;">
+                                        <mat-label>Số điện thoại</mat-label>
+
+                                        <input matInput placeholder="Số điện thoại" maxlength="10"
+                                            formControlName="SoDienThoai" [errorStateMatcher]="matcher">
+
+                                        @if(SoDienThoai?.errors?.['required']){
+                                        <mat-error>Vui lòng nhập số điện thoại</mat-error>
+                                        }
+                                        @else if(SoDienThoai?.errors?.['pattern']){
+                                        <mat-error>Số điện thoại không hợp lệ</mat-error>
+                                        }
+                                        @else if(SoDienThoai?.errors?.['minlength']){
+                                        <mat-error>Số điện thoại phải đúng 10 ký tự</mat-error>
+                                        }
+                                        @else if(SoDienThoai?.errors?.['maxlength']){
+                                        <mat-error>Số điện thoại phải đúng 10 ký tự</mat-error>
+                                        }
+
+
+
+                                    </mat-form-field>
+                                </div>
+                            </div>
+
+
+                            <div class="d-flex justify-content-end">
+                                <button mat-button matStepperNext [disabled]="firstFormGroup.invalid">Tiếp theo</button>
+                            </div>
+                        </form>
+                    </mat-step>
+                    <mat-step [stepControl]="secondFormGroup" label="Nhập địa chỉ, cccd">
+                        <form [formGroup]="secondFormGroup" style="margin-top: 20px;">
+                            <div class="row d-flex justify-content-center">
+                                <div class="col-sm-12 col-md-5"><mat-form-field style="width: 100%;">
+                                        <mat-label>Địa chỉ</mat-label>
+                                        <input matInput formControlName="DiaChi" [errorStateMatcher]="matcher"
+                                            placeholder="Địa chỉ">
+                                        @if (DiaChi?.errors?.['required']) {
+                                        <mat-error>Vui lòng nhập địa chỉ</mat-error>
+                                        } @else if (DiaChi?.errors?.['whitespace']) {
+                                        <mat-error>Địa chỉ không được chỉ toàn là dấu cách</mat-error>
+                                        }@else if (DiaChi?.errors?.['minlength']) {
+                                        <mat-error>Địa chỉ quá ít</mat-error>
+                                        }
+                                    </mat-form-field>
+                                </div>
+                                <div class="col-sm-12 col-md-5"> <mat-form-field style="width: 100%;">
+                                        <mat-label>CCCD</mat-label>
+                                        <input [errorStateMatcher]="matcher" maxlength="12" matInput
+                                            formControlName="CCCD" placeholder="Căn cước công dân">
+                                        @if(CCCD?.errors?.['required']){
+                                        <mat-error>Vui lòng nhập cccd</mat-error>
+                                        }@else if(CCCD?.errors?.['pattern']){
+                                        <mat-error>CCCD không hợp lệ</mat-error>
+                                        }
+                                        @else if(CCCD?.errors?.['minlength']){
+                                        <mat-error>CCCD phải đúng 12 ký tự</mat-error>
+                                        }
+                                        @else if(CCCD?.errors?.['maxlength']){
+                                        <mat-error>CCCD phải đúng 12 ký tự</mat-error>
+                                        }
+                                    </mat-form-field></div>
+                            </div>
+
+
+                            <div class="d-flex justify-content-end">
+                                <button mat-button matStepperPrevious>Trở lại</button>
+                                <button mat-button matStepperNext [disabled]="secondFormGroup.invalid">Tiếp
+                                    theo</button>
+                            </div>
+                        </form>
+                    </mat-step>
+
+
+                    <mat-step>
+                        <ng-template matStepLabel>Xong!</ng-template>
+                        <p>Tất cả thông tin của bạn nhập đã xong.</p>
+                        <p>Bạn có muốn chúng tôi lưu thông tin của bạn không?</p>
+                        <div>
+                            <button mat-button matStepperPrevious>Trở lại</button>
+                            <button type="button" (click)="LuuThongTin()" mat-button
+                                [disabled]="firstFormGroup.invalid || secondFormGroup.invalid"
+                                data-bs-dismiss="modal">Lưu thông
+                                tin</button>
+                        </div>
+                    </mat-step>
+                </mat-stepper>
+
+            </div>
+
+        </div>
+    </div>
+</div>
+}
+@else{
+
+
+
+
+<div class="modal fade" id="exampleModalToggle" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title" id="exampleModalLabel">Modal title</h2>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+
+            </div>
+            <div class="modal-body">
+                ...
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">Save changes</button>
+            </div>
+        </div>
+    </div>
+</div>
+}

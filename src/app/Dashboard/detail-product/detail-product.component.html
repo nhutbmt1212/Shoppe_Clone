@@ -1,7 +1,8 @@
 <div class="container">
     <nav aria-label="breadcrumb">
         <ol class="breadcrumb">
-            <li class="breadcrumb-item "><a class="text-primary text-decoration-none">Trang chủ</a></li>
+            <li class="breadcrumb-item "><a class="text-primary text-decoration-none" routerLink="/home">Trang chủ</a>
+            </li>
             <li class="breadcrumb-item active" aria-current="page">Chi tiết</li>
         </ol>
     </nav>
@@ -105,7 +106,7 @@
                     </div>
                 </div>
 
-                <div class="mt-5 row gx-2">
+                <div class="mt-5 btn_bothBuy row gx-2">
                     <div class="col-sm-4 mt-1">
                         <button class="btn_addToCart equal w-100" (click)="AddToCart()"><i
                                 class="bi bi-cart-plus"></i><a>Thêm vào giỏ

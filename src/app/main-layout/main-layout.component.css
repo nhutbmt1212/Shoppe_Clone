@@ -85,19 +85,19 @@
   width: 50px;
   height: 50px;
   margin-left: 40px;
-  margin-bottom: 45px;
+  margin-bottom: 10px;
 }
 
 .brand-img {
   width: 35px;
   height: 40px;
-  margin-bottom: 30px;
+  margin-bottom: 20px;
 }
 
 .text-brand {
   font-size: 25px;
   font-weight: 400;
-  margin-bottom: 25px;
+  margin-bottom: 15px;
 }
 .router_page_main {
   position: relative;
@@ -111,12 +111,13 @@
 .wrap-navbar-input {
   margin-left: 50px;
   width: 67%;
+  margin-top: 15px;
 }
 .text_display_total_cart {
   position: relative;
   /* top: -9px;
   right: 21px; */
-  top: -47px;
+  top: -33px;
   left: 19px;
 }
 /* Đối với màn hình có chiều rộng nhỏ hơn 600px */
@@ -127,7 +128,7 @@
   .icon-shop {
     width: 40px;
     height: 40px;
-    margin-top: -27px;
+    margin-top: -40px;
   }
   .header1 {
     display: block !important;
@@ -153,11 +154,11 @@
     height: 40px;
     background-color: #ffffff;
     border-radius: 6px;
-    margin-top: -15px;
+    margin-top: -30px;
   }
   .brand-img {
-    margin-top: -20px;
-    margin-bottom: 25px;
+    margin-top: -30px;
+    margin-bottom: 18px;
   }
   .router_page_main {
     position: relative;
@@ -190,19 +191,19 @@
     height: 40px;
     background-color: #ffffff;
     border-radius: 6px;
-    margin-top: -15px;
+    margin-top: -30px;
   }
   .icon-shop {
     width: 40px;
     height: 40px;
-    margin-top: -30px;
+    margin-top: -40px;
   }
   .text-brand {
-    margin-top: -15px;
+    margin-top: -20px;
     margin-bottom: 27px;
   }
   .brand-img {
-    margin-top: -15px;
+    margin-top: -20px;
     margin-bottom: 30px;
   }
   .router_page_main {

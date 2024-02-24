@@ -1,11 +1,17 @@
 import { Injectable } from '@angular/core';
-import { Observable, from, tap } from 'rxjs';
+import { BehaviorSubject, Observable, from, tap } from 'rxjs';
 import * as jwt_decode from 'jwt-decode';
 
 @Injectable({
   providedIn: 'root'
 })
 export class SvLoginService {
+  private loginStatus = new BehaviorSubject<boolean>(false);
+  currentStatus = this.loginStatus.asObservable();
+
+
+  private titleStatus = new BehaviorSubject<boolean>(false);
+  currentTitleStatus = this.titleStatus.asObservable();
 
   login(Email: string, MatKhau: string): Observable<any> {
     const body = { Email, MatKhau };
@@ -40,5 +46,13 @@ export class SvLoginService {
         }
       }));
   }
+  thayDoiLoginStatus(status: boolean) {
+    this.loginStatus.next(status);
+  }
+  changeTitleLoginAndRegister(title: boolean) {
+    this.titleStatus.next(title)
+  }
+
+
 
 }
