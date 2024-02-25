@@ -11,8 +11,16 @@
                     <a class="nav-link " href="#" role="button" data-bs-toggle="dropdown">Xin chào! {{
                         NguoiDung.TenNguoiDung }}</a>
                     <ul class="dropdown-menu">
+                        @if(NguoiDung.TenNguoiDung ===null || NguoiDung.TenNguoiDung === "" ){
                         <li><a class="dropdown-item" data-bs-target="#exampleModalToggle" data-bs-toggle="modal">Xem
                                 thông tin của bạn</a></li>
+                        }
+                        @else{
+                        <li><a class="dropdown-item" (click)="XemThongTinNguoiDung()"
+                                data-bs-target="#exampleModalToggle" data-bs-toggle="modal">Xem
+                                thông tin của bạn</a></li>
+                        }
+
                     </ul>
                 </span>
                 <div class="hr1 mx-2"></div>
@@ -267,7 +275,7 @@
     </div>
 </div>
 
-@if(NguoiDung.TenNguoiDung ===null ){
+@if(NguoiDung.TenNguoiDung ===null || NguoiDung.TenNguoiDung === "" ){
 <div class="modal fade" id="exampleModalToggle" aria-hidden="true" aria-labelledby="exampleModalToggleLabel"
     tabindex="-1">
     <div class="modal-dialog modal-dialog-centered modal-lg"> <!-- Thêm class modal-lg hoặc modal-xl tại đây -->
@@ -283,7 +291,7 @@
                         <form [formGroup]="firstFormGroup" style="margin-top: 20px;">
                             <ng-template matStepLabel>Nhập họ và tên, số điện thoại</ng-template>
                             <div class="row d-flex justify-content-center">
-                                <div class="col-sm-12 col-md-5">
+                                <div class="col-sm-12 col-md-4">
                                     <mat-form-field style="width: 100%;">
                                         <mat-label>Họ và tên</mat-label>
                                         <input matInput placeholder="Họ và tên" [errorStateMatcher]="matcher"
@@ -302,7 +310,7 @@
                                     </mat-form-field>
 
                                 </div>
-                                <div class="col-sm-12 col-md-5">
+                                <div class="col-sm-12 col-md-4">
                                     <mat-form-field style="width: 100%;">
                                         <mat-label>Số điện thoại</mat-label>
 
@@ -315,16 +323,31 @@
                                         @else if(SoDienThoai?.errors?.['pattern']){
                                         <mat-error>Số điện thoại không hợp lệ</mat-error>
                                         }
-                                        @else if(SoDienThoai?.errors?.['minlength']){
+                                        @else if(SoDienThoai?.errors?.['minlength'] ||
+                                        SoDienThoai?.errors?.['maxlength']){
                                         <mat-error>Số điện thoại phải đúng 10 ký tự</mat-error>
                                         }
-                                        @else if(SoDienThoai?.errors?.['maxlength']){
-                                        <mat-error>Số điện thoại phải đúng 10 ký tự</mat-error>
+                                        @else if(SoDienThoai?.errors?.['invalidPhoneNumber']){
+                                        <mat-error>Số điện thoại đã tồn tại</mat-error>
                                         }
 
 
 
                                     </mat-form-field>
+                                </div>
+                                <div class="col-sm-12 col-md-4">
+                                    <mat-form-field>
+                                        <mat-label>Giới tính</mat-label>
+                                        <mat-select formControlName="GioiTinh" [errorStateMatcher]="matcher">
+                                            @for (gt of GioiTinh_value_select; track gt) {
+                                            <mat-option [value]="gt.value">{{gt.value}}</mat-option>
+                                            }
+                                        </mat-select>
+                                        @if(GioiTinh?.errors?.['required']){
+                                        <mat-error>Vui lòng chọn giới tính</mat-error>
+                                        }
+                                    </mat-form-field>
+
                                 </div>
                             </div>
 
@@ -365,6 +388,9 @@
                                         @else if(CCCD?.errors?.['maxlength']){
                                         <mat-error>CCCD phải đúng 12 ký tự</mat-error>
                                         }
+                                        @else if(CCCD?.errors?.['invalidCCCD']){
+                                        <mat-error>Căn cước công dân đã tồn tại</mat-error>
+                                        }
                                     </mat-form-field></div>
                             </div>
 
@@ -382,11 +408,12 @@
                         <ng-template matStepLabel>Xong!</ng-template>
                         <p>Tất cả thông tin của bạn nhập đã xong.</p>
                         <p>Bạn có muốn chúng tôi lưu thông tin của bạn không?</p>
-                        <div>
+                        <p>Sau khi lưu sẽ tự động đăng xuất để lưu thông tin mới của bạn.</p>
+                        <div class="d-flex justify-content-end">
                             <button mat-button matStepperPrevious>Trở lại</button>
                             <button type="button" (click)="LuuThongTin()" mat-button
-                                [disabled]="firstFormGroup.invalid || secondFormGroup.invalid"
-                                data-bs-dismiss="modal">Lưu thông
+                                [disabled]="firstFormGroup.invalid || secondFormGroup.invalid" data-bs-dismiss="modal"
+                                (click)="DangXuat(NguoiDung)">Lưu thông
                                 tin</button>
                         </div>
                     </mat-step>
@@ -408,16 +435,146 @@
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h2 class="modal-title" id="exampleModalLabel">Modal title</h2>
+                <h2 class="modal-title" id="exampleModalLabel">Thông tin của bạn</h2>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 
             </div>
             <div class="modal-body">
-                ...
+                <div>
+                    <form [formGroup]="ThongTinNguoiDung" class="row">
+                        <div class="col-sm-12 col-md-4">
+                            <mat-form-field class="example-full-width" style="width: 100%;">
+                                <mat-label>Tên người dùng</mat-label>
+                                <input matInput [errorStateMatcher]="matcher" formControlName="TenNguoiDung_ChiTiet">
+                                @if (TenNguoiDung_ChiTiet?.errors?.['required']) {
+                                <mat-error>Vui lòng nhập họ và tên</mat-error>
+                                } @else if (TenNguoiDung_ChiTiet?.errors?.['invalidChar']) {
+                                <mat-error>Họ và tên không chứa ký tự đặc biệt & số</mat-error>
+                                } @else if (TenNguoiDung_ChiTiet?.errors?.['whitespace']) {
+                                <mat-error>Họ và tên không được chỉ toàn là dấu cách</mat-error>
+                                }@else if (TenNguoiDung_ChiTiet?.errors?.['minlength']) {
+                                <mat-error>Họ và tên quá ít</mat-error>
+                                }
+                            </mat-form-field>
+                        </div>
+                        <div class="col-sm-12 col-md-4">
+                            <mat-form-field class="example-full-width" style="width: 100%;">
+                                <mat-label>Số điện thoại</mat-label>
+                                <input matInput [errorStateMatcher]="matcher" formControlName="SoDienThoai_ChiTiet">
+                                @if(SoDienThoai_ChiTiet?.errors?.['required']){
+                                <mat-error>Vui lòng nhập số điện thoại</mat-error>
+                                }
+                                @else if(SoDienThoai_ChiTiet?.errors?.['pattern']){
+                                <mat-error>Số điện thoại không hợp lệ</mat-error>
+                                }
+                                @else if(SoDienThoai_ChiTiet?.errors?.['minlength'] ||
+                                SoDienThoai_ChiTiet?.errors?.['maxlength']){
+                                <mat-error>Số điện thoại phải đúng 10 ký tự</mat-error>
+                                }
+                                @else if(SoDienThoai_ChiTiet?.errors?.['invalidPhoneNumber']){
+                                <mat-error>Số điện thoại đã tồn tại</mat-error>
+                                }
+
+                            </mat-form-field>
+                        </div>
+                        <div class="col-sm-12 col-md-4">
+                            <mat-form-field class="example-full-width" style="width: 100%;">
+                                <mat-label>Email</mat-label>
+                                <input matInput [errorStateMatcher]="matcher" formControlName="Email_ChiTiet">
+                                @if(Email_ChiTiet?.errors?.['required']){
+                                <mat-error>Vui lòng nhập số email</mat-error>
+                                }
+                                @else if(Email_ChiTiet?.errors?.['pattern']){
+                                <mat-error>Email không hợp lệ</mat-error>
+                                }
+                                @else if(Email_ChiTiet?.errors?.['minlength'] ||
+                                Email_ChiTiet?.errors?.['maxlength']){
+                                <mat-error>Email phải hơn 16 -> 70 ký tự</mat-error>
+                                }
+                                @else if(Email_ChiTiet?.errors?.['invalidEmail']){
+                                <mat-error>Email đã tồn tại</mat-error>
+                                }
+                            </mat-form-field>
+                        </div>
+                        <div class="col-sm-12 col-md-4">
+                            <mat-form-field class="example-full-width" style="width: 100%;">
+                                <mat-label>Địa chỉ</mat-label>
+                                <input matInput [errorStateMatcher]="matcher" formControlName="DiaChi_ChiTiet">
+                                @if (DiaChi_ChiTiet?.errors?.['required']) {
+                                <mat-error>Vui lòng nhập địa chỉ</mat-error>
+                                } @else if (DiaChi_ChiTiet?.errors?.['whitespace']) {
+                                <mat-error>Địa chỉ không được chỉ toàn là dấu cách</mat-error>
+                                }@else if (DiaChi_ChiTiet?.errors?.['minlength']) {
+                                <mat-error>Địa chỉ quá ít</mat-error>
+                                }
+                            </mat-form-field>
+                        </div>
+                        <div class="col-sm-12 col-md-4">
+                            <mat-form-field style="width: 100%;">
+                                <mat-label>Giới tính</mat-label>
+                                <mat-select [errorStateMatcher]="matcher" formControlName="GioiTinh_ChiTiet">
+                                    @for (gt of GioiTinh_value_select; track gt) {
+                                    <mat-option [value]="gt.value">{{gt.value}}</mat-option>
+                                    }
+                                </mat-select>
+                                @if(GioiTinh_ChiTiet?.errors?.['required']){
+                                <mat-error>Vui lòng chọn giới tính</mat-error>
+                                }
+                            </mat-form-field>
+                        </div>
+                        <div class="col-sm-12 col-md-4">
+                            <mat-form-field class="example-full-width" style="width: 100%;">
+                                <mat-label>CCCD</mat-label>
+                                <input maxlength="12" [errorStateMatcher]="matcher" matInput
+                                    formControlName="CCCD_ChiTiet">
+                                @if(CCCD_ChiTiet?.errors?.['required']){
+                                <mat-error>Vui lòng nhập cccd</mat-error>
+                                }@else if(CCCD_ChiTiet?.errors?.['pattern']){
+                                <mat-error>CCCD không hợp lệ</mat-error>
+                                }
+                                @else if(CCCD_ChiTiet?.errors?.['minlength']){
+                                <mat-error>CCCD phải đúng 12 ký tự</mat-error>
+                                }
+                                @else if(CCCD_ChiTiet?.errors?.['maxlength']){
+                                <mat-error>CCCD phải đúng 12 ký tự</mat-error>
+                                }
+                                @else if(CCCD_ChiTiet?.errors?.['invalidEmail']){
+                                <mat-error>Căn cước công dân đã tồn tại</mat-error>
+                                }
+                            </mat-form-field>
+
+                        </div>
+                        <div class="col-sm-12 col-md-4">
+                            <mat-form-field class="example-full-width" style="width: 100%;">
+                                <mat-label>Quyền hạn</mat-label>
+                                <input readonly matInput formControlName="QuyenHan_ChiTiet" value="user">
+                            </mat-form-field>
+                        </div>
+                        <div class="col-sm-12 col-md-4">
+                            <mat-form-field class="example-full-width" style="width: 100%;">
+                                <mat-label>Mật khẩu</mat-label>
+                                <input [errorStateMatcher]="matcher" type="password" formControlName="MatKhauChiTiet"
+                                    matInput>
+                                @if (MatKhauChiTiet?.errors?.['required']) {
+                                <mat-error>Vui lòng nhập mật khẩu</mat-error>
+                                } @else if (MatKhauChiTiet?.errors?.['whitespace']) {
+                                <mat-error>Mật khẩu không được chỉ toàn là dấu cách</mat-error>
+                                }@else if (MatKhauChiTiet?.errors?.['minlength']) {
+                                <mat-error>Mật khẩu quá ít</mat-error>
+                                }
+                                @else if (MatKhauChiTiet?.errors?.['maxlength']) {
+                                <mat-error>Mật khẩu quá dài</mat-error>
+                                }
+                            </mat-form-field>
+                        </div>
+                    </form>
+                </div>
+
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary">Save changes</button>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+                <button type="button" class="btn btn-primary" data-bs-dismiss="modal"
+                    (click)="ThayDoiThongTinNguoiDung()" [disabled]="ThongTinNguoiDung.invalid">Thay đổi</button>
             </div>
         </div>
     </div>

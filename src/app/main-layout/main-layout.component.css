@@ -1,3 +1,6 @@
+::ng-deep .cdk-overlay-container {
+  z-index: 9999;
+}
 /* header */
 .header {
   background: linear-gradient(-180deg, #f53d2d, #f63);
