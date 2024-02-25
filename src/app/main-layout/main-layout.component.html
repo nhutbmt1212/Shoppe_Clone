@@ -482,7 +482,7 @@
                                 <mat-label>Email</mat-label>
                                 <input matInput [errorStateMatcher]="matcher" formControlName="Email_ChiTiet">
                                 @if(Email_ChiTiet?.errors?.['required']){
-                                <mat-error>Vui lòng nhập số email</mat-error>
+                                <mat-error>Vui lòng nhập email</mat-error>
                                 }
                                 @else if(Email_ChiTiet?.errors?.['pattern']){
                                 <mat-error>Email không hợp lệ</mat-error>
@@ -529,7 +529,8 @@
                                     formControlName="CCCD_ChiTiet">
                                 @if(CCCD_ChiTiet?.errors?.['required']){
                                 <mat-error>Vui lòng nhập cccd</mat-error>
-                                }@else if(CCCD_ChiTiet?.errors?.['pattern']){
+                                }
+                                @else if(CCCD_ChiTiet?.errors?.['pattern']){
                                 <mat-error>CCCD không hợp lệ</mat-error>
                                 }
                                 @else if(CCCD_ChiTiet?.errors?.['minlength']){

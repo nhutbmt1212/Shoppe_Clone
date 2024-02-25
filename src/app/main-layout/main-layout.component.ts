@@ -313,12 +313,12 @@ export class MainLayoutComponent implements OnInit {
   LuuThongTin() {
 
     const MaNguoiDung = this.NguoiDung.MaNguoiDung;
-    const TenNguoiDung = this.firstFormGroup.value.HoVaTen;
-    const SoDienThoai = this.firstFormGroup.value.SoDienThoai;
+    const TenNguoiDung = this.firstFormGroup.value.HoVaTen?.trim();
+    const SoDienThoai = this.firstFormGroup.value.SoDienThoai?.trim();
     const GioiTinh = this.firstFormGroup.value.GioiTinh;
-    const DiaChi = this.secondFormGroup.value.DiaChi;
-    const CCCD = this.secondFormGroup.value.CCCD;
-    const formData = new FormData();
+    const DiaChi = this.secondFormGroup.value.DiaChi?.trim();
+    const CCCD = this.secondFormGroup.value.CCCD?.trim();
+
     const body = { MaNguoiDung, TenNguoiDung, SoDienThoai, GioiTinh, DiaChi, CCCD };
 
 
