@@ -216,7 +216,7 @@ export class MainLayoutComponent implements OnInit {
     MatKhauChiTiet: new FormControl('', [
       Validators.required,
       Validators.minLength(6),
-      Validators.maxLength(20),
+      Validators.maxLength(40),
       this.noWhitespaceValidator()
     ]),
     QuyenHan_ChiTiet: new FormControl('', [

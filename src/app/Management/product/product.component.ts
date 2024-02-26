@@ -4,7 +4,7 @@ import { ServiceSanPhamService } from '../../Services/service-san-pham.service';
 import { DanhMucService } from '../../Services/servicesDanhMuc/danh-muc.service';
 import { RouterLink, ActivatedRoute, Router } from '@angular/router';
 import { FormGroup, ReactiveFormsModule, FormControl, Validator, AbstractControl } from '@angular/forms';
-import { isPlatformBrowser } from '@angular/common';
+import { CommonModule, isPlatformBrowser } from '@angular/common';
 
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { ToastrService } from 'ngx-toastr';
@@ -289,6 +289,11 @@ export class ProductComponent implements OnInit {
     // Cập nhật trang hiện tại sau khi sắp xếp
     this.goToPage(this.currentPage);
   }
+  // Trong component TypeScript của bạn
+  get pages(): number[] {
+    return Array.from({ length: Math.min(5, this.totalPages) }, (_, i) => i + 1);
+  }
+
   goToPage(page: number) {
     this.currentPage = page;
     this.pagedItems = this.SanPham.slice((this.currentPage - 1) * this.itemsPerPage, this.currentPage * this.itemsPerPage);

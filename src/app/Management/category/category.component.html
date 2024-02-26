@@ -20,7 +20,7 @@
                         </div>
                         <div class="col-sm-4">
                             <label for="" class="form-label">Tên Danh Mục</label>
-                            <input type="text" formControlName="TenDanhMucThem" class="form-control" />
+                            <input type="text" maxlength="70" formControlName="TenDanhMucThem" class="form-control" />
                             @if(TenDanhMucThem?.invalid && (TenDanhMucThem?.dirty || TenDanhMucThem?.touched)){
                             @if(TenDanhMucThem?.errors?.['required']){
                             <small class="text-danger">Vui lòng nhập tên danh mục</small>
@@ -47,7 +47,7 @@
                         </div>
                         <div class="col-sm-4">
                             <label for="" class="form-label">Mô Tả</label>
-                            <input type="text" formControlName="MoTaThem" class="form-control" />
+                            <input type="text" maxlength="150" formControlName="MoTaThem" class="form-control" />
                             @if(MoTaThem?.invalid && (MoTaThem?.dirty || MoTaThem?.touched)){
                             @if(MoTaThem?.errors?.['required']){
                             <small class="text-danger">Vui lòng nhập mô tả</small>
@@ -211,7 +211,8 @@
                             </div>
                             <div class="col-sm-4">
                                 <label for="" class="form-label">Tên Danh Mục</label>
-                                <input type="text" formControlName="TenDanhMucSua" class="form-control" />
+                                <input type="text" maxlength="70" formControlName="TenDanhMucSua"
+                                    class="form-control" />
                                 @if(TenDanhMucSua?.invalid && (TenDanhMucSua?.dirty || TenDanhMucSua?.touched)){
                                 @if(TenDanhMucThem?.errors?.['required']){
                                 <small class="text-danger">Vui lòng nhập tên danh mục</small>
@@ -241,7 +242,7 @@
                             </div>
                             <div class="col-sm-4">
                                 <label for="" class="form-label">Mô Tả</label>
-                                <input type="text" formControlName="MoTaSua" class="form-control" />
+                                <input type="text" maxlength="150" formControlName="MoTaSua" class="form-control" />
                                 @if(MoTaSua?.invalid && (MoTaSua?.dirty || MoTaSua?.touched)){
                                 @if(MoTaSua?.errors?.['required']){
                                 <small class="text-danger">Vui lòng nhập mô tả</small>

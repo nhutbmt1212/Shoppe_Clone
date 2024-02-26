@@ -294,8 +294,8 @@
                                 <div class="col-sm-12 col-md-4">
                                     <mat-form-field style="width: 100%;">
                                         <mat-label>Họ và tên</mat-label>
-                                        <input matInput placeholder="Họ và tên" [errorStateMatcher]="matcher"
-                                            formControlName="HoVaTen">
+                                        <input maxlength="50" matInput placeholder="Họ và tên"
+                                            [errorStateMatcher]="matcher" formControlName="HoVaTen">
 
                                         @if (HoVaTen?.errors?.['required']) {
                                         <mat-error>Vui lòng nhập họ và tên</mat-error>
@@ -362,8 +362,8 @@
                             <div class="row d-flex justify-content-center">
                                 <div class="col-sm-12 col-md-5"><mat-form-field style="width: 100%;">
                                         <mat-label>Địa chỉ</mat-label>
-                                        <input matInput formControlName="DiaChi" [errorStateMatcher]="matcher"
-                                            placeholder="Địa chỉ">
+                                        <input maxlength="70" matInput formControlName="DiaChi"
+                                            [errorStateMatcher]="matcher" placeholder="Địa chỉ">
                                         @if (DiaChi?.errors?.['required']) {
                                         <mat-error>Vui lòng nhập địa chỉ</mat-error>
                                         } @else if (DiaChi?.errors?.['whitespace']) {
@@ -445,7 +445,8 @@
                         <div class="col-sm-12 col-md-4">
                             <mat-form-field class="example-full-width" style="width: 100%;">
                                 <mat-label>Tên người dùng</mat-label>
-                                <input matInput [errorStateMatcher]="matcher" formControlName="TenNguoiDung_ChiTiet">
+                                <input maxlength="50" matInput [errorStateMatcher]="matcher"
+                                    formControlName="TenNguoiDung_ChiTiet">
                                 @if (TenNguoiDung_ChiTiet?.errors?.['required']) {
                                 <mat-error>Vui lòng nhập họ và tên</mat-error>
                                 } @else if (TenNguoiDung_ChiTiet?.errors?.['invalidChar']) {
@@ -460,7 +461,8 @@
                         <div class="col-sm-12 col-md-4">
                             <mat-form-field class="example-full-width" style="width: 100%;">
                                 <mat-label>Số điện thoại</mat-label>
-                                <input matInput [errorStateMatcher]="matcher" formControlName="SoDienThoai_ChiTiet">
+                                <input maxlength="10" matInput [errorStateMatcher]="matcher"
+                                    formControlName="SoDienThoai_ChiTiet">
                                 @if(SoDienThoai_ChiTiet?.errors?.['required']){
                                 <mat-error>Vui lòng nhập số điện thoại</mat-error>
                                 }
@@ -480,7 +482,8 @@
                         <div class="col-sm-12 col-md-4">
                             <mat-form-field class="example-full-width" style="width: 100%;">
                                 <mat-label>Email</mat-label>
-                                <input matInput [errorStateMatcher]="matcher" formControlName="Email_ChiTiet">
+                                <input maxlength="70" matInput [errorStateMatcher]="matcher"
+                                    formControlName="Email_ChiTiet">
                                 @if(Email_ChiTiet?.errors?.['required']){
                                 <mat-error>Vui lòng nhập email</mat-error>
                                 }
@@ -499,7 +502,8 @@
                         <div class="col-sm-12 col-md-4">
                             <mat-form-field class="example-full-width" style="width: 100%;">
                                 <mat-label>Địa chỉ</mat-label>
-                                <input matInput [errorStateMatcher]="matcher" formControlName="DiaChi_ChiTiet">
+                                <input maxlength="100" matInput [errorStateMatcher]="matcher"
+                                    formControlName="DiaChi_ChiTiet">
                                 @if (DiaChi_ChiTiet?.errors?.['required']) {
                                 <mat-error>Vui lòng nhập địa chỉ</mat-error>
                                 } @else if (DiaChi_ChiTiet?.errors?.['whitespace']) {
@@ -554,8 +558,8 @@
                         <div class="col-sm-12 col-md-4">
                             <mat-form-field class="example-full-width" style="width: 100%;">
                                 <mat-label>Mật khẩu</mat-label>
-                                <input [errorStateMatcher]="matcher" type="password" formControlName="MatKhauChiTiet"
-                                    matInput>
+                                <input maxlength="40" [errorStateMatcher]="matcher" type="password"
+                                    formControlName="MatKhauChiTiet" matInput>
                                 @if (MatKhauChiTiet?.errors?.['required']) {
                                 <mat-error>Vui lòng nhập mật khẩu</mat-error>
                                 } @else if (MatKhauChiTiet?.errors?.['whitespace']) {
