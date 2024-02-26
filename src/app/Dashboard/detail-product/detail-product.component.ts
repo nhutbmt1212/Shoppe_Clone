@@ -19,8 +19,10 @@ import { ToastrService } from 'ngx-toastr';
 })
 export class DetailProductComponent implements OnInit {
   MaSanPham: any;
-
+  ListAnhSanPham: any[] = [];
+  ListAnhSanPhamGioiHang: any[] = [];
   SanPham: any[] = [];
+  ListAnhDangHienThi: any[] = [];
   CartArray: any[] = [];
   CartStorage: any = {};
   MoTa: string = '';
@@ -33,6 +35,11 @@ export class DetailProductComponent implements OnInit {
   TenSanPham: string = '';
   MaSanPhamLimit: string = '';
   HinhAnhDauTien: any;
+  SoLuongDaFixed: number = 0;
+  IsActvate = true;
+  IsActivateAnother: number = 0;
+  index_Image: number = 0;
+  ThuTuAnhDaClick: number = 0;
   constructor(
     private activatedRoute: ActivatedRoute,
     private servicesSanPhamServices: ServiceSanPhamService,
@@ -41,14 +48,18 @@ export class DetailProductComponent implements OnInit {
     private toastr: ToastrService
 
   ) { }
+
+
+
+
   ngOnInit(): void {
+
+
     let EncodedString = this.activatedRoute.snapshot.paramMap.get('id');
     let decodedString: string = decodeURIComponent(EncodedString || '');
 
-    // Tách chuỗi đã giải mã bằng dấu cách
     let parts: string[] = decodedString.split(' ');
 
-    // Mã sản phẩm nằm ở vị trí thứ hai trong mảng
     this.MaSanPham = parts[1];
     if (isPlatformBrowser(this.platformId)) {
       const pathKey = 'path';
@@ -58,6 +69,19 @@ export class DetailProductComponent implements OnInit {
       };
       localStorage.setItem(pathKey, JSON.stringify(pathValue));
     }
+    this.servicesSanPhamServices.LayHinhAnhTheoMaSanPham(this.MaSanPham).subscribe((data: any[]) => {
+      this.ListAnhSanPham = data
+      for (let index = 0; index < 4; index++) {
+        if (this.ListAnhSanPham[index] !== undefined) {
+          this.ListAnhSanPhamGioiHang.push(this.ListAnhSanPham[index]);
+          // this.ListAnhDangHienThi.push(this.ListAnhSanPham[index]);
+        }
+
+      }
+    })
+
+
+
     this.servicesSanPhamServices
       .laySPTheoId(this.MaSanPham)
       .subscribe((data: any[]) => {
@@ -79,18 +103,62 @@ export class DetailProductComponent implements OnInit {
         });
       });
 
+    console.log(this.ListAnhSanPham);
 
 
   }
-
-  ThayDoiSoLuong() {
-    if (this.SoLuongDaChon < 1) {
-      this.SoLuongDaChon = 1;
-    } else if (this.SoLuongDaChon > this.SoLuong) {
-      this.SoLuongDaChon = this.SoLuong;
+  PrevImage() {
+    //giảm xuống 1 ảnh vào đây
+    if (this.index_Image === 0) {
+      return;
     }
-    console.log(this.SoLuongDaChon);
+    this.ListAnhSanPhamGioiHang = [];
+    this.index_Image--;
+    for (let index = this.index_Image; index < this.index_Image + 4; index++) {
+      if (this.ListAnhSanPham[index] !== null) {
+        this.ListAnhSanPhamGioiHang.push(this.ListAnhSanPham[index]);
+      }
+
+    }
+    this.HinhAnhDauTien = this.ListAnhSanPhamGioiHang[this.IsActivateAnother].TenFileAnh;
+
   }
+  NextImage() {
+    this.ListAnhSanPhamGioiHang = [];
+    this.index_Image++;
+    for (let index = this.index_Image; index < this.index_Image + 4; index++) {
+      if (this.ListAnhSanPham[index] !== undefined) {
+        this.ListAnhSanPhamGioiHang.push(this.ListAnhSanPham[index]);
+      }
+      else {
+        this.PrevImage();
+      }
+    }
+    this.HinhAnhDauTien = this.ListAnhSanPhamGioiHang[this.IsActivateAnother].TenFileAnh;
+
+  }
+  ChonAnhDePreviewing(index: number, MaHinhAnh: string) {
+    this.IsActvate = false;
+    this.IsActivateAnother = index;
+    this.HinhAnhDauTien = this.ListAnhSanPhamGioiHang[index].TenFileAnh;
+
+
+  }
+  ChonAnhDauTienDePreviewing(index: number, MaHinhAnh: string) {
+    this.IsActvate = true;
+    this.IsActivateAnother = 0;
+    this.HinhAnhDauTien = this.ListAnhSanPhamGioiHang[0].TenFileAnh;
+  }
+  ThayDoiSoLuong() {
+    setTimeout(() => {
+      if (this.SoLuongDaChon < 1) {
+        this.SoLuongDaChon = 1;
+      } else if (this.SoLuongDaChon > this.SoLuong) {
+        this.SoLuongDaChon = this.SoLuong;
+      }
+    }, 0);
+  }
+
 
   AddToCart() {
     if (isPlatformBrowser(this.platformId)) {

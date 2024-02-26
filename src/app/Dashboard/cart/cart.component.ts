@@ -87,6 +87,7 @@ export class CartComponent implements OnInit {
     }
   }
   ThayDoiSoLuong(index: number) {
+
     if (this.cartData[index].SoLuong === '' || this.cartData[index].SoLuong < 1 || isNaN(this.cartData[index].SoLuong)) {
       this.cartData[index].SoLuong = 1;
     }
@@ -102,6 +103,7 @@ export class CartComponent implements OnInit {
     }
     this.CapNhatTongTien();
   }
+
   CheckMotSanPham(index: number) {
 
     if (this.cartData[index].CheckBox === true) {

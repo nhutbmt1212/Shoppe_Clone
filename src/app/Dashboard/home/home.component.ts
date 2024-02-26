@@ -50,6 +50,8 @@ export class HomeComponent implements OnInit {
       this.totalPages = Math.ceil(this.SanPham.length / this.itemsPerPage);
       this.goToPage(1);
     })
+
+
   }
   get filteredItems() {
     if (this.searchTerm) {

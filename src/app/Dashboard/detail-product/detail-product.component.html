@@ -12,9 +12,31 @@
     <div class="container" style="background-color: white; padding: 15px;">
         <div class="row">
             <div class="col-lg-4">
-                <!-- <img src="assets/ImageProduct/imgProductDetail1.jpg"  alt=""> -->
                 <img [src]="'http://localhost:4000/images/' +HinhAnhDauTien" width="100%" alt="Hình ảnh" />
+                <div class="carousel d-flex justify-content-center mt-1">
+                    @if(ListAnhSanPham.length >4){
+                    <button class="btn_prev carousel-control-prev-icon" (click)="PrevImage()"></button>
 
+                    }
+                    @for (item of ListAnhSanPhamGioiHang; track $index) {
+                    @if($index ==0){
+                    <img [src]="'http://localhost:4000/images/'+item.TenFileAnh " class="img_carousel_previewing"
+                        [class]="{'borderImg' : IsActvate}" (click)="ChonAnhDauTienDePreviewing($index,item.MaHinhAnh)"
+                        alt="1" width="24%">
+                    }
+                    @else{
+                    <img [src]="'http://localhost:4000/images/'+item.TenFileAnh "
+                        (click)="ChonAnhDePreviewing($index,item.MaHinhAnh)"
+                        [class]="{'borderImg' : IsActivateAnother=== $index}" class="img_carousel_previewing" alt="1"
+                        width="24%" style="margin-left: 1.3%;">
+                    }
+                    }
+
+                    @if(ListAnhSanPham.length >4){
+
+                    <button class="btn_next carousel-control-next-icon" (click)="NextImage()"></button>
+                    }
+                </div>
             </div>
             <div class="col-lg-8">
                 <div class="title_product_detail">
@@ -85,6 +107,28 @@
                     <span class="text-secondary ">Vận chuyển</span>
                     <img src="https://deo.shopeemobile.com/shopee/shopee-pcmall-live-sg/productdetailspage/d9e992985b18d96aab90.png"
                         height="20" class="Fy4A_Q">
+
+                    <span class="font-weight-bolds">Miễn phí vận chuyển</span>
+                    <br>
+                    <br>
+                    <span class="text-secondary ">Vận chuyển</span>
+                    <img src="https://deo.shopeemobile.com/shopee/shopee-pcmall-live-sg/productdetailspage/d9e992985b18d96aab90.png"
+                        height="20" class="Fy4A_Q">
+
+                    <span class="font-weight-bolds">Vận chuyển tới Buôn Ma Thuột</span>
+                    <br>
+                    <br>
+                    <span class="text-secondary ">Phí vận chuyển</span>
+                    <img src="https://deo.shopeemobile.com/shopee/shopee-pcmall-live-sg/productdetailspage/d9e992985b18d96aab90.png"
+                        height="20" class="Fy4A_Q">
+
+                    <span class="font-weight-bolds">d43.000</span>
+                    <br>
+                    <br>
+                    <span class="text-secondary ">Vận chuyển</span>
+                    <img src="https://deo.shopeemobile.com/shopee/shopee-pcmall-live-sg/productdetailspage/d9e992985b18d96aab90.png"
+                        height="20" class="Fy4A_Q">
+
                     <span class="font-weight-bolds">Miễn phí vận chuyển</span>
 
                     <p class="text-secondary pt-2">Giảm giá: <span class="font-weight-bolds Fy4A_Q"
@@ -97,10 +141,11 @@
                             <div class="col-sm-2"> <span class="text-secondary text_sl">Số lượng</span>
                             </div>
                             <div class="col-sm-2">
-                                <input type="number" width="100px" [(ngModel)]="SoLuongDaChon"
-                                    (input)="ThayDoiSoLuong()" min="1" [max]="SoLuong"
-                                    class="form-control select_soluong">
+                                <input type="number" width="100px" [(ngModel)]="SoLuongDaChon" (blur)="ThayDoiSoLuong()"
+                                    min="1" [max]="SoLuong" class="form-control select_soluong">
                             </div>
+
+
                             <div class="col-sm-3"> <span class="text-secondary">{{SoLuong}} sản phẩm có sẵn</span>
                             </div>
                         </div>
@@ -132,7 +177,7 @@
                 src="https://down-vn.img.susercontent.com/file/b94257a4a46e08cbc131607802f331fa_tn" alt=""></div>
         <div class="col-lg-2">
             <div class="row">
-                <div class="row-sm-3 font-weight-bold"><b>binhcao86</b></div>
+                <div class="row-sm-3 font-weight-bold"><b>nhutbmt1212</b></div>
                 <div class="row-sm-3">Online 5 giờ trước</div>
                 <div class="row-sm-6">
                     <div class="row gx-1">

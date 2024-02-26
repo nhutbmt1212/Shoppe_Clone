@@ -210,6 +210,9 @@
             </div>
             }
         </div>
+        @if(filteredItems.length>0){
+
+
         <nav aria-label="..." class="d-flex justify-content-end ">
             <ul class="pagination">
                 <li class="page-item" [class.disabled]="currentPage === 1">
@@ -248,5 +251,6 @@
                         </li>
             </ul>
         </nav>
+        }
     </div>
 </div>
