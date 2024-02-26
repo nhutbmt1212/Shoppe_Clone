@@ -9,7 +9,6 @@ import { ToastrService } from 'ngx-toastr';
 import { ServiceSanPhamService } from '../../Services/service-san-pham.service';
 
 
-
 @Component({
   selector: 'app-cart',
   standalone: true,
@@ -90,8 +89,10 @@ export class CartComponent implements OnInit {
 
     if (this.cartData[index].SoLuong === '' || this.cartData[index].SoLuong < 1 || isNaN(this.cartData[index].SoLuong)) {
       this.cartData[index].SoLuong = 1;
+
     }
     this.cartData[index].TongTien = this.cartData[index].SoLuong * this.cartData[index].GiaDaGiam;
+
     if (isPlatformBrowser(this.platformId)) {
       const cartValueLocalStorage = localStorage.getItem('cart');
       if (cartValueLocalStorage) {

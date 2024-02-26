@@ -48,9 +48,6 @@ export class ServiceSanPhamService {
 
       }
     }
-
-
-
     return from(
       fetch('http://localhost:4000/sanpham').then((response) => {
         if (!response.ok) {

@@ -178,7 +178,7 @@
 
     <div class="container">
         <div id="total_card_product" style="margin-top: 10px; margin-bottom: 50px">
-            @for (sp of filteredItems; track $index) {
+            @for (sp of pagedItems; track $index) {
             <!-- <div class="product-card border bg-white" [routerLink]="'/detail/'+sp.MaSanPham"> -->
             <div class="product-card border bg-white" (click)="RedirectToDetal(sp.MaSanPham)">
 
@@ -210,7 +210,7 @@
             </div>
             }
         </div>
-        @if(filteredItems.length>0){
+        @if(pagedItems.length>0){
 
 
         <nav aria-label="..." class="d-flex justify-content-end ">

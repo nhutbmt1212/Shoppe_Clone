@@ -4,7 +4,7 @@ import { ServiceSanPhamService } from '../../Services/service-san-pham.service';
 import { isPlatformBrowser, CommonModule } from '@angular/common';
 import { encode } from 'punycode';
 import { ChangeDetectorRef } from '@angular/core';
-
+import { UserService } from '../../Services/ServicesUser/user.service';
 
 
 @Component({
@@ -15,6 +15,7 @@ import { ChangeDetectorRef } from '@angular/core';
   styleUrls: ['./home.component.css']
 })
 export class HomeComponent implements OnInit {
+  private _filteredItems: any[] = [];
   totalPages: number = 0;
   currentPage: number = 1;
   itemsPerPage: number = 18;
@@ -25,6 +26,7 @@ export class HomeComponent implements OnInit {
   constructor(private sanPhamServices: ServiceSanPhamService,
     @Inject(PLATFORM_ID) private platformId: Object,
     private router: Router,
+    private userServices: UserService,
 
 
   ) { }
@@ -38,33 +40,30 @@ export class HomeComponent implements OnInit {
       localStorage.setItem(pathKey, JSON.stringify(pathValue));
     }
 
+    this.fetchData();
+
+    this.userServices.currentStatus.subscribe(status => {
+      if (status) {
+        location.reload();
+      }
+    })
+  }
+
+  fetchData(): void {
     this.sanPhamServices.laySanPhamHome().subscribe((data: any[]) => {
       this.SanPham = data;
 
       for (let index = 0; index < data.length; index++) {
         this.sanPhamServices.LayHinhAnhTheoMaSanPhamLimit1(data[index].MaSanPham).subscribe((res: any[]) => {
           this.SanPham[index].HinhAnhSP = res[0].TenFileAnh;
-
         });
       }
       this.totalPages = Math.ceil(this.SanPham.length / this.itemsPerPage);
       this.goToPage(1);
+
     })
-
-
   }
-  get filteredItems() {
-    if (this.searchTerm) {
-      return this.pagedItems.filter(item =>
-        Object.values(item).some((val: any) =>
-          val.toString().toLowerCase().includes(this.searchTerm.toLowerCase())
-        )
-      );
-    }
 
-
-    return this.pagedItems;
-  }
 
   RedirectToDetal(MaSanPham: string) {
     let encodedString: string = encodeURIComponent(';q?ees3rs ' + MaSanPham + ' #@#%^d').toLocaleUpperCase();
