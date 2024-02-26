@@ -97,7 +97,8 @@
                             <div class="col-sm-2"> <span class="text-secondary text_sl">Số lượng</span>
                             </div>
                             <div class="col-sm-2">
-                                <input type="number" width="100px" [(ngModel)]="SoLuongDaChon" min="1" [max]="SoLuong"
+                                <input type="number" width="100px" [(ngModel)]="SoLuongDaChon"
+                                    (input)="ThayDoiSoLuong()" min="1" [max]="SoLuong"
                                     class="form-control select_soluong">
                             </div>
                             <div class="col-sm-3"> <span class="text-secondary">{{SoLuong}} sản phẩm có sẵn</span>

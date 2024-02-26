@@ -82,6 +82,16 @@ export class DetailProductComponent implements OnInit {
 
 
   }
+
+  ThayDoiSoLuong() {
+    if (this.SoLuongDaChon < 1) {
+      this.SoLuongDaChon = 1;
+    } else if (this.SoLuongDaChon > this.SoLuong) {
+      this.SoLuongDaChon = this.SoLuong;
+    }
+    console.log(this.SoLuongDaChon);
+  }
+
   AddToCart() {
     if (isPlatformBrowser(this.platformId)) {
       const token = localStorage.getItem('token');

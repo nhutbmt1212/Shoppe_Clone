@@ -1,20 +1,27 @@
 import { Component, OnInit, Inject, PLATFORM_ID } from '@angular/core';
 import { ActivatedRoute, RouterLink, Router } from '@angular/router';
 import { ServiceSanPhamService } from '../../Services/service-san-pham.service';
-import { isPlatformBrowser } from '@angular/common';
+import { isPlatformBrowser, CommonModule } from '@angular/common';
 import { encode } from 'punycode';
+import { ChangeDetectorRef } from '@angular/core';
+
 
 
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [RouterLink],
+  imports: [RouterLink, CommonModule],
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.css']
 })
 export class HomeComponent implements OnInit {
-
+  totalPages: number = 0;
+  currentPage: number = 1;
+  itemsPerPage: number = 18;
+  pagedItems: any[] = [];
   SanPham: any[] = [];
+  searchTerm: string = '';
+
   constructor(private sanPhamServices: ServiceSanPhamService,
     @Inject(PLATFORM_ID) private platformId: Object,
     private router: Router,
@@ -40,10 +47,33 @@ export class HomeComponent implements OnInit {
 
         });
       }
+      this.totalPages = Math.ceil(this.SanPham.length / this.itemsPerPage);
+      this.goToPage(1);
     })
   }
+  get filteredItems() {
+    if (this.searchTerm) {
+      return this.pagedItems.filter(item =>
+        Object.values(item).some((val: any) =>
+          val.toString().toLowerCase().includes(this.searchTerm.toLowerCase())
+        )
+      );
+    }
+
+
+    return this.pagedItems;
+  }
+
   RedirectToDetal(MaSanPham: string) {
     let encodedString: string = encodeURIComponent(';q?ees3rs ' + MaSanPham + ' #@#%^d').toLocaleUpperCase();
     this.router.navigate(['detail/' + encodedString]);
+  }
+  get pages(): number[] {
+    return Array.from({ length: Math.min(5, this.totalPages) }, (_, i) => i + 1);
+  }
+
+  goToPage(page: number) {
+    this.currentPage = page;
+    this.pagedItems = this.SanPham.slice((this.currentPage - 1) * this.itemsPerPage, this.currentPage * this.itemsPerPage);
   }
 }

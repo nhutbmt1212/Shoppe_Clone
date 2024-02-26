@@ -6,7 +6,7 @@ import { JwtHelperService } from '@auth0/angular-jwt';
 import { routes } from '../../app.routes';
 
 import { ToastrService } from 'ngx-toastr';
-
+import { ServiceSanPhamService } from '../../Services/service-san-pham.service';
 
 
 
@@ -26,7 +26,9 @@ export class CartComponent implements OnInit {
   valueLengthCart: number = 0;
   TongCongTienGioHang: number = 0;
   labelSoLuongThanhToan: number = 0;
-  constructor(@Inject(PLATFORM_ID) private platformId: Object, private toastr: ToastrService
+  constructor(@Inject(PLATFORM_ID) private platformId: Object,
+    private toastr: ToastrService,
+    private sanPhamServices: ServiceSanPhamService
   ) { }
   ngOnInit(): void {
     this.LayDataCart();
@@ -64,7 +66,15 @@ export class CartComponent implements OnInit {
             if (this.cartData[index].CheckBox === true) {
               this.labelSoLuongThanhToan++;
             }
+            this.sanPhamServices.LayHinhAnhTheoMaSanPhamLimit1(this.cartData[index].SanPham[0].MaSanPham).subscribe((res: any[]) => {
+              this.cartData[index].TenFileAnh = res[0].TenFileAnh
+
+
+            });
+
           }
+          console.log(this.cartData);
+
           this.valueLengthCart = this.cartData.length;
           this.CapNhatTongTien();
 

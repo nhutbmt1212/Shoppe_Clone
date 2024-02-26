@@ -178,7 +178,7 @@
 
     <div class="container">
         <div id="total_card_product" style="margin-top: 10px; margin-bottom: 50px">
-            @for (sp of SanPham; track $index) {
+            @for (sp of filteredItems; track $index) {
             <!-- <div class="product-card border bg-white" [routerLink]="'/detail/'+sp.MaSanPham"> -->
             <div class="product-card border bg-white" (click)="RedirectToDetal(sp.MaSanPham)">
 
@@ -210,19 +210,43 @@
             </div>
             }
         </div>
+        <nav aria-label="..." class="d-flex justify-content-end ">
+            <ul class="pagination">
+                <li class="page-item" [class.disabled]="currentPage === 1">
+                    <a class="page-link" (click)="goToPage(currentPage - 1)" tabindex="-1">Previous</a>
+                </li>
+                @if (currentPage > 3) {
+                <li class="page-item"><a class="page-link" (click)="goToPage(1)">1</a></li>
+                <li class="page-item"><span class="page-link">...</span></li>
+                }
 
-        <!-- <nav aria-label="Page navigation example">
-            <ul class="pagination justify-content-center">
-                <li class="page-item disabled">
-                    <a class="page-link">Previous</a>
-                </li>
-                <li class="page-item"><a class="page-link" href="#">1</a></li>
-                <li class="page-item"><a class="page-link" href="#">2</a></li>
-                <li class="page-item"><a class="page-link" href="#">3</a></li>
+                @if(currentPage >1){
                 <li class="page-item">
-                    <a class="page-link" href="#">Next</a>
+                    <a class="page-link" (click)="goToPage(currentPage - 1)">{{ currentPage - 1 }}</a>
                 </li>
+                }
+                @if(currentPage >0){
+                <li class="page-item" [class.active]="true">
+                    <a class="page-link" (click)="goToPage(currentPage)">{{ currentPage}}</a>
+                </li>
+                }
+                <!-- <li class="page-item" *ngFor="let i of pages; index as idx" [class.active]="currentPage === i">
+                    <a class="page-link" (click)="goToPage(i)">{{ i }}</a>
+                </li> -->
+
+                @if(currentPage < totalPages){ <li class="page-item">
+                    <a class="page-link" (click)="goToPage(currentPage + 1)">{{ currentPage + 1 }}</a>
+                    </li>
+                    }
+
+                    @if (currentPage < totalPages - 3) { <li class="page-item"><span class="page-link">...</span></li>
+                        <li class="page-item"><a class="page-link" (click)="goToPage(totalPages)">{{ totalPages }}</a>
+                        </li>
+                        }
+                        <li class="page-item" [class.disabled]="currentPage === totalPages">
+                            <a class="page-link" (click)="goToPage(currentPage + 1)">Next</a>
+                        </li>
             </ul>
-        </nav> -->
+        </nav>
     </div>
 </div>
