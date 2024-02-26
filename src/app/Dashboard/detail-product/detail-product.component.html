@@ -141,8 +141,9 @@
                             <div class="col-sm-2"> <span class="text-secondary text_sl">Số lượng</span>
                             </div>
                             <div class="col-sm-2">
-                                <input type="number" width="100px" [(ngModel)]="SoLuongDaChon" (blur)="ThayDoiSoLuong()"
-                                    min="1" [max]="SoLuong" class="form-control select_soluong">
+                                <input type="number" width="100px" [(ngModel)]="SoLuongDaChon"
+                                    (keyup)="ThayDoiSoLuong()" min="1" [max]="SoLuong"
+                                    class="form-control select_soluong">
                             </div>
 
 

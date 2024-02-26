@@ -25,6 +25,7 @@ export class CartComponent implements OnInit {
   valueLengthCart: number = 0;
   TongCongTienGioHang: number = 0;
   labelSoLuongThanhToan: number = 0;
+  keycart: string = ''
   constructor(@Inject(PLATFORM_ID) private platformId: Object,
     private toastr: ToastrService,
     private sanPhamServices: ServiceSanPhamService
@@ -43,11 +44,13 @@ export class CartComponent implements OnInit {
       }
       localStorage.setItem(pathKey, JSON.stringify(pathValue));
       // Lấy dữ liệu từ localStorage
-      const cart = localStorage.getItem('cart');
+
       const token = localStorage.getItem('token');
       const helper = new JwtHelperService();
       if (token) {
         let decode = helper.decodeToken(token);
+        this.keycart = 'key' + decode.results[0].MaNguoiDung;
+        const cart = localStorage.getItem(this.keycart);
 
         if (cart !== null) {
           //chỉ lọc những cart nào có cùng mã người dùng
@@ -61,7 +64,7 @@ export class CartComponent implements OnInit {
 
           for (let index = 0; index < this.cartData.length; index++) {
             this.cartData[index].GiaDaGiam = this.cartData[index].SanPham[0].DonGia - (this.cartData[index].SanPham[0].DonGia * this.cartData[index].SanPham[0].GiamGia) / 100;
-            this.cartData[index].TongTien = this.cartData[index].GiaDaGiam * this.cartData[index].SoLuong;
+            this.cartData[index].TongTien = (this.cartData[index].GiaDaGiam * this.cartData[index].SoLuong).toFixed(2);
             if (this.cartData[index].CheckBox === true) {
               this.labelSoLuongThanhToan++;
             }
@@ -84,6 +87,12 @@ export class CartComponent implements OnInit {
 
 
     }
+    console.log(this.cartData);
+
+  }
+  KeyUpValidateSoLuong(index: number) {
+    // console.log(this.cartData.);
+
   }
   ThayDoiSoLuong(index: number) {
 
@@ -91,14 +100,17 @@ export class CartComponent implements OnInit {
       this.cartData[index].SoLuong = 1;
 
     }
+    if (this.cartData[index].SoLuong > this.cartData[index].SanPham[0].SoLuong) {
+      this.cartData[index].SoLuong = this.cartData[index].SanPham[0].SoLuong;
+    }
     this.cartData[index].TongTien = this.cartData[index].SoLuong * this.cartData[index].GiaDaGiam;
 
     if (isPlatformBrowser(this.platformId)) {
-      const cartValueLocalStorage = localStorage.getItem('cart');
+      const cartValueLocalStorage = localStorage.getItem(this.keycart);
       if (cartValueLocalStorage) {
         let parseCartValueLocalStorage = JSON.parse(cartValueLocalStorage);
         parseCartValueLocalStorage[index].SoLuong = this.cartData[index].SoLuong;
-        localStorage.setItem('cart', JSON.stringify(parseCartValueLocalStorage));
+        localStorage.setItem(this.keycart, JSON.stringify(parseCartValueLocalStorage));
 
       }
     }
@@ -118,7 +130,7 @@ export class CartComponent implements OnInit {
       this.labelSoLuongThanhToan += 1;
     }
 
-    localStorage.setItem('cart', JSON.stringify(this.cartData));
+    localStorage.setItem(this.keycart, JSON.stringify(this.cartData));
     this.CapNhatTongTien();
 
 
@@ -143,7 +155,7 @@ export class CartComponent implements OnInit {
       this.labelSoLuongThanhToan = this.cartData.length;
 
     }
-    localStorage.setItem('cart', JSON.stringify(this.cartData));
+    localStorage.setItem(this.keycart, JSON.stringify(this.cartData));
     this.CapNhatTongTien();
   }
 
@@ -151,7 +163,7 @@ export class CartComponent implements OnInit {
     this.TongCongTienGioHang = 0;
     for (let index = 0; index < this.cartData.length; index++) {
       if (this.cartData[index].CheckBox) {
-        this.TongCongTienGioHang += this.cartData[index].SoLuong * this.cartData[index].GiaDaGiam;
+        this.TongCongTienGioHang += parseFloat((this.cartData[index].SoLuong * this.cartData[index].GiaDaGiam).toFixed(2));
 
       }
 
@@ -168,7 +180,7 @@ export class CartComponent implements OnInit {
         let found = false;
         let decode = helper.decodeToken(token);
         let MaNguoiDungToken = decode.results[0].MaNguoiDung;
-        const cart = localStorage.getItem('cart');
+        const cart = localStorage.getItem(this.keycart);
 
 
         //nếu cart có data
@@ -191,7 +203,7 @@ export class CartComponent implements OnInit {
           } else {
             // Cập nhật giỏ hàng trong localstorage
             this.toastr.info('Xóa sản phẩm khỏi giỏ hàng thành công', 'Xóa giỏ hàng');
-            localStorage.setItem('cart', JSON.stringify(cartValue));
+            localStorage.setItem(this.keycart, JSON.stringify(cartValue));
             this.LayDataCart();
 
           }

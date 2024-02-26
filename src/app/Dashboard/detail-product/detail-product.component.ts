@@ -168,7 +168,9 @@ export class DetailProductComponent implements OnInit {
 
       if (token) {
         const decodeToken = helper.decodeToken(token);
-        const cart = localStorage.getItem('cart');
+        let keycart = 'key' + decodeToken.results[0].MaNguoiDung;
+
+        const cart = localStorage.getItem(keycart);
         this.CartStorage = {
           CheckBox: false,
           SoLuong: this.SoLuongDaChon,
@@ -212,18 +214,15 @@ export class DetailProductComponent implements OnInit {
             //chỉ thêm dữ liệu mới vào localstorage
             //lấy data từ localstorage về, push vào mảng và đẩy lại vào local
             cartValueParsed.push(this.CartStorage);
-
-
-
           }
           this.toastr.success('Thêm sản phẩm vào giỏ hàng thành công.');
-          localStorage.setItem('cart', JSON.stringify(cartValueParsed));
+          localStorage.setItem(keycart, JSON.stringify(cartValueParsed));
         }
         //done nếu không có sản phẩm trong cart
         else {
           this.toastr.success('Thêm sản phẩm vào giỏ hàng thành công.');
 
-          localStorage.setItem('cart', JSON.stringify(this.cartValueArr));
+          localStorage.setItem(keycart, JSON.stringify(this.cartValueArr));
         }
         this.router.navigate(['/cart']);
       }

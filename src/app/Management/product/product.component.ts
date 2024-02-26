@@ -302,18 +302,52 @@ export class ProductComponent implements OnInit {
   inputFileAnh(event: any) {
     const files = event.target.files;
     for (let i = 0; i < files.length; i++) {
-      const extension = files[i].name.split('.').pop().toLowerCase();
+      const file = files[i];
+      const extension = file.name.split('.').pop().toLowerCase();
       const imageExtensions = ['jpg', 'jpeg', 'png', 'gif', 'bmp'];
+
+      const fileSize = file.size;
+      const maxFileSize = 10000000;
+
+      if (fileSize > maxFileSize) {
+        this.toastr.warning('Kích thước tệp quá lớn', 'Thêm ảnh');
+        event.target.value = null;
+        this.ThemSanPhamForm.controls['HinhAnhThem'].setErrors({ 'require': true });
+        return;
+      }
+
       if (!imageExtensions.includes(extension)) {
         this.toastr.warning('Vui lòng chọn tệp ảnh', 'Thêm ảnh');
         event.target.value = null; // Xóa tất cả các tệp đã chọn
         this.ThemSanPhamForm.controls['HinhAnhThem'].setErrors({ 'require': true });
         return;
       }
+
+      let reader = new FileReader();
+      reader.onloadend = (e) => {
+        if (e.target && e.target.result instanceof ArrayBuffer) {
+          let arr = (new Uint8Array(e.target.result)).subarray(0, 4);
+          let header = "";
+          for (let i = 0; i < arr.length; i++) {
+            header += arr[i].toString(16);
+          }
+          // Check the signature against known image file signatures
+          if (!["89504e47", "ffd8ffe0", "47494638"].includes(header)) {
+            this.toastr.warning('Tệp không phải là ảnh', 'Thêm ảnh');
+            event.target.value = null; // Xóa tất cả các tệp đã chọn
+            this.ThemSanPhamForm.controls['HinhAnhThem'].setErrors({ 'require': true });
+            return;
+          }
+        }
+      };
+      reader.readAsArrayBuffer(file);
+
     }
     this.selectedFile = files;
 
   }
+
+
 
 
   ThayDoiMaRandom() {
@@ -486,8 +520,9 @@ export class ProductComponent implements OnInit {
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`);
     } else {
-      this.getDataSanPhamVaDanhMuc();
+
       this.toastr.success('Sửa sản phẩm thành công', 'Sửa sản phẩm')
+      this.getDataSanPhamVaDanhMuc();
       console.log("Update product successfully");
     }
   }
@@ -499,17 +534,24 @@ export class ProductComponent implements OnInit {
     });
   }
   async XoaHinhAnh(index: number) {
-    const MaHinhAnh = this.imageUrlEdit[index].MaHinhAnh;
-    this.imageUrlEdit.splice(index, 1);
-    const response = await fetch(`http://localhost:4000/hinhanh/${MaHinhAnh}`, {
-      method: 'DELETE',
-    });
-    if (!response.ok) {
-      throw new Error(`Remove image error! status: ${response.status}`);
-    } else {
-      console.log(`Remove successfully`);
-      this.getDataSanPhamVaDanhMuc();
+    if (this.imageUrlEdit.length > 1) {
+      const MaHinhAnh = this.imageUrlEdit[index].MaHinhAnh;
+      this.imageUrlEdit.splice(index, 1);
+      const response = await fetch(`http://localhost:4000/hinhanh/${MaHinhAnh}`, {
+        method: 'DELETE',
+      });
+      if (!response.ok) {
+        throw new Error(`Remove image error! status: ${response.status}`);
+      } else {
+        console.log(`Remove successfully`);
+        this.getDataSanPhamVaDanhMuc();
+      }
     }
+    else {
+      this.toastr.warning("Không thể xóa hết ảnh của một sản phẩm", "Thông báo");
+    }
+
+
   }
 
   async UpLoadMultipleImg_Edit(event: any, MaSP: string) {
@@ -521,13 +563,40 @@ export class ProductComponent implements OnInit {
       const imageExtensions = ['jpg', 'jpeg', 'png', 'gif', 'bmp'];
       if (extension && !imageExtensions.includes(extension)) {
         this.toastr.warning('Vui lòng chọn tệp ảnh', 'Sửa ảnh');
-
         event.target.value = null; // Xóa tất cả các tệp đã chọn
         this.SuaSanPhamForm.controls['HinhAnhSua'].setErrors({ 'require': true });
+        return;
+      }
+      let reader = new FileReader();
+      const fileReading = new Promise<void>((resolve, reject) => {
+        reader.onloadend = (e) => {
+          if (e.target && e.target.result instanceof ArrayBuffer) {
+            let arr = (new Uint8Array(e.target.result)).subarray(0, 4);
+            let header = "";
+            for (let i = 0; i < arr.length; i++) {
+              header += arr[i].toString(16);
+            }
+            // Check the signature against known image file signatures
+            if (!["89504e47", "ffd8ffe0", "47494638"].includes(header)) {
+              this.toastr.warning('Nội dung của file không phải là file ảnh', 'Thêm ảnh');
+              event.target.value = null; // Xóa tất cả các tệp đã chọn
+              this.SuaSanPhamForm.controls['HinhAnhSua'].setErrors({ 'require': true });
+              reject();
+            } else {
+              resolve();
+            }
+          }
+        };
+      });
 
+      reader.readAsArrayBuffer(element);
+      try {
+        await fileReading;
+      } catch (error) {
         return;
       }
       formdata.append('files', element);
+      console.log(element);
     }
     const formData = new FormData();
     for (let i = 0; i < files.length; i++) {

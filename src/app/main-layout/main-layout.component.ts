@@ -281,12 +281,12 @@ export class MainLayoutComponent implements OnInit {
           this.TotalQuantityCart = 0;
           const helper = new JwtHelperService();
           const token = localStorage.getItem('token');
-          const cart = localStorage.getItem('cart');
 
           if (token) {
             const decodedToken = helper.decodeToken(token);
             this.NguoiDung = decodedToken.results[0];
-            console.log(this.NguoiDung);
+            const cart = localStorage.getItem('key' + decodedToken.results[0].MaNguoiDung);
+            console.log(cart);
 
             if (cart && this.NguoiDung.MaNguoiDung) {
               let cartLength = JSON.parse(cart);

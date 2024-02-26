@@ -376,7 +376,7 @@
     <div class="modal fade" id="editModal">
         <div class="modal-dialog modal-xl">
             <div class="modal-content">
-                <form (submit)="ExecSuaSanPham()" [formGroup]="SuaSanPhamForm">
+                <form [formGroup]="SuaSanPhamForm">
                     <!-- Modal Header -->
                     <div class="modal-header">
                         <h4 class="modal-title">Sửa sản phẩm</h4>
@@ -586,7 +586,7 @@
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
                             Hủy
                         </button>
-                        <button type="submit" class="btn btn-success" data-bs-dismiss="modal"
+                        <button type="submit" class="btn btn-success" (click)="ExecSuaSanPham()" data-bs-dismiss="modal"
                             [disabled]="SuaSanPhamForm.invalid">
                             Sửa sản phẩm
                         </button>

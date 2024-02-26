@@ -59,7 +59,8 @@
                             class="text-muted">đ{{sp.SanPham[0].DonGia}}</del></span><b>₫{{sp.GiaDaGiam}}</b>
                 </div>
                 <input type="number" min="1" [max]="sp.SanPham[0].SoLuong" [(ngModel)]="sp.SoLuong"
-                    (input)="ThayDoiSoLuong($index)" class="form-control" style="width: 90px;">
+                    (change)="ThayDoiSoLuong($index)" (keyup)="ThayDoiSoLuong($index)" class="form-control"
+                    style="width: 90px;">
 
                 <div class="cart-col cart-col-subtotal text-danger">
                     ₫{{sp.TongTien}}

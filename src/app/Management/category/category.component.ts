@@ -93,7 +93,6 @@ export class CategoryComponent implements OnInit {
 
     ]),
     HinhAnhSua: new FormControl('', [
-
     ]),
   });
 
@@ -169,7 +168,24 @@ export class CategoryComponent implements OnInit {
       this.ThemDanhMucForm.controls['HinhAnhThem'].setErrors({ 'require': true });
       return;
     }
-
+    let reader = new FileReader();
+    reader.onloadend = (e) => {
+      if (e.target && e.target.result instanceof ArrayBuffer) {
+        let arr = (new Uint8Array(e.target.result)).subarray(0, 4);
+        let header = "";
+        for (let i = 0; i < arr.length; i++) {
+          header += arr[i].toString(16);
+        }
+        // Check the signature against known image file signatures
+        if (!["89504e47", "ffd8ffe0", "47494638"].includes(header)) {
+          this.toastr.warning('Tệp không phải là ảnh', 'Thêm ảnh');
+          event.target.value = null; // Xóa tất cả các tệp đã chọn
+          this.ThemDanhMucForm.controls['HinhAnhThem'].setErrors({ 'require': true });
+          return;
+        }
+      }
+    };
+    reader.readAsArrayBuffer(file);
     this.selectedFile = file;
   }
 
@@ -285,8 +301,28 @@ export class CategoryComponent implements OnInit {
       this.ThemDanhMucForm.controls['HinhAnhThem'].setErrors({ 'require': true });
       return;
     }
+    let reader = new FileReader();
+    reader.onloadend = (e) => {
+      if (e.target && e.target.result instanceof ArrayBuffer) {
+        let arr = (new Uint8Array(e.target.result)).subarray(0, 4);
+        let header = "";
+        for (let i = 0; i < arr.length; i++) {
+          header += arr[i].toString(16);
+        }
+        // Check the signature against known image file signatures
+        if (!["89504e47", "ffd8ffe0", "47494638"].includes(header)) {
+          this.toastr.warning('Tệp không phải là ảnh', 'Thêm ảnh');
+          event.target.value = null; // Xóa tất cả các tệp đã chọn
+          // this.ThemDanhMucForm.controls['HinhAnhThem'].setErrors({ 'require': true });
+          return;
+        }
+      }
+    };
+    reader.readAsArrayBuffer(file);
 
     this.selectedFileSua = file;
+    console.log(file);
+
   }
 
   XoaDanhMuc(MaDanhMuc: string) {
