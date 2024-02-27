@@ -172,11 +172,40 @@
 
 </div>
 <div class="container-fluid bg-secondly">
-    <div class="container mt-4 bg-white border-bottom border-4 border-danger position-sticky suggested_today">
+    <div class="container mt-4 bg-white border-bottom border-4 border-danger position-sticky suggested_today"
+        style="z-index: 2;">
         <p class="text-center text-danger p-1 pt-3 fw-bold">GỢI Ý HÔM NAY</p>
     </div>
 
     <div class="container">
+        <div class="filter_sp mt-3">
+            <div class="row" style="position: relative; z-index: 1;">
+                <div class="col-12 col-md-1 d-flex justify-content-center">
+
+
+                </div>
+                <div class="col-12 col-md-3 d-flex justify-content-center">
+                    <mat-form-field class="example-full-width" style="width: 90%;">
+                        <mat-label>Tìm kiếm theo tên</mat-label>
+                        <input matInput placeholder="Tên sản phẩm" [(ngModel)]="searchTerm" (keyup)="search()">
+                    </mat-form-field>
+
+                </div>
+                <div class="col-12 col-md-3 d-flex justify-content-center">
+                    <mat-form-field style="width: 90%;">
+                        <mat-label>Tìm kiếm theo giá</mat-label>
+                        <mat-select (ngModelChange)="delayedSearch()" [(ngModel)]="selectedPriceRange">
+                            <mat-option [value]="null">Không</mat-option>
+                            <mat-option *ngFor="let gc of giaCa" [value]="gc">đ{{gc.GiaMin}} -
+                                đ{{gc.GiaMax}}</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+
+
+
+            </div>
+        </div>
         <div id="total_card_product" style="margin-top: 10px; margin-bottom: 50px">
             @for (sp of pagedItems; track $index) {
             <!-- <div class="product-card border bg-white" [routerLink]="'/detail/'+sp.MaSanPham"> -->
@@ -213,7 +242,7 @@
         @if(pagedItems.length>0){
 
 
-        <nav aria-label="..." class="d-flex justify-content-end ">
+        <nav aria-label="..." class="d-flex justify-content-end " style="position: relative; z-index: 1;">
             <ul class="pagination">
                 <li class="page-item" [class.disabled]="currentPage === 1">
                     <a class="page-link" (click)="goToPage(currentPage - 1)" tabindex="-1">Previous</a>

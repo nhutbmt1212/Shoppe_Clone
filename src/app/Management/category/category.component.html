@@ -32,6 +32,9 @@
                             @if(TenDanhMucThem?.errors?.['pattern']){
                             <small class="text-danger">Tên danh mục không chứa dấu hoặc kí tự đặc biệt</small>
                             }
+                            @else if(TenDanhMucThem?.errors?.['whitespace']){
+                            <small class="text-danger">Tên danh mục không hợp lệ</small>
+                            }
 
                             }
                         </div>
@@ -56,7 +59,9 @@
                             <small class="text-danger">Mô tả quá ít</small>
                             <br>
                             }
-
+                            @else if(MoTaThem?.errors?.['whitespace']){
+                            <small class="text-danger">Mô tả không hợp lệ</small>
+                            }
                             }
                         </div>
 
@@ -224,7 +229,9 @@
                                 @if(TenDanhMucSua?.errors?.['pattern']){
                                 <small class="text-danger">Tên danh mục không chứa dấu hoặc kí tự đặc biệt</small>
                                 }
-
+                                @else if(TenDanhMucSua?.errors?.['whitespace']){
+                                <small class="text-danger">Tên danh mục không hợp lệ</small>
+                                }
                                 }
                             </div>
                             <div class="col-sm-4">
@@ -251,7 +258,9 @@
                                 <small class="text-danger">Mô tả quá ít</small>
                                 <br>
                                 }
-
+                                @else if(MoTaSua?.errors?.['whitespace']){
+                                <small class="text-danger">Mô tả không hợp lệ</small>
+                                }
                                 }
                             </div>
 

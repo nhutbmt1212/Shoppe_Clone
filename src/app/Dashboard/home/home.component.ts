@@ -5,16 +5,27 @@ import { isPlatformBrowser, CommonModule } from '@angular/common';
 import { encode } from 'punycode';
 import { ChangeDetectorRef } from '@angular/core';
 import { UserService } from '../../Services/ServicesUser/user.service';
-
+import { MatInputModule } from '@angular/material/input';
+import { MatFormFieldModule } from '@angular/material/form-field'
+import { MatSelectModule } from '@angular/material/select';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [RouterLink, CommonModule],
+  imports: [RouterLink, CommonModule, MatInputModule, MatSelectModule,
+    MatFormFieldModule, FormsModule
+  ],
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.css']
 })
 export class HomeComponent implements OnInit {
+  giaCa = [
+    { id: 1, GiaMin: 0, GiaMax: 1000000 },
+    { id: 2, GiaMin: 1000000, GiaMax: 5000000 },
+    { id: 3, GiaMin: 5000000, GiaMax: 500000000 },
+  ];
+
   private _filteredItems: any[] = [];
   totalPages: number = 0;
   currentPage: number = 1;
@@ -22,6 +33,8 @@ export class HomeComponent implements OnInit {
   pagedItems: any[] = [];
   SanPham: any[] = [];
   searchTerm: string = '';
+  selectedPriceRange: any; // Khai báo biến này để lưu giá trị được chọn
+  selectedPriceRanges: any[] = []; // Khai báo một mảng để lưu trữ tất cả các lựa chọn
 
   constructor(private sanPhamServices: ServiceSanPhamService,
     @Inject(PLATFORM_ID) private platformId: Object,
@@ -29,7 +42,8 @@ export class HomeComponent implements OnInit {
     private userServices: UserService,
 
 
-  ) { }
+  ) {
+  }
   ngOnInit(): void {
     if (isPlatformBrowser(this.platformId)) {
       const pathKey = 'path';
@@ -77,4 +91,26 @@ export class HomeComponent implements OnInit {
     this.currentPage = page;
     this.pagedItems = this.SanPham.slice((this.currentPage - 1) * this.itemsPerPage, this.currentPage * this.itemsPerPage);
   }
+  delayedSearch() {
+    setTimeout(() => {
+      this.search();
+    }, 0);
+  }
+  search(): void {
+    let filteredProducts = [...this.SanPham]; // Create a new copy of SanPham
+
+    if (this.searchTerm) {
+      filteredProducts = filteredProducts.filter(sp => sp.TenSanPham.toLowerCase().includes(this.searchTerm.toLowerCase()));
+    }
+
+    if (this.selectedPriceRange) {
+      filteredProducts = filteredProducts.filter(sp => sp.DonGia >= this.selectedPriceRange.GiaMin && sp.DonGia <= this.selectedPriceRange.GiaMax);
+    }
+
+    this.totalPages = Math.ceil(filteredProducts.length / this.itemsPerPage);
+    this.goToPage(1);
+    this.pagedItems = filteredProducts.slice(0, this.itemsPerPage);
+  }
+
+
 }

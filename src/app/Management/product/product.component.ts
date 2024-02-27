@@ -1,5 +1,5 @@
 import { AfterViewInit, Component, OnInit, Inject, PLATFORM_ID, ElementRef, ViewChild, Input } from '@angular/core';
-import { FormsModule, Validators } from '@angular/forms';
+import { FormsModule, ValidatorFn, Validators } from '@angular/forms';
 import { ServiceSanPhamService } from '../../Services/service-san-pham.service';
 import { DanhMucService } from '../../Services/servicesDanhMuc/danh-muc.service';
 import { RouterLink, ActivatedRoute, Router } from '@angular/router';
@@ -63,6 +63,7 @@ export class ProductComponent implements OnInit {
       Validators.required,
       Validators.minLength(4),
       Validators.pattern(/^[^\d~`!@#$%\^&*()_+=\-\[\]\\';,/{}|\\":<>\?]*$/),
+      this.noWhitespaceValidator(),
 
     ]),
     SoLuongThem: new FormControl('', [
@@ -73,6 +74,7 @@ export class ProductComponent implements OnInit {
       Validators.required,
       Validators.minLength(2),
       Validators.pattern(/^[^\d~`!@#$%\^&*()_+=\-\[\]\\';,/{}|\\":<>\?]*$/),
+      this.noWhitespaceValidator(),
     ]),
     DonGiaThem: new FormControl('', [
       Validators.required,
@@ -82,7 +84,7 @@ export class ProductComponent implements OnInit {
       Validators.required,
       Validators.minLength(4),
       Validators.pattern(/^[^\d~`!@#$%\^&*()_+=\-\[\]\\';,/{}|\\":<>\?]*$/),
-
+      this.noWhitespaceValidator(),
 
     ]),
     GiamGiaThem: new FormControl('', [
@@ -93,6 +95,7 @@ export class ProductComponent implements OnInit {
     MoTaThem: new FormControl('', [
       Validators.required,
       Validators.minLength(4),
+      this.noWhitespaceValidator(),
     ]),
     HinhAnhThem: new FormControl('', [
       Validators.required,
@@ -101,6 +104,12 @@ export class ProductComponent implements OnInit {
 
 
   });
+  noWhitespaceValidator(): ValidatorFn {
+    return (control: AbstractControl): { [key: string]: any } | null => {
+      const isWhitespace = (control.value || '').trim().length === 0;
+      return !isWhitespace ? null : { 'whitespace': true };
+    }
+  }
   get TenSanPhamThem() {
     return this.ThemSanPhamForm.get('TenSanPhamThem');
   }
@@ -139,7 +148,7 @@ export class ProductComponent implements OnInit {
       Validators.required,
       Validators.minLength(4),
       Validators.pattern(/^[^\d~`!@#$%\^&*()_+=\-\[\]\\';,/{}|\\":<>\?]*$/),
-
+      this.noWhitespaceValidator(),
     ]),
     SoLuongSua: new FormControl('', [
       Validators.required,
@@ -149,6 +158,7 @@ export class ProductComponent implements OnInit {
       Validators.required,
       Validators.minLength(2),
       Validators.pattern(/^[^\d~`!@#$%\^&*()_+=\-\[\]\\';,/{}|\\":<>\?]*$/),
+      this.noWhitespaceValidator(),
     ]),
     DonGiaSua: new FormControl('', [
       Validators.required,
@@ -158,7 +168,7 @@ export class ProductComponent implements OnInit {
       Validators.required,
       Validators.minLength(4),
       Validators.pattern(/^[^\d~`!@#$%\^&*()_+=\-\[\]\\';,/{}|\\":<>\?]*$/),
-
+      this.noWhitespaceValidator(),
 
     ]),
     GiamGiaSua: new FormControl('', [
@@ -169,6 +179,7 @@ export class ProductComponent implements OnInit {
     MoTaSua: new FormControl('', [
       Validators.required,
       Validators.minLength(4),
+      this.noWhitespaceValidator(),
     ]),
 
 
@@ -384,16 +395,16 @@ export class ProductComponent implements OnInit {
 
           const newProduct = {
             MaSanPham: this.ThemSanPhamForm.value.MaSanPhamThem,
-            TenSanPham: this.ThemSanPhamForm.value.TenSanPhamThem,
+            TenSanPham: this.ThemSanPhamForm.value.TenSanPhamThem?.trim(),
             NgayThem: NgayGioConvert,
             MaDanhMuc: this.ThemSanPhamForm.get('MaDanhMucThem')?.value,
             DonGia: this.ThemSanPhamForm.value.DonGiaThem,
             SoLuong: this.ThemSanPhamForm.value.SoLuongThem,
-            DonViTinh: this.ThemSanPhamForm.value.DonViTinhThem,
-            Hang: this.ThemSanPhamForm.value.HangThem,
+            DonViTinh: this.ThemSanPhamForm.value.DonViTinhThem?.trim(),
+            Hang: this.ThemSanPhamForm.value.HangThem?.trim(),
             TinhTrang: 'Còn Hàng',
             GiamGia: this.ThemSanPhamForm.value.GiamGiaThem,
-            MoTa: this.ThemSanPhamForm.value.MoTaThem,
+            MoTa: this.ThemSanPhamForm.value.MoTaThem?.trim(),
             MaNguoiDung: decode.results[0].MaNguoiDung,
 
           };
@@ -496,14 +507,14 @@ export class ProductComponent implements OnInit {
   async ExecSuaSanPham() {
     let updateProduct = {
       MaSanPham: this.SuaSanPhamForm.value.MaSanPhamSua,
-      TenSanPham: this.SuaSanPhamForm.value.TenSanPhamSua,
+      TenSanPham: this.SuaSanPhamForm.value.TenSanPhamSua?.trim(),
       SoLuong: this.SuaSanPhamForm.value.SoLuongSua,
       DonGia: this.SuaSanPhamForm.value.DonGiaSua,
-      DonViTinh: this.SuaSanPhamForm.value.DonViTinhSua,
+      DonViTinh: this.SuaSanPhamForm.value.DonViTinhSua?.trim(),
       MaDanhMuc: this.SuaSanPhamForm.value.MaDanhMucSua,
-      Hang: this.SuaSanPhamForm.value.HangSua,
+      Hang: this.SuaSanPhamForm.value.HangSua?.trim(),
       GiamGia: this.SuaSanPhamForm.value.GiamGiaSua,
-      MoTa: this.SuaSanPhamForm.value.MoTaSua,
+      MoTa: this.SuaSanPhamForm.value.MoTaSua?.trim(),
       MaNguoiDung: this.SuaSanPhamForm.value.MaNguoiDungSua,
       NgayThem: this.SuaSanPhamForm.value.NgayThemSua,
       TinhTrang: this.SuaSanPhamForm.value.TinhTrangSua

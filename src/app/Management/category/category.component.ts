@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormGroup, FormsModule, ReactiveFormsModule, FormControl, Validators, AbstractControl } from '@angular/forms';
+import { FormGroup, FormsModule, ReactiveFormsModule, FormControl, Validators, AbstractControl, ValidatorFn } from '@angular/forms';
 import { DanhMucService } from '../../Services/servicesDanhMuc/danh-muc.service';
 import { ServiceSanPhamService } from '../../Services/service-san-pham.service';
 import { ToastrService } from 'ngx-toastr';
@@ -30,6 +30,8 @@ export class CategoryComponent implements OnInit {
       Validators.required,
       Validators.minLength(4),
       Validators.pattern(/^[^\d~`!@#$%\^&*()_+=\-\[\]\\';,/{}|\\":<>\?]*$/),
+      this.noWhitespaceValidator(),
+
 
     ]),
     NgayThemThem: new FormControl('',
@@ -42,6 +44,7 @@ export class CategoryComponent implements OnInit {
     MoTaThem: new FormControl('', [
       Validators.required,
       Validators.minLength(4),
+      this.noWhitespaceValidator(),
     ]),
     HinhAnhThem: new FormControl('', [
       Validators.required,
@@ -51,6 +54,12 @@ export class CategoryComponent implements OnInit {
 
 
   });
+  noWhitespaceValidator(): ValidatorFn {
+    return (control: AbstractControl): { [key: string]: any } | null => {
+      const isWhitespace = (control.value || '').trim().length === 0;
+      return !isWhitespace ? null : { 'whitespace': true };
+    }
+  }
   get MaDanhMucThem() {
     return this.ThemDanhMucForm.get('MaDanhMucThem');
   }
@@ -78,6 +87,8 @@ export class CategoryComponent implements OnInit {
       Validators.required,
       Validators.minLength(4),
       Validators.pattern(/^[^\d~`!@#$%\^&*()_+=\-\[\]\\';,/{}|\\":<>\?]*$/),
+      this.noWhitespaceValidator(),
+
 
     ]),
     NgayThemSua: new FormControl('', [
@@ -90,6 +101,8 @@ export class CategoryComponent implements OnInit {
     MoTaSua: new FormControl('', [
       Validators.required,
       Validators.minLength(4),
+      this.noWhitespaceValidator(),
+
 
     ]),
     HinhAnhSua: new FormControl('', [
@@ -200,10 +213,10 @@ export class CategoryComponent implements OnInit {
       const formData = new FormData();
       formData.append('file', this.selectedFile);
       formData.append('MaDanhMuc', this.ThemDanhMucForm.value.MaDanhMucThem ?? '');
-      formData.append('TenDanhMuc', this.ThemDanhMucForm.value.TenDanhMucThem ?? '');
+      formData.append('TenDanhMuc', this.ThemDanhMucForm.value.TenDanhMucThem?.trim() ?? '');
       formData.append('NgayThem', this.ThemDanhMucForm.value.NgayThemThem ?? '');
       formData.append('TinhTrang', this.ThemDanhMucForm.value.TinhTrangThem ?? '');
-      formData.append('MoTa', this.ThemDanhMucForm.value.MoTaThem ?? '');
+      formData.append('MoTa', this.ThemDanhMucForm.value.MoTaThem?.trim() ?? '');
 
       await fetch('http://localhost:4000/danhmuc', {
         method: 'POST',
@@ -258,10 +271,10 @@ export class CategoryComponent implements OnInit {
     if (this.SuaDanhMucForm) {
       const formData = new FormData();
       formData.append('MaDanhMuc', this.SuaDanhMucForm.value.MaDanhMucSua ?? '');
-      formData.append('TenDanhMuc', this.SuaDanhMucForm.value.TenDanhMucSua ?? '');
+      formData.append('TenDanhMuc', this.SuaDanhMucForm.value.TenDanhMucSua?.trim() ?? '');
       formData.append('NgayThem', this.SuaDanhMucForm.value.NgayThemSua ?? '');
       formData.append('TinhTrang', this.SuaDanhMucForm.value.TinhTrangSua ?? '');
-      formData.append('MoTa', this.SuaDanhMucForm.value.MoTaSua ?? '');
+      formData.append('MoTa', this.SuaDanhMucForm.value.MoTaSua?.trim() ?? '');
 
       // Only append the file to the form data if it exists
       if (this.selectedFileSua) {
